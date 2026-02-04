@@ -16,16 +16,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  session,
 }: Readonly<{
   children: React.ReactNode
-  session: any
 }>) {
   return (
     <html lang='en'>
       <body className={`${font.className} bg-white dark:bg-black antialiased`}>
         <NextTopLoader color="#07be8a" />
-        <SessionProviderComp session={session}>
+        <SessionProviderComp>
           <ThemeProvider
             attribute='class'
             enableSystem={true}
