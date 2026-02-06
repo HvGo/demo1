@@ -43,7 +43,7 @@ const Hero = async () => {
               {title}
             </h1>
             {tagline ? (
-              <div className='mb-8 max-w-2xl md:max-w-45p'>
+              <div className='mb-10 sm:mb-12 max-w-2xl md:max-w-45p'>
                 <p className='inline-block max-w-xl bg-black/30 backdrop-blur-md border border-white/15 rounded-lg px-4 py-2 text-white/90 text-base sm:text-lg md:text-xl leading-snug font-medium italic tracking-wide shadow-sm shadow-black/30 border-l-4 border-l-primary/90'>
                   {tagline}
                 </p>
