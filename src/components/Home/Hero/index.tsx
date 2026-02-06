@@ -5,6 +5,7 @@ import { getSiteSectionByKey } from '@/lib/queries/content'
 
 const Hero = async () => {
   const section = await getSiteSectionByKey('home_hero')
+  const taglineSection = await getSiteSectionByKey('home_hero_tagline')
 
   const subtitle = section?.subtitle || 'Palm springs, CA'
   const title = section?.title || 'Futuristic Haven'
@@ -17,6 +18,7 @@ const Hero = async () => {
   const secondaryHref = section?.secondaryCtaHref || ''
   const bottomText = section?.description || ''
   const profileImageUrl = section?.profileImageUrl || ''
+  const tagline = taglineSection?.description || ''
 
   if (section && section.isVisible === false) return null
 
@@ -40,16 +42,23 @@ const Hero = async () => {
             <h1 className='text-inherit text-6xl sm:text-9xl font-semibold -tracking-wider md:max-w-45p mt-4 mb-6'>
               {title}
             </h1>
+            {tagline ? (
+              <div className='mb-8 max-w-2xl md:max-w-45p'>
+                <p className='inline-block max-w-xl bg-black/30 backdrop-blur-md border border-white/15 rounded-lg px-4 py-2 text-white/90 text-base sm:text-lg md:text-xl leading-snug font-medium italic tracking-wide shadow-sm shadow-black/30 border-l-4 border-l-primary/90'>
+                  {tagline}
+                </p>
+              </div>
+            ) : null}
             <div className='flex flex-col xs:flex-row justify-center md:justify-start gap-4'>
-              <Link href={primaryHref} className='px-8 py-4 border border-white/80 bg-white text-dark duration-300 hover:bg-transparent hover:text-white text-base font-semibold rounded-full hover:cursor-pointer'>
+              <Link href={primaryHref} className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors'>
                 {primaryLabel}
               </Link>
               {secondaryHref ? (
-                <Link href={secondaryHref} className='px-8 py-4 border border-white/80 bg-transparent text-white hover:bg-white hover:text-dark duration-300 text-base font-semibold rounded-full hover:cursor-pointer text-center'>
+                <Link href={secondaryHref} className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer text-center bg-white/15 text-white backdrop-blur-md border border-white/35 shadow-md shadow-black/20 hover:bg-white/25 transition-colors'>
                   {secondaryLabel}
                 </Link>
               ) : (
-                <button className='px-8 py-4 border border-white/80 bg-transparent text-white hover:bg-white hover:text-dark duration-300 text-base font-semibold rounded-full hover:cursor-pointer'>
+                <button className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer bg-white/15 text-white backdrop-blur-md border border-white/35 shadow-md shadow-black/20 hover:bg-white/25 transition-colors'>
                   {secondaryLabel}
                 </button>
               )}

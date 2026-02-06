@@ -5,5 +5,4 @@ export const navLinks: NavLinks[] = [
   { label: 'Properties', href: '/properties' },
   { label: 'Blog', href: '/blogs' },
   { label: 'Contact', href: '/contactus' },
-  { label: 'Docs', href: '/documentation' },
 ]

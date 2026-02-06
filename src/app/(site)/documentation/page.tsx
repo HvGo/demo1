@@ -1,14 +1,10 @@
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
-import { Documentation } from "@/components/Documentation/Documentation";
-import { Metadata } from "next";
 export const metadata: Metadata = {
-    title: "Featurs | Homely",
-};
+  title: 'Featurs | Homely',
+}
 
 export default function Page() {
-    return (
-        <>
-        <Documentation/>
-        </>
-    );
-};
+  notFound()
+}
