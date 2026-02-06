@@ -1,4 +1,4 @@
-import { getAllPosts, getPostBySlug } from "@/components/utils/markdown";
+import { getBlogPostBySlug } from "@/lib/queries/content";
 import markdownToHtml from "@/components/utils/markdownToHtml";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -11,13 +11,7 @@ type Props = {
 
 export async function generateMetadata({ params }: any) {
     const data = await params;
-    const posts = getAllPosts(["title", "date", "excerpt", "coverImage", "slug"]);
-    const post = getPostBySlug(data.slug, [
-        "title",
-        "author",
-        "content",
-        "metadata",
-    ]);
+    const post = await getBlogPostBySlug(data.slug);
 
     const siteName = process.env.SITE_NAME || "Your Site Name";
     const authorName = process.env.AUTHOR_NAME || "Your Author Name";
@@ -64,17 +58,10 @@ export async function generateMetadata({ params }: any) {
 
 export default async function Post({ params }: any) {
     const data = await params;
-    const posts = getAllPosts(["title", "date", "excerpt", "coverImage", "slug"]);
-    const post = getPostBySlug(data.slug, [
-        "title",
-        "author",
-        "authorImage",
-        "content",
-        "coverImage",
-        "date",
-        "tag",
-        "detail",
-    ]);
+    const post = await getBlogPostBySlug(data.slug);
+    if (!post) {
+        return null;
+    }
 
     const content = await markdownToHtml(post.content || "");
 

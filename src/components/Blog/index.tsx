@@ -1,6 +1,6 @@
 import React from 'react';
 import BlogCard from '@/components/shared/Blog/blogCard';
-import { getAllPosts } from '@/components/utils/markdown';
+import { getBlogPosts } from '@/lib/queries/content';
 
 interface Blog {
     title: string;
@@ -12,18 +12,16 @@ interface Blog {
     tag: string;
 }
 
-const BlogList: React.FC = () => {
-    // Get all posts and map over them to ensure each field is a string
-    const posts: Blog[] = getAllPosts(["title", "date", "excerpt", "coverImage", "slug", "detail", "tag"])
-        .map(item => ({
-            title: typeof item.title === 'string' ? item.title : String(item.title),
-            date: typeof item.date === 'string' ? item.date : String(item.date),
-            excerpt: typeof item.excerpt === 'string' ? item.excerpt : String(item.excerpt),
-            coverImage: typeof item.coverImage === 'string' ? item.coverImage : String(item.coverImage),
-            slug: typeof item.slug === 'string' ? item.slug : String(item.slug),
-            detail: typeof item.detail === 'string' ? item.detail : String(item.detail),
-            tag: typeof item.tag === 'string' ? item.tag : String(item.tag),
-        }))
+const BlogList = async () => {
+    const posts: Blog[] = (await getBlogPosts()).map((item) => ({
+        title: item.title,
+        date: item.date,
+        excerpt: item.excerpt,
+        coverImage: item.coverImage,
+        slug: item.slug,
+        detail: item.detail,
+        tag: item.tag,
+    }));
 
     return (
         <section className='pt-0!'>

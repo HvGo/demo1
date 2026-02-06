@@ -1,8 +1,10 @@
 import { Icon } from '@iconify/react'
 import PropertyCard from './Card/Card'
-import { propertyHomes } from '@/app/api/propertyhomes'
+import { getFeaturedProperties } from '@/lib/queries/content'
 
-const Properties: React.FC = () => {
+const Properties = async () => {
+  const propertyHomes = await getFeaturedProperties(6)
+
   return (
     <section>
       <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>

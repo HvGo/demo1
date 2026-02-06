@@ -37,28 +37,28 @@ const Header: React.FC = () => {
   }, [handleScroll])
 
   const isHomepage = pathname === '/'
+  const useLightLogo = (isHomepage && !sticky) || theme === 'dark'
 
   return (
     <header className={`fixed h-24 py-1 z-50 w-full bg-transparent transition-all duration-300 lg:px-0 px-4 ${sticky ? "top-3" : "top-0"}`}>
-      <nav className={`container mx-auto max-w-8xl flex items-center justify-between py-4 duration-300 ${sticky ? "shadow-lg bg-white dark:bg-dark rounded-full top-5 px-4 " : "shadow-none top-0"}`}>
+      <nav
+        className={`container mx-auto max-w-8xl flex items-center justify-between py-4 duration-300 ${sticky
+          ? "shadow-lg bg-white dark:bg-dark rounded-full top-5 px-4 "
+          : isHomepage
+            ? "shadow-none top-0 rounded-full px-4 bg-white/25 dark:bg-black/25 backdrop-blur-md border border-white/30 dark:border-white/10"
+            : "shadow-none top-0"
+          }`}
+      >
         <div className='flex justify-between items-center gap-2 w-full'>
-          <div>
+          <div className='ml-2 sm:ml-4'>
             <Link href='/'>
               <Image
-                src={'/images/header/dark-logo.svg'}
+                src={'/images/header/logo1.png'}
                 alt='logo'
                 width={150}
                 height={68}
                 unoptimized={true}
-                className={`${isHomepage ? sticky ? "block dark:hidden" : "hidden" : sticky ? "block dark:hidden" : "block dark:hidden"}`}
-              />
-              <Image
-                src={'/images/header/logo.svg'}
-                alt='logo'
-                width={150}
-                height={68}
-                unoptimized={true}
-                className={`${isHomepage ? sticky ? "hidden dark:block" : "block" : sticky ? "dark:block hidden" : "dark:block hidden"}`}
+                className={useLightLogo ? 'brightness-0 invert' : ''}
               />
             </Link>
           </div>
@@ -103,7 +103,7 @@ const Header: React.FC = () => {
                 className={`flex items-center gap-3 p-2 sm:px-5 sm:py-3 rounded-full font-semibold hover:cursor-pointer border ${isHomepage
                   ? sticky
                     ? 'text-white bg-dark dark:bg-white dark:text-dark dark:hover:text-white dark:hover:bg-dark hover:text-dark hover:bg-white border-dark dark:border-white'
-                    : 'text-dark bg-white dark:text-dark hover:bg-transparent hover:text-white border-white'
+                    : 'text-dark bg-white/90 dark:text-dark hover:bg-white hover:text-dark border-white/70'
                   : 'bg-dark text-white hover:bg-transparent hover:text-dark dark:bg-white dark:text-dark dark:hover:bg-transparent dark:hover:text-white duration-300'
                   }`}
                 aria-label='Toggle mobile menu'>

@@ -8,9 +8,13 @@ import {
     CarouselItem,
     type CarouselApi,
 } from "@/components/ui/carousel";
-import { testimonials } from "@/app/api/testimonial";
+import type { DbTestimonial } from "@/lib/queries/content";
 
-const Testimonial = () => {
+type Props = {
+    testimonials: DbTestimonial[];
+};
+
+const Testimonial = ({ testimonials }: Props) => {
     const [api, setApi] = React.useState<CarouselApi | undefined>(undefined);
     const [current, setCurrent] = React.useState(0);
     const [count, setCount] = React.useState(0);

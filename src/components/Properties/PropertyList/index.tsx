@@ -1,7 +1,9 @@
 import PropertyCard from '@/components/Home/Properties/Card/Card'
-import { propertyHomes } from '@/app/api/propertyhomes'
+import { getFeaturedProperties } from '@/lib/queries/content'
 
-const PropertiesListing: React.FC = () => {
+const PropertiesListing = async () => {
+  const propertyHomes = await getFeaturedProperties()
+
   return (
     <section className='pt-0!'>
       <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
