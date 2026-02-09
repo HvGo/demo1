@@ -8,6 +8,8 @@ import BlogSmall from '@/components/shared/Blog'
 import GetInTouch from '@/components/Home/GetInTouch'
 import FAQ from '@/components/Home/FAQs'
 
+export const revalidate = 600
+
 export default function Home() {
   return (
     <main>
