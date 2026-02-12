@@ -7,18 +7,27 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 
-import { getFaqs } from '@/lib/queries/content';
+import { getFaqs, getSiteSectionByKey } from '@/lib/queries/content';
 
 const FAQ = async () => {
+    const section = await getSiteSectionByKey('home_faqs');
     const faqs = await getFaqs('home');
+    
+    if (section && section.isVisible === false) return null;
+    
+    const title = section?.title || 'FAQs';
+    const subtitle = section?.subtitle || 'Everything about Homely homes';
+    const description = section?.description || 'We know that buying, selling, or investing in real estate can be overwhelming. Here are some frequently asked questions to help guide you through the process';
+    const imageUrl = section?.imageUrl || '/images/faqs/faq-image.png';
+    
     return (
         <section id='faqs'>
             <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
                 <div className="grid lg:grid-cols-2 gap-10 ">
                     <div className='lg:mx-0 mx-auto'>
                         <Image
-                            src="/images/faqs/faq-image.png"
-                            alt='image'
+                            src={imageUrl}
+                            alt='faq image'
                             width={680}
                             height={644}
                             className='lg:w-full'
@@ -28,13 +37,13 @@ const FAQ = async () => {
                     <div className='lg:px-12'>
                         <p className="text-dark/75 dark:text-white/75 text-base font-semibold flex gap-2">
                             <Icon icon="ph:house-simple-fill" className="text-2xl text-primary " />
-                            FAQs
+                            {title}
                         </p>
                         <h2 className='lg:text-52 text-40 leading-[1.2] font-medium text-dark dark:text-white'>
-                            Everything about Homely homes
+                            {subtitle}
                         </h2>
                         <p className='text-dark/50 dark:text-white/50 pr-20'>
-                            We know that buying, selling, or investing in real estate can be overwhelming. Here are some frequently asked questions to help guide you through the process
+                            {description}
                         </p>
                         <div className="my-8">
                             <Accordion

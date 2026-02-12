@@ -1,15 +1,25 @@
 import Link from "next/link";
 import { Icon } from "@iconify/react"
 import { FooterLinks } from "@/app/api/footerlinks";
+import { getSiteSectionByKey } from "@/lib/queries/content";
 
-const Footer = () => {
+const Footer = async () => {
+  const section = await getSiteSectionByKey('home_footer');
+  
+  if (section && section.isVisible === false) return null;
+  
+  const description = section?.description || 'Stay updated with the latest news, promotions, and exclusive offers.';
+  const title = section?.title || 'Begin your path to success';
+  const subtitle = section?.subtitle || 'contact us today';
+  const ctaLabel = section?.primaryCtaLabel || 'Get In Touch';
+  const ctaHref = section?.primaryCtaHref || '/contactus';
+  
   return (
     <footer className="relative z-10 bg-dark">
       <div className="container mx-auto max-w-8xl pt-14 px-4 sm:px-6 lg:px-0">
         <div className="flex lg:items-center justify-between items-end lg:gap-11 pb-14 border-b border-white/10 lg:flex-nowrap flex-wrap gap-6">
           <p className="text-white text-sm lg:max-w-1/5">
-            Stay updated with the latest news,
-            promotions, and exclusive offers.
+            {description}
           </p>
           <div className="flex lg:flex-row flex-col items-center lg:gap-10 gap-3">
             <div className="flex gap-2 lg:order-1 order-2">
@@ -38,11 +48,12 @@ const Footer = () => {
           <div className="grid grid-cols-12 sm:gap-10 gap-y-6">
             <div className="md:col-span-7 col-span-12">
               <h2 className="text-white leading-[1.2] text-40 font-medium mb-6 lg:max-w-3/4">
-                Begin your path to
-                success contact us today.
+                {title}
+                <br />
+                {subtitle}
               </h2>
-              <Link href="/contactus" className="bg-primary text-base font-semibold py-4 px-8 rounded-full text-white hover:bg-white hover:text-dark duration-300 hover:cursor-pointer">
-                Get In Touch
+              <Link href={ctaHref} className="bg-primary text-base font-semibold py-4 px-8 rounded-full text-white hover:bg-white hover:text-dark duration-300 hover:cursor-pointer">
+                {ctaLabel}
               </Link>
             </div>
             <div className="md:col-span-3 sm:col-span-6 col-span-12">

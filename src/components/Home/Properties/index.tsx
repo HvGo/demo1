@@ -1,9 +1,12 @@
 import { Icon } from '@iconify/react'
 import PropertyCard from './Card/Card'
-import { getFeaturedProperties } from '@/lib/queries/content'
+import { getFeaturedProperties, getSiteSectionByKey } from '@/lib/queries/content'
 
 const Properties = async () => {
+  const section = await getSiteSectionByKey('home_properties');
   const propertyHomes = await getFeaturedProperties(6)
+
+  if (section && section.isVisible === false) return null;
 
   return (
     <section>

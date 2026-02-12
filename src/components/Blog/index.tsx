@@ -24,9 +24,9 @@ const BlogList = async () => {
     }));
 
     return (
-        <section className='pt-0!'>
-            <div className="container max-w-8xl mx-auto px-5 2xl:px-0">
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-12">
+        <section className='py-16 sm:py-20 lg:py-24'>
+            <div className="container max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
                     {posts.map((blog, i) => (
                         <div key={i} className="w-full">
                             <BlogCard blog={blog} />

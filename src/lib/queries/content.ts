@@ -36,6 +36,7 @@ export type DbFaq = {
 };
 
 export type DbSiteSection = {
+  key: string;
   title: string;
   subtitle: string;
   description: string;
@@ -46,6 +47,7 @@ export type DbSiteSection = {
   secondaryCtaLabel: string;
   secondaryCtaHref: string;
   isVisible: boolean;
+  sortOrder: number;
 };
 
 export type DbBlogListItem = {
@@ -131,6 +133,7 @@ export async function getFaqs(sectionKey: string = "home"): Promise<DbFaq[]> {
 
 export async function getSiteSectionByKey(sectionKey: string): Promise<DbSiteSection | null> {
   const { rows } = await sql<{
+    key: string;
     title: string | null;
     subtitle: string | null;
     description: string | null;
@@ -141,12 +144,13 @@ export async function getSiteSectionByKey(sectionKey: string): Promise<DbSiteSec
     secondary_cta_label: string | null;
     secondary_cta_href: string | null;
     is_visible: boolean;
+    sort_order: number;
   }>(
     `
-    select title, subtitle, description, image_url, profile_image_url,
+    select key, title, subtitle, description, image_url, profile_image_url,
            primary_cta_label, primary_cta_href,
            secondary_cta_label, secondary_cta_href,
-           is_visible
+           is_visible, sort_order
     from site_sections
     where key = $1
     limit 1
@@ -158,6 +162,7 @@ export async function getSiteSectionByKey(sectionKey: string): Promise<DbSiteSec
   if (!r) return null;
 
   return {
+    key: r.key,
     title: r.title || "",
     subtitle: r.subtitle || "",
     description: r.description || "",
@@ -168,7 +173,54 @@ export async function getSiteSectionByKey(sectionKey: string): Promise<DbSiteSec
     secondaryCtaLabel: r.secondary_cta_label || "",
     secondaryCtaHref: r.secondary_cta_href || "",
     isVisible: r.is_visible,
+    sortOrder: r.sort_order || 0,
   };
+}
+
+export async function getAllSiteSections(): Promise<DbSiteSection[]> {
+  const { rows } = await sql<{
+    key: string;
+    title: string | null;
+    subtitle: string | null;
+    description: string | null;
+    image_url: string | null;
+    profile_image_url: string | null;
+    primary_cta_label: string | null;
+    primary_cta_href: string | null;
+    secondary_cta_label: string | null;
+    secondary_cta_href: string | null;
+    is_visible: boolean;
+    sort_order: number;
+  }>(
+    `
+    select key, title, subtitle, description, image_url, profile_image_url,
+           primary_cta_label, primary_cta_href,
+           secondary_cta_label, secondary_cta_href,
+           is_visible, sort_order
+    from site_sections
+    order by sort_order asc, created_at asc
+    `
+  );
+
+  return rows.map((r) => ({
+    key: r.key,
+    title: r.title || "",
+    subtitle: r.subtitle || "",
+    description: r.description || "",
+    imageUrl: r.image_url || "",
+    profileImageUrl: r.profile_image_url || "",
+    primaryCtaLabel: r.primary_cta_label || "",
+    primaryCtaHref: r.primary_cta_href || "",
+    secondaryCtaLabel: r.secondary_cta_label || "",
+    secondaryCtaHref: r.secondary_cta_href || "",
+    isVisible: r.is_visible,
+    sortOrder: r.sort_order || 0,
+  }));
+}
+
+export async function getAllVisibleSiteSections(): Promise<DbSiteSection[]> {
+  const allSections = await getAllSiteSections();
+  return allSections.filter((section) => section.isVisible);
 }
 
 async function getPropertyImages(propertyId: string, limit?: number) {

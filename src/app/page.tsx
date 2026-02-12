@@ -1,27 +1,26 @@
-import FeaturedProperty from '@/components/Home/FeaturedProperty'
-import Hero from '@/components/Home/Hero'
-import Profile from '@/components/Home/Profile'
-import Properties from '@/components/Home/Properties'
-import Services from '@/components/Home/Services'
-import TestimonialSection from '@/components/Home/Testimonial/Section'
-import BlogSmall from '@/components/shared/Blog'
-import GetInTouch from '@/components/Home/GetInTouch'
-import FAQ from '@/components/Home/FAQs'
+import { getAllSiteSections } from '@/lib/queries/content'
+import { getSectionComponent, isValidSectionKey } from '@/lib/sectionComponents'
 
 export const revalidate = 600
 
-export default function Home() {
+export default async function Home() {
+  const allSections = await getAllSiteSections()
+
   return (
     <main>
-      <Hero />
-      <Profile />
-      <Services />
-      <Properties />
-      <FeaturedProperty />
-      <TestimonialSection />
-      <BlogSmall />
-      <GetInTouch />
-      <FAQ />
+      {allSections
+        .filter((section) => section.isVisible)
+        .map((section) => {
+          if (!isValidSectionKey(section.key)) {
+            console.warn(`Section key not found: ${section.key}`)
+            return null
+          }
+
+          const Component = getSectionComponent(section.key)
+          if (!Component) return null
+
+          return <Component key={section.key} />
+        })}
     </main>
   )
 }

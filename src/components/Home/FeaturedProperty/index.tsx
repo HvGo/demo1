@@ -1,83 +1,34 @@
-"use client";
-import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { featuredProprty } from "@/app/api/featuredproperty";
 import { Icon } from "@iconify/react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from "@/components/ui/carousel";
+import { getSiteSectionByKey } from "@/lib/queries/content";
+import FeaturedPropertyClient from "./FeaturedPropertyClient";
 
-const FeaturedProperty: React.FC = () => {
-  const [api, setApi] = React.useState<CarouselApi | undefined>(undefined);
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
-  React.useEffect(() => {
-    if (!api) {
-      return;
-    }
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
+const FeaturedProperty = async () => {
+  const section = await getSiteSectionByKey('home_featured_property');
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api]);
+  if (section && section.isVisible === false) return null;
 
-  const handleDotClick = (index: number) => {
-    if (api) {
-      api.scrollTo(index);
-    }
-  };
-
+  const badge = section?.title || 'Featured property';
+  const title = section?.subtitle || 'Modern luxe villa';
+  const description = section?.description || 'Experience luxury living at modern luxe villa, located at 20 S Aurora Ave, Miami. Priced at $1,650,500, this 560 ft² smart home offers 4 bedrooms, 3 bathrooms, and spacious living areas. Enjoy energy efficiency, natural light, security systems, outdoor spaces, and 2 bar areas—perfect for 8+ guests. Built in 2025.';
+  const ctaLabel = section?.primaryCtaLabel || 'Get in touch';
+  const ctaHref = section?.primaryCtaHref || '/contactus';
 
   return (
     <section>
       <div className="container max-w-8xl mx-auto px-5 2xl:px-0">
         <div className="grid lg:grid-cols-2 gap-10">
-          <div className="relative">
-            <Carousel
-              setApi={setApi}
-              opts={{
-                loop: true,
-              }}
-            >
-              <CarouselContent>
-                {featuredProprty.map((item, index) => (
-                  <CarouselItem key={index}>
-                    <Image
-                      src={item.scr}
-                      alt={item.alt}
-                      width={680}
-                      height={530}
-                      className="rounded-2xl w-full h-540"
-                      unoptimized={true}
-                    />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
-            <div className="absolute left-2/5 bg-dark/50 rounded-full py-2.5 bottom-10 flex justify-center mt-4 gap-2.5 px-2.5">
-              {Array.from({ length: count }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleDotClick(index)}
-                  className={`w-2.5 h-2.5 rounded-full ${current === index + 1 ? "bg-white" : "bg-white/50"}`}
-                />
-              ))}
-            </div>
-          </div>
+          <FeaturedPropertyClient properties={featuredProprty} />
           <div className="flex flex-col gap-10">
             <div>
               <p className="text-dark/75 dark:text-white/75 text-base font-semibold flex gap-2">
                 <Icon icon="ph:house-simple-fill" className="text-2xl text-primary " />
-                Featured property
+                {badge}
               </p>
               <h2 className="lg:text-52 text-40 font-medium text-dark dark:text-white">
-                Modern luxe villa
+                {title}
               </h2>
               <div className="flex items-center gap-2.5">
                 <Icon icon="ph:map-pin" width={28} height={26} className="text-dark/50 dark:text-white/50" />
@@ -87,9 +38,7 @@ const FeaturedProperty: React.FC = () => {
               </div>
             </div>
             <p className="text-base text-dark/50 dark:text-white/50">
-              Experience luxury living at modern luxe villa, located at 20 S Aurora Ave, Miami. Priced at $1,650,500, this 560 ft² smart home offers 4 bedrooms,
-              3 bathrooms, and spacious living areas. Enjoy energy efficiency, natural light, security systems, outdoor spaces, and 2 bar areas—perfect for 8+
-              guests. Built in 2025.
+              {description}
             </p>
             <div className="grid grid-cols-2 gap-10">
               <div className="flex items-center gap-4">
@@ -178,8 +127,8 @@ const FeaturedProperty: React.FC = () => {
               </div>
             </div>
             <div className="flex gap-10">
-              <Link href="/contactus" className="py-4 px-8 bg-primary hover:bg-dark duration-300 rounded-full text-white">
-                Get in touch
+              <Link href={ctaHref} className="py-4 px-8 bg-primary hover:bg-dark duration-300 rounded-full text-white">
+                {ctaLabel}
               </Link>
               <div>
                 <h4 className="text-3xl text-dark dark:text-white font-medium">

@@ -67,77 +67,82 @@ export default async function Post({ params }: any) {
 
     return (
         <>
-            <section className="relative !pt-44 pb-0!">
-                <div className="container max-w-8xl mx-auto md:px-0 px-4">
-                    <div>
-                        <div>
-                            <Link href="/blogs" className="flex items-center gap-3 text-white bg-primary py-3 px-4 rounded-full w-fit hover:bg-dark duration-300">
-                                <Icon
-                                    icon={'ph:arrow-left'}
-                                    width={20}
-                                    height={20}
-                                    className=''
-                                />
-                                <span>Go Back</span>
-                            </Link>
-                            <h2 className="text-dark dark:text-white md:text-52 text-40 leading-[1.2] font-semibold pt-7">
+            <section className="relative pt-20 sm:pt-28 lg:pt-36 pb-0">
+                <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="space-y-6 sm:space-y-8">
+                        <Link href="/blogs" className="inline-flex items-center gap-2 sm:gap-3 text-white bg-primary hover:bg-primary/90 py-2.5 sm:py-3 px-4 sm:px-5 rounded-full transition duration-300 text-sm sm:text-base">
+                            <Icon
+                                icon={'ph:arrow-left'}
+                                width={18}
+                                height={18}
+                                className='sm:w-5 sm:h-5'
+                            />
+                            <span>Go Back</span>
+                        </Link>
+                        
+                        <div className="space-y-4 sm:space-y-6">
+                            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-tight font-bold text-dark dark:text-white">
                                 {post.title}
-                            </h2>
-                            <h6 className="text-xm mt-5 text-dark dark:text-white">
+                            </h1>
+                            <p className="text-base sm:text-lg text-dark/70 dark:text-white/70 leading-relaxed">
                                 {post.detail}
-                            </h6>
+                            </p>
                         </div>
-                        <div className="flex items-center justify-between gap-6 mt-12">
-                            <div className="flex items-center gap-4">
+
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-8 pt-4 sm:pt-6 border-t border-dark/10 dark:border-white/10">
+                            <div className="flex items-center gap-3 sm:gap-4">
                                 <Image
                                     src={post.authorImage}
-                                    alt="image"
-                                    className="bg-no-repeat bg-contain inline-block rounded-full !w-12 !h-12"
-                                    width={48}
-                                    height={48}
+                                    alt={post.author}
+                                    className="rounded-full w-12 h-12 sm:w-14 sm:h-14 object-cover"
+                                    width={56}
+                                    height={56}
                                     quality={100}
                                     unoptimized={true}
                                 />
                                 <div>
-                                    <span className="text-xm text-dark dark:text-white">
+                                    <p className="text-sm sm:text-base font-semibold text-dark dark:text-white">
                                         {post.author}
-                                    </span>
+                                    </p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-7">
-                                <div className="flex items-center gap-4">
+                            
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                                <div className="flex items-center gap-2 sm:gap-3 text-dark dark:text-white">
                                     <Icon
                                         icon={'ph:clock'}
-                                        width={20}
-                                        height={20}
-                                        className=''
+                                        width={18}
+                                        height={18}
+                                        className='sm:w-5 sm:h-5'
                                     />
-                                    <span className="text-base text-dark font-medium dark:text-white">
+                                    <span className="text-sm sm:text-base font-medium">
                                         {format(new Date(post.date), "MMM dd, yyyy")}
                                     </span>
                                 </div>
-                                <div className="py-2.5 px-5 bg-dark/5 rounded-full dark:bg-white/15">
-                                    <p className="text-sm font-semibold text-dark dark:text-white">{post.tag}</p>
+                                <div className="inline-block py-1.5 sm:py-2 px-3 sm:px-4 bg-primary/10 dark:bg-primary/20 rounded-full">
+                                    <p className="text-xs sm:text-sm font-semibold text-primary">{post.tag}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="z-20 mt-12 overflow-hidden rounded">
+
+                    <div className="mt-8 sm:mt-12 lg:mt-16 overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-3xl">
                         <Image
                             src={post.coverImage}
-                            alt="image"
+                            alt={post.title}
                             width={1170}
-                            height={766}
+                            height={660}
                             quality={100}
-                            className="h-full w-full object-cover object-center rounded-3xl"
+                            priority
+                            className="w-full h-auto object-cover"
                         />
                     </div>
                 </div>
             </section>
-            <section className="pt-12!">
-                <div className="container max-w-8xl mx-auto px-4">
-                    <div className="-mx-4 flex flex-wrap justify-center">
-                        <div className="blog-details markdown xl:pr-10">
+            <section className="py-12 sm:py-16 lg:py-20">
+                <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert max-w-none">
+                        <div className="blog-details markdown space-y-6 sm:space-y-8">
                             <div dangerouslySetInnerHTML={{ __html: content }}></div>
                         </div>
                     </div>
