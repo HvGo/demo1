@@ -7,9 +7,13 @@ import FeaturedProperty from '@/components/Home/FeaturedProperty'
 import Properties from '@/components/Home/Properties'
 import Services from '@/components/Home/Services'
 import GetInTouch from '@/components/Home/GetInTouch'
+import Stats from '@/components/Home/Stats'
+import HowIHelp from '@/components/Home/HowIHelp'
 
 export const SECTION_COMPONENTS: Record<string, React.ComponentType<any>> = {
   'home_hero': Hero,
+  'home_stats': Stats,
+  'home_how_i_help': HowIHelp,
   'home_testimonials': TestimonialSection,
   'home_blog': BlogSmall,
   'home_faqs': FAQ,

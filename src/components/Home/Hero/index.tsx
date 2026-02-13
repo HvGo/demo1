@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { getSiteSectionByKey } from '@/lib/queries/content'
+import SearchBar from './SearchBar'
 
 const Hero = async () => {
   const section = await getSiteSectionByKey('home_hero')
@@ -11,14 +12,24 @@ const Hero = async () => {
   const title = section?.title || 'Futuristic Haven'
   const imageUrl = section?.imageUrl || '/images/hero/heroBanner.png'
 
-  const primaryLabel = section?.primaryCtaLabel || 'Get in touch'
-  const primaryHref = section?.primaryCtaHref || '/contactus'
+  const primaryLabel = section?.primaryCtaLabel || ''
+  const primaryHref = section?.primaryCtaHref || ''
 
-  const secondaryLabel = section?.secondaryCtaLabel || 'View Details'
+  const secondaryLabel = section?.secondaryCtaLabel || ''
   const secondaryHref = section?.secondaryCtaHref || ''
   const bottomText = section?.description || ''
   const profileImageUrl = section?.profileImageUrl || ''
   const tagline = taglineSection?.description || ''
+
+  // SearchBar data from content_data
+  const searchData = section?.contentData || {}
+  const searchTabs = searchData.searchTabs || [
+    { id: 'buy', label: 'BUY A HOME' },
+    { id: 'sell', label: 'SELL A HOME' },
+    { id: 'value', label: 'HOME VALUE' }
+  ]
+  const searchPlaceholder = searchData.searchPlaceholder || 'Search by city, county, or zip'
+  const searchButtonLabel = searchData.searchButtonLabel || 'SEARCH'
 
   if (section && section.isVisible === false) return null
 
@@ -49,20 +60,23 @@ const Hero = async () => {
                 </p>
               </div>
             ) : null}
-            <div className='flex flex-col xs:flex-row justify-center md:justify-start gap-4'>
-              <Link href={primaryHref} className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors'>
-                {primaryLabel}
-              </Link>
-              {secondaryHref ? (
-                <Link href={secondaryHref} className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer text-center bg-white/15 text-white backdrop-blur-md border border-white/35 shadow-md shadow-black/20 hover:bg-white/25 transition-colors'>
-                  {secondaryLabel}
-                </Link>
-              ) : (
-                <button className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer bg-white/15 text-white backdrop-blur-md border border-white/35 shadow-md shadow-black/20 hover:bg-white/25 transition-colors'>
-                  {secondaryLabel}
-                </button>
-              )}
+            <div className='w-full md:max-w-2xl mb-8'>
+              <SearchBar tabs={searchTabs} placeholder={searchPlaceholder} buttonLabel={searchButtonLabel} />
             </div>
+            {(primaryHref && primaryLabel) || (secondaryHref && secondaryLabel) ? (
+              <div className='flex flex-col xs:flex-row justify-center md:justify-start gap-4'>
+                {primaryHref && primaryLabel ? (
+                  <Link href={primaryHref} className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors'>
+                    {primaryLabel}
+                  </Link>
+                ) : null}
+                {secondaryHref && secondaryLabel ? (
+                  <Link href={secondaryHref} className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer text-center bg-white/15 text-white backdrop-blur-md border border-white/35 shadow-md shadow-black/20 hover:bg-white/25 transition-colors'>
+                    {secondaryLabel}
+                  </Link>
+                ) : null}
+              </div>
+            ) : null}
           </div>
         </div>
         <div className='md:absolute bottom-0 md:-right-68 xl:right-0 bg-white/55 dark:bg-black/40 backdrop-blur-md border border-white/35 dark:border-white/10 shadow-lg py-12 px-8 mobile:px-16 md:pl-16 md:pr-[295px] rounded-2xl md:rounded-none md:rounded-tl-2xl mt-24'>

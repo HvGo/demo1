@@ -48,6 +48,7 @@ export type DbSiteSection = {
   secondaryCtaHref: string;
   isVisible: boolean;
   sortOrder: number;
+  contentData?: any;
 };
 
 export type DbBlogListItem = {
@@ -145,12 +146,13 @@ export async function getSiteSectionByKey(sectionKey: string): Promise<DbSiteSec
     secondary_cta_href: string | null;
     is_visible: boolean;
     sort_order: number;
+    content_data: any;
   }>(
     `
     select key, title, subtitle, description, image_url, profile_image_url,
            primary_cta_label, primary_cta_href,
            secondary_cta_label, secondary_cta_href,
-           is_visible, sort_order
+           is_visible, sort_order, content_data
     from site_sections
     where key = $1
     limit 1
@@ -174,6 +176,7 @@ export async function getSiteSectionByKey(sectionKey: string): Promise<DbSiteSec
     secondaryCtaHref: r.secondary_cta_href || "",
     isVisible: r.is_visible,
     sortOrder: r.sort_order || 0,
+    contentData: r.content_data,
   };
 }
 
@@ -191,12 +194,13 @@ export async function getAllSiteSections(): Promise<DbSiteSection[]> {
     secondary_cta_href: string | null;
     is_visible: boolean;
     sort_order: number;
+    content_data: any;
   }>(
     `
     select key, title, subtitle, description, image_url, profile_image_url,
            primary_cta_label, primary_cta_href,
            secondary_cta_label, secondary_cta_href,
-           is_visible, sort_order
+           is_visible, sort_order, content_data
     from site_sections
     order by sort_order asc, created_at asc
     `
@@ -215,6 +219,7 @@ export async function getAllSiteSections(): Promise<DbSiteSection[]> {
     secondaryCtaHref: r.secondary_cta_href || "",
     isVisible: r.is_visible,
     sortOrder: r.sort_order || 0,
+    contentData: r.content_data,
   }));
 }
 
