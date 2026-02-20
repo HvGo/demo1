@@ -13,7 +13,21 @@ const Footer = async () => {
   const subtitle = section?.subtitle || 'contact us today';
   const ctaLabel = section?.primaryCtaLabel || 'Get In Touch';
   const ctaHref = section?.primaryCtaHref || '/contactus';
-  
+
+  const defaultSocialLinks = [
+    { icon: "ph:x-logo-bold", label: "X", href: "#" },
+    { icon: "ph:facebook-logo-bold", label: "Facebook", href: "#" },
+    { icon: "ph:instagram-logo-bold", label: "Instagram", href: "#" },
+    { icon: "ph:youtube-logo-bold", label: "YouTube", href: "#" },
+    { icon: "ph:tiktok-logo-fill", label: "TikTok", href: "#" },
+    { icon: "ph:google-logo", label: "Google", href: "#" },
+  ];
+
+  const socialLinksRaw = (section as any)?.contentData?.socialLinks;
+  const socialLinks = Array.isArray(socialLinksRaw)
+    ? socialLinksRaw.filter((item: any) => item && item.href && item.icon)
+    : defaultSocialLinks;
+
   return (
     <footer className="relative z-10 bg-dark">
       <div className="container mx-auto max-w-8xl pt-14 px-4 sm:px-6 lg:px-0">
@@ -33,15 +47,11 @@ const Footer = async () => {
             </p>
           </div>
           <div className="flex items-center gap-6">
-            <Link href="#">
-              <Icon icon="ph:x-logo-bold" width={24} height={24} className="text-white hover:text-primary duration-300" />
-            </Link>
-            <Link href="#">
-              <Icon icon="ph:facebook-logo-bold" width={24} height={24} className="text-white hover:text-primary duration-300" />
-            </Link>
-            <Link href="#">
-              <Icon icon="ph:instagram-logo-bold" width={24} height={24} className="text-white hover:text-primary duration-300" />
-            </Link>
+            {socialLinks.map((item, idx) => (
+              <Link key={idx} href={item.href} aria-label={item.label || 'social link'}>
+                <Icon icon={item.icon} width={24} height={24} className="text-white hover:text-primary duration-300" />
+              </Link>
+            ))}
           </div>
         </div>
         <div className="py-16 border-b border-white/10">

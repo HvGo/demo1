@@ -2,6 +2,8 @@ import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Metadata } from "next";
+import ContactForm from '@/components/ContactForm'
+
 export const metadata: Metadata = {
     title: "Contact Us | Homely",
 };
@@ -50,7 +52,7 @@ export default function ContactUs() {
                 Contact information
               </h5>
               <p className='text-sm xs:text-base mobile:text-xm font-normal text-white/80'>
-                Ready to find your dream home or sell your property? We’re here
+                Ready to find your dream home or sell your property? We're here
                 to help!
               </p>
             </div>
@@ -80,50 +82,7 @@ export default function ContactUs() {
             </div>
           </div>
           <div className='flex-1/2'>
-            <form>
-              <div className='flex flex-col gap-8'>
-                <div className='flex flex-col lg:flex-row gap-6'>
-                  <input
-                    type='text'
-                    name='username'
-                    id='username'
-                    autoComplete='username'
-                    placeholder='Name*'
-                    required
-                    className='px-6 py-3.5 border border-black/10 dark:border-white/10 rounded-full outline-primary focus:outline w-full'
-                  />
-                  <input
-                    type='number'
-                    name='mobile'
-                    id='mobile'
-                    autoComplete='mobile'
-                    placeholder='Phone number*'
-                    required
-                    className='px-6 py-3.5 border border-black/10 dark:border-white/10 rounded-full outline-primary focus:outline w-full'
-                  />
-                </div>
-                <input
-                  type='email'
-                  name='email'
-                  id='email'
-                  autoComplete='email'
-                  placeholder='Email address*'
-                  required
-                  className='px-6 py-3.5 border border-black/10 dark:border-white/10 rounded-full outline-primary focus:outline'
-                />
-                <textarea
-                  rows={8}
-                  cols={50}
-                  name='message'
-                  id='message'
-                  placeholder='Write here your message'
-                  required
-                  className='px-6 py-3.5 border border-black/10 dark:border-white/10 rounded-2xl outline-primary focus:outline'></textarea>
-                <button className='px-8 py-4 rounded-full bg-primary text-white text-base font-semibold w-full mobile:w-fit hover:cursor-pointer hover:bg-dark duration-300'>
-                  Send message
-                </button>
-              </div>
-            </form>
+            <ContactForm />
           </div>
         </div>
       </div>

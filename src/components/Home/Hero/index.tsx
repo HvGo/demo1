@@ -2,11 +2,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { getSiteSectionByKey } from '@/lib/queries/content'
+import { getSchemaMarkupByKey } from '@/lib/queries/schema'
+import { SchemaMarkup } from '@/components/SchemaMarkup'
 import SearchBar from './SearchBar'
 
 const Hero = async () => {
   const section = await getSiteSectionByKey('home_hero')
   const taglineSection = await getSiteSectionByKey('home_hero_tagline')
+  const organizationSchema = await getSchemaMarkupByKey('organization')
 
   const subtitle = section?.subtitle || 'Palm springs, CA'
   const title = section?.title || 'Futuristic Haven'
@@ -35,6 +38,7 @@ const Hero = async () => {
 
   return (
     <section className='!py-0'>
+      <SchemaMarkup schema={organizationSchema?.schemaData} />
       <div className='overflow-hidden relative'>
         <div className='absolute inset-0 -z-[1]'>
           <Image

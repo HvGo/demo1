@@ -1,4 +1,6 @@
 import { getBlogPostBySlug } from "@/lib/queries/content";
+import { getBlogPostBySlugWithMetadata } from "@/lib/queries/blog";
+import { BlogPostSchema } from "@/components/Blog/BlogPostSchema";
 import markdownToHtml from "@/components/utils/markdownToHtml";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -59,6 +61,8 @@ export async function generateMetadata({ params }: any) {
 export default async function Post({ params }: any) {
     const data = await params;
     const post = await getBlogPostBySlug(data.slug);
+    const postWithMetadata = await getBlogPostBySlugWithMetadata(data.slug);
+    
     if (!post) {
         return null;
     }
@@ -67,6 +71,8 @@ export default async function Post({ params }: any) {
 
     return (
         <>
+            {postWithMetadata && <BlogPostSchema post={postWithMetadata} baseUrl={process.env.NEXT_PUBLIC_SITE_URL || "https://yourdomain.com"} />}
+            
             <section className="relative pt-20 sm:pt-28 lg:pt-36 pb-0">
                 <div className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="space-y-6 sm:space-y-8">

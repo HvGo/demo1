@@ -1,14 +1,31 @@
 'use client'
-import { navLinks } from '@/app/api/navlink'
+import { navLinks as defaultNavLinks } from '@/app/api/navlink'
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import NavLink from './Navigation/NavLink'
 import { useTheme } from 'next-themes'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 
-const Header: React.FC = () => {
+type HeaderLink = { label: string; href: string }
+type HeaderConfig = {
+  logoLight?: string
+  logoDark?: string
+  phone?: string
+  email?: string
+  whatsAppNumber?: string
+  navLinks?: HeaderLink[]
+}
+
+type HeaderProps = {
+  config?: HeaderConfig
+  isVisible?: boolean
+}
+
+const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
+  if (isVisible === false) return null
+
   const [sticky, setSticky] = useState(false)
   const [navbarOpen, setNavbarOpen] = useState(false)
   const { theme, setTheme } = useTheme()
@@ -39,6 +56,17 @@ const Header: React.FC = () => {
   const isHomepage = pathname === '/'
   const useLightLogo = (isHomepage && !sticky) || theme === 'dark'
 
+  const logoLight = config?.logoLight || '/images/header/logo1.png'
+  const logoDark = config?.logoDark || '/images/header/logo1.png'
+  const phone = config?.phone || '+1-212-456-789'
+  const email = config?.email || 'hello@homely.com'
+  const navLinks = Array.isArray(config?.navLinks) && config?.navLinks.length > 0
+    ? config.navLinks
+    : defaultNavLinks
+
+  const phoneDigits = (config?.whatsAppNumber || phone || '').replace(/\D/g, '')
+  const phoneHref = phoneDigits ? `https://wa.me/${phoneDigits}` : `tel:${phone}`
+
   return (
     <header className={`fixed h-24 py-1 z-50 w-full bg-transparent transition-all duration-300 lg:px-0 px-4 ${sticky ? "top-3" : "top-0"}`}>
       <nav
@@ -53,7 +81,7 @@ const Header: React.FC = () => {
           <div className='ml-2 sm:ml-4'>
             <Link href='/'>
               <Image
-                src={'/images/header/logo1.png'}
+                src={useLightLogo ? (logoLight || logoDark) : (logoDark || logoLight)}
                 alt='logo'
                 width={150}
                 height={68}
@@ -86,7 +114,7 @@ const Header: React.FC = () => {
               />
             </button>
             <div className={`hidden md:block`}>
-              <Link href='#' className={`text-base text-inherit flex items-center gap-2 border-r pr-6 ${isHomepage
+              <Link href={phoneHref} target="_blank" rel="noreferrer" className={`text-base text-inherit flex items-center gap-2 border-r pr-6 ${isHomepage
                 ? sticky
                   ? 'text-dark dark:text-white hover:text-primary border-dark dark:border-white'
                   : 'text-white hover:text-primary'
@@ -94,7 +122,7 @@ const Header: React.FC = () => {
                 }`}
               >
                 <Icon icon={'ph:phone-bold'} width={24} height={24} />
-                +1-212-456-789
+                {phone}
               </Link>
             </div>
             <div>
@@ -164,10 +192,10 @@ const Header: React.FC = () => {
               Contact
             </p>
             <Link href="#" className='text-base sm:text-xm font-medium text-inherit hover:text-primary'>
-              hello@homely.com
+              {email}
             </Link>
             <Link href="#" className='text-base sm:text-xm font-medium text-inherit hover:text-primary'>
-              +1-212-456-7890{' '}
+              {phone}
             </Link>
           </div>
         </div>
