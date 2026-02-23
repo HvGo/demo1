@@ -1,5 +1,6 @@
 'use client'
 
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react'
 

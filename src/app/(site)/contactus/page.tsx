@@ -52,7 +52,7 @@ export default function ContactUs() {
                 Contact information
               </h5>
               <p className='text-sm xs:text-base mobile:text-xm font-normal text-white/80'>
-                Ready to find your dream home or sell your property? We're here
+                Ready to find your dream home or sell your property? We&apos;re here
                 to help!
               </p>
             </div>

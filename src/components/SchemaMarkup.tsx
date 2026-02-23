@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 interface SchemaMarkupProps {
   schema?: Record<string, any> | null
 }

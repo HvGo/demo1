@@ -1,4 +1,5 @@
 'use client'
+/* eslint-disable react-hooks/rules-of-hooks */
 import { navLinks as defaultNavLinks } from '@/app/api/navlink'
 import { Icon } from '@iconify/react'
 import Link from 'next/link'

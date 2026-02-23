@@ -11,10 +11,10 @@ const STALE_TTL = 86400 // 1 día
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { key: string } }
+  { params }: { params: Promise<{ key: string }> }
 ) {
   try {
-    const { key } = params
+    const { key } = await params
 
     // Validar que key es válido
     if (!key || typeof key !== 'string' || key.length > 255) {
@@ -88,10 +88,10 @@ export async function GET(
  */
 export async function HEAD(
   request: NextRequest,
-  { params }: { params: { key: string } }
+  { params }: { params: Promise<{ key: string }> }
 ) {
   try {
-    const { key } = params
+    const { key } = await params
 
     const schema = await getSchemaMarkupByKey(key)
 
