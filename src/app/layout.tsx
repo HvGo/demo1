@@ -9,6 +9,7 @@ import SessionProviderComp from '@/components/nextauth/SessionProvider'
 import EngagementTracker from '@/components/EngagementTracker'
 import UTMTracker from '@/components/UTMTracker'
 import { getSiteSectionByKey } from '@/lib/queries/content'
+import { Suspense } from 'react'
 
 const font = Bricolage_Grotesque({ subsets: ["latin"] });
 
@@ -39,8 +40,12 @@ export default async function RootLayout({
             attribute='class'
             enableSystem={true}
             defaultTheme='light'>
-            <UTMTracker />
-            <EngagementTracker />
+            <Suspense fallback={null}>
+              <UTMTracker />
+            </Suspense>
+            <Suspense fallback={null}>
+              <EngagementTracker />
+            </Suspense>
             <Header config={headerSection?.contentData}
               isVisible={headerSection?.isVisible ?? true}
             />

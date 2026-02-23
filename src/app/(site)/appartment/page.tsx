@@ -2,6 +2,9 @@ import HeroSub from "@/components/shared/HeroSub";
 import Appartment from "@/components/Properties/Appartment";
 import React from "react";
 import { Metadata } from "next";
+
+export const revalidate = 60;
+
 export const metadata: Metadata = {
     title: "Property List | Homely",
 };

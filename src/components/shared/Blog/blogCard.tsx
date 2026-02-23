@@ -7,7 +7,6 @@ import Link from "next/link";
 const BlogCard: FC<{ blog: Blog }> = ({ blog }) => {
     const { title, coverImage, date, slug, tag } = blog;
     
-    // Prefijar con dominio de admin si es ruta relativa
     const imageUrl = coverImage 
         ? (coverImage.startsWith('http') ? coverImage : `https://admin.datans.work${coverImage}`)
         : '/images/placeholder.jpg';
