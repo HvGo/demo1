@@ -68,6 +68,15 @@ export default async function Post({ params }: any) {
     }
 
     const content = await markdownToHtml(post.content || "");
+    
+    // Prefijar URLs relativas con dominio de admin
+    const authorImageUrl = post.authorImage 
+        ? (post.authorImage.startsWith('http') ? post.authorImage : `https://admin.datans.work${post.authorImage}`)
+        : '/images/placeholder.jpg';
+    
+    const coverImageUrl = post.coverImage 
+        ? (post.coverImage.startsWith('http') ? post.coverImage : `https://admin.datans.work${post.coverImage}`)
+        : '/images/placeholder.jpg';
 
     return (
         <>
@@ -98,7 +107,7 @@ export default async function Post({ params }: any) {
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 sm:gap-8 pt-4 sm:pt-6 border-t border-dark/10 dark:border-white/10">
                             <div className="flex items-center gap-3 sm:gap-4">
                                 <Image
-                                    src={post.authorImage}
+                                    src={authorImageUrl}
                                     alt={post.author}
                                     className="rounded-full w-12 h-12 sm:w-14 sm:h-14 object-cover"
                                     width={56}
@@ -134,7 +143,7 @@ export default async function Post({ params }: any) {
 
                     <div className="mt-8 sm:mt-12 lg:mt-16 overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-3xl">
                         <Image
-                            src={post.coverImage}
+                            src={coverImageUrl}
                             alt={post.title}
                             width={1170}
                             height={660}

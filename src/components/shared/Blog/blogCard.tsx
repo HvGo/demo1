@@ -6,11 +6,17 @@ import Link from "next/link";
 
 const BlogCard: FC<{ blog: Blog }> = ({ blog }) => {
     const { title, coverImage, date, slug, tag } = blog;
+    
+    // Prefijar con dominio de admin si es ruta relativa
+    const imageUrl = coverImage 
+        ? (coverImage.startsWith('http') ? coverImage : `https://admin.datans.work${coverImage}`)
+        : '/images/placeholder.jpg';
+    
     return (
         <Link href={`/blogs/${slug}`} className="group h-full flex flex-col">
             <div className="overflow-hidden rounded-xl sm:rounded-2xl flex-shrink-0 mb-4 sm:mb-5 bg-gray-100 dark:bg-gray-800">
                 <Image
-                    src={coverImage || '/images/placeholder.jpg'}
+                    src={imageUrl}
                     alt={title || 'Blog post'}
                     className="w-full h-48 sm:h-56 lg:h-64 object-cover transition duration-300 group-hover:scale-105"
                     width={400}
