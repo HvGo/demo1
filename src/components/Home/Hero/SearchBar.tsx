@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Icon } from '@iconify/react'
+import { useRouter } from 'next/navigation'
 
 interface SearchTab {
   id: string
@@ -23,12 +24,13 @@ const SearchBar = ({
   placeholder = 'Search by city, county, or zip',
   buttonLabel = 'SEARCH'
 }: SearchBarProps) => {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState(tabs[0]?.id || 'buy')
   const [searchInput, setSearchInput] = useState('')
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(`Search for: ${searchInput} in tab: ${activeTab}`)
+    router.push('/properties')
   }
 
   return (

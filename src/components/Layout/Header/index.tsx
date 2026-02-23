@@ -66,7 +66,8 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
     : defaultNavLinks
 
   const phoneDigits = (config?.whatsAppNumber || phone || '').replace(/\D/g, '')
-  const phoneHref = phoneDigits ? `https://wa.me/${phoneDigits}` : `tel:${phone}`
+  const whatsappMessage = encodeURIComponent('Hola, quisiera más información')
+  const phoneHref = phoneDigits ? `https://wa.me/${phoneDigits}?text=${whatsappMessage}` : `tel:${phone}`
 
   return (
     <header className={`fixed h-24 py-1 z-50 w-full bg-transparent transition-all duration-300 lg:px-0 px-4 ${sticky ? "top-3" : "top-0"}`}>
@@ -114,6 +115,15 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
                 className='dark:block hidden text-white'
               />
             </button>
+            <Link href={phoneHref} target="_blank" rel="noreferrer" className={`md:hidden hover:cursor-pointer ${isHomepage
+              ? sticky
+                ? 'text-dark dark:text-white hover:text-primary'
+                : 'text-white hover:text-primary'
+              : 'text-dark hover:text-primary'
+              }`}
+              aria-label='Contact via WhatsApp'>
+              <Icon icon={'ph:whatsapp-logo'} width={28} height={28} />
+            </Link>
             <div className={`hidden md:block`}>
               <Link href={phoneHref} target="_blank" rel="noreferrer" className={`text-base text-inherit flex items-center gap-2 border-r pr-6 ${isHomepage
                 ? sticky
@@ -188,15 +198,16 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
             </nav>
           </div>
 
-          <div className='flex flex-col gap-1 my-16 text-white'>
+          <div className='flex flex-col gap-4 my-16 text-white'>
             <p className='text-base sm:text-xm font-normal text-white/40'>
               Contact
             </p>
-            <Link href="#" className='text-base sm:text-xm font-medium text-inherit hover:text-primary'>
+            <Link href={`mailto:${email}`} className='text-base sm:text-xm font-medium text-inherit hover:text-primary'>
               {email}
             </Link>
-            <Link href="#" className='text-base sm:text-xm font-medium text-inherit hover:text-primary'>
-              {phone}
+            <Link href={phoneHref} target="_blank" rel="noreferrer" className='flex items-center gap-2 text-base sm:text-xm font-medium text-inherit hover:text-primary'>
+              <Icon icon={'ph:whatsapp-logo'} width={20} height={20} />
+              WhatsApp
             </Link>
           </div>
         </div>
