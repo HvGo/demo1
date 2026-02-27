@@ -1,0 +1,23 @@
+[
+    {
+        "place_id": 3219377,
+        "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+        "osm_type": "way",
+        "osm_id": 892933334,
+        "lat": "-12.1368765",
+        "lon": "-76.9989239",
+        "class": "highway",
+        "type": "secondary",
+        "place_rank": 26,
+        "importance": 0.05341063477531087,
+        "addresstype": "road",
+        "name": "Avenida Ayacucho",
+        "display_name": "Avenida Ayacucho, La Virreyna, Santiago de Surco, Lima, Lima Metropolitana, Lima, 15038, Perú",
+        "boundingbox": [
+            "-12.1370031",
+            "-12.1367500",
+            "-76.9989532",
+            "-76.9988944"
+        ]
+    }
+]

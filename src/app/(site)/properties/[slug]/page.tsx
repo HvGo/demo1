@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getPropertyDetailBySlug } from '@/lib/queries/content';
+import MapComponent from '@/components/Map';
 
 export default async function Details({ params }: any) {
     const data = await params;
@@ -13,6 +14,15 @@ export default async function Details({ params }: any) {
     return (
         <section className="!pt-44 pb-20 relative" >
             <div className="container mx-auto max-w-8xl px-5 2xl:px-0">
+                <Link href="/properties" className="inline-flex items-center gap-2 sm:gap-3 text-white bg-primary hover:bg-primary/90 py-2.5 sm:py-3 px-4 sm:px-5 rounded-full transition duration-300 text-sm sm:text-base mb-8">
+                    <Icon
+                        icon={'ph:arrow-left'}
+                        width={18}
+                        height={18}
+                        className='sm:w-5 sm:h-5'
+                    />
+                    <span>Go Back</span>
+                </Link>
                 <div className="grid grid-cols-12 items-end gap-6">
                     <div className="lg:col-span-8 col-span-12">
                         <div className="flex items-center gap-4 flex-wrap">
@@ -133,10 +143,9 @@ export default async function Details({ params }: any) {
                                 ) : null}
                             </div>
                         </div>
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d938779.7831767448!2d71.05098621661072!3d23.20271516446136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e82dd003ff749%3A0x359e803f537cea25!2sGANESH%20GLORY%2C%20Gota%2C%20Ahmedabad%2C%20Gujarat%20382481!5e0!3m2!1sen!2sin!4v1715676641521!5m2!1sen!2sin"
-                            width="1114" height="400" loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="rounded-2xl w-full">
-                        </iframe>
+                        {item.address && (
+                            <MapComponent address={item.address} />
+                        )}
                     </div>
                     <div className="lg:col-span-4 col-span-12">
                         <div className="bg-primary/10 p-8 rounded-2xl relative z-10 overflow-hidden">

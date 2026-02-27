@@ -92,7 +92,7 @@ const Footer = async () => {
         </div>
         <div className="flex justify-between md:flex-nowrap flex-wrap items-center py-6 gap-6">
           <p className="text-white/40 text-sm ">
-            ©2025 Homely - Design & Developed by <Link href="https://getnextjstemplates.com/" className="hover:text-primary" target="_blanck">GetNextJs Templates</Link>
+            &copy; {new Date().getFullYear()} Ivan Vavincopa - All rights reserved
           </p>
           <div className="flex gap-8 items-center">
             <Link href="#" className="text-white/40 hover:text-primary text-sm">
