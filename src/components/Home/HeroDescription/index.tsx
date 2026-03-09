@@ -12,7 +12,7 @@ const HeroDescription = async () => {
   if (!description) return null
 
   return (
-    <section className='py-12 md:py-16 bg-white dark:bg-dark'>
+    <section className='py-3 md:py-4 bg-white dark:bg-dark'>
       <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
         <div className='flex items-center gap-5'>
           {profileImageUrl ? (

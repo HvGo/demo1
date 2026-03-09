@@ -60,10 +60,10 @@ const Hero = async () => {
           />
           <div className='absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-white/5 dark:to-black/25' />
         </div>
-        <div className='container max-w-8xl mx-auto px-5 2xl:px-0 pt-32 md:pt-60 md:pb-68'>
+        <div className='container max-w-8xl mx-auto px-5 2xl:px-0 pt-8 md:pt-56 pb-4 md:pb-12'>
           <div className='relative text-white dark:text-white text-center md:text-center z-10'>
             <p className='text-inherit text-xm font-medium'>{subtitle}</p>
-            <div className='my-6 flex justify-center'>
+            <div className='my-3 md:my-6 flex justify-center'>
               <Image
                 src='/images/hero/pic_ws.png'
                 alt='Ivan Profile'
@@ -73,7 +73,7 @@ const Hero = async () => {
                 unoptimized={true}
               />
             </div>
-            <h1 className='text-inherit text-4xl sm:text-5xl font-semibold -tracking-wider mx-auto mt-4 mb-6'>
+            <h1 className='text-inherit text-4xl sm:text-5xl font-semibold -tracking-wider mx-auto mt-2 md:mt-4 mb-4 md:mb-6'>
               {title}
             </h1>
             {(primaryHref && primaryLabel) || (secondaryHref && secondaryLabel) ? (
@@ -93,18 +93,18 @@ const Hero = async () => {
               </div>
             ) : null}
             {tagline ? (
-              <div className='mb-10 sm:mb-12 max-w-2xl md:max-w-45p'>
+              <div className='mb-4 md:mb-10 sm:md:mb-12 max-w-2xl md:max-w-45p'>
                 <p className='inline-block max-w-xl bg-black/30 backdrop-blur-md border border-white/15 rounded-lg px-4 py-2 text-white/90 text-base sm:text-lg md:text-xl leading-snug font-medium italic tracking-wide shadow-sm shadow-black/30 border-l-4 border-l-primary/90'>
                   {tagline}
                 </p>
               </div>
             ) : null}
-            <div className='w-full md:max-w-2xl mb-8 mx-auto'>
+            <div className='w-full md:max-w-2xl mb-4 md:mb-8 mx-auto'>
               <SearchBar tabs={searchTabs} placeholder={searchPlaceholder} buttonLabel={searchButtonLabel} />
             </div>
           </div>
         </div>
-        <div className='w-full md:absolute bottom-0 left-0 right-0 bg-white/55 dark:bg-black/40 backdrop-blur-md border border-white/35 dark:border-white/10 shadow-lg py-4 px-8 mobile:px-16 md:pl-16 md:pr-8 rounded-2xl md:rounded-none md:rounded-tl-2xl mt-24'>
+        <div className='w-full md:absolute bottom-0 left-0 right-0 bg-white/55 dark:bg-black/40 backdrop-blur-md border border-white/35 dark:border-white/10 shadow-lg py-4 px-8 mobile:px-16 md:pl-16 md:pr-8 rounded-2xl md:rounded-none md:rounded-tl-2xl mt-6 md:mt-24'>
           {bottomText ? (
             <div className='flex items-center gap-5'>
               {profileImageUrl ? (
