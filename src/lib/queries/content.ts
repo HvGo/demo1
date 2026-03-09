@@ -180,6 +180,30 @@ export async function getSiteSectionByKey(sectionKey: string): Promise<DbSiteSec
   };
 }
 
+export async function getContactInfo() {
+  const { rows } = await sql<{
+    content_data: any;
+  }>(
+    `
+    select content_data
+    from site_sections
+    where key = 'contact_page'
+    limit 1
+    `
+  );
+
+  const row = rows[0];
+  if (!row || !row.content_data) {
+    return { email: '', phone: '', address: '' };
+  }
+
+  return {
+    email: row.content_data.email || '',
+    phone: row.content_data.phone || '',
+    address: row.content_data.address || ''
+  };
+}
+
 export async function getAllSiteSections(): Promise<DbSiteSection[]> {
   const { rows } = await sql<{
     key: string;

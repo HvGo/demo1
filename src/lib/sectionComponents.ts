@@ -1,4 +1,5 @@
 import Hero from '@/components/Home/Hero'
+import HeroDescription from '@/components/Home/HeroDescription'
 import Profile from '@/components/Home/Profile'
 import TestimonialSection from '@/components/Home/Testimonial/Section'
 import BlogSmall from '@/components/shared/Blog'
@@ -9,9 +10,11 @@ import Services from '@/components/Home/Services'
 import GetInTouch from '@/components/Home/GetInTouch'
 import Stats from '@/components/Home/Stats'
 import HowIHelp from '@/components/Home/HowIHelp'
+import VideoSection from '@/components/Home/VideoSection'
 
 export const SECTION_COMPONENTS: Record<string, React.ComponentType<any>> = {
   'home_hero': Hero,
+  'home_hero_description': HeroDescription,
   'home_stats': Stats,
   'home_how_i_help': HowIHelp,
   'home_testimonials': TestimonialSection,
@@ -21,7 +24,7 @@ export const SECTION_COMPONENTS: Record<string, React.ComponentType<any>> = {
   'home_featured_property': FeaturedProperty,
   'home_properties': Properties,
   'home_categories': Services,
-  'home_video_section': GetInTouch,
+  'home_video_section': VideoSection,
 };
 
 export function getSectionComponent(key: string) {

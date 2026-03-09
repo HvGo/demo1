@@ -26,7 +26,7 @@ const BlogSmall = async () => {
     }));
 
     return (
-        <section>
+        <section id="blog">
             <div className="container max-w-8xl mx-auto px-5 2xl:px-0">
                 <div className='flex justify-between md:items-end items-start mb-10 md:flex-row flex-col'>
                     <div>

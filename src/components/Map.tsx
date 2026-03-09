@@ -14,9 +14,9 @@ export default function Map({ address }: MapProps) {
   useEffect(() => {
     const geocodeAndGenerateMap = async () => {
       try {
-        // Coordenadas por defecto para West Jordan, UT (tu ejemplo)
-        let latNum = 40.586;
-        let lonNum = -111.941;
+        // Coordenadas por defecto para West Jordan, UT
+        let latNum = 40.586843;
+        let lonNum = -111.926818;
 
         console.log('Geocoding address:', address);
 

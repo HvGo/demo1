@@ -1,6 +1,6 @@
 'use client'
 /* eslint-disable react-hooks/rules-of-hooks */
-import { navLinks as defaultNavLinks } from '@/app/api/navlink'
+import { navLinks as defaultNavLinks } from '@/constants/navigation'
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState, useCallback } from 'react'
@@ -92,30 +92,24 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
               />
             </Link>
           </div>
-          <div className='flex items-center gap-2 sm:gap-6'>
-            <button
-              className='hover:cursor-pointer'
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            >
-              <Icon
-                icon={'solar:sun-bold'}
-                width={32}
-                height={32}
-                className={`dark:hidden block ${isHomepage
-                  ? sticky
-                    ? 'text-dark'
-                    : 'text-white'
-                  : 'text-dark'
-                  }`}
-              />
-              <Icon
-                icon={'solar:moon-bold'}
-                width={32}
-                height={32}
-                className='dark:block hidden text-white'
-              />
-            </button>
-            <Link href={phoneHref} target="_blank" rel="noreferrer" className={`md:hidden hover:cursor-pointer ${isHomepage
+          <div className='flex items-center gap-6'>
+            <nav className='hidden lg:flex items-center gap-8'>
+              {navLinks.map((item, index) => (
+                <Link 
+                  key={index}
+                  href={item.href}
+                  className={`text-base font-medium transition-colors ${isHomepage
+                    ? sticky
+                      ? 'text-dark dark:text-white hover:text-primary'
+                      : 'text-white hover:text-primary'
+                    : 'text-dark dark:text-white hover:text-primary'
+                  } ${pathname === item.href ? 'text-primary font-semibold' : ''}`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <Link href={phoneHref} target="_blank" rel="noreferrer" className={`lg:hidden hover:cursor-pointer ${isHomepage
               ? sticky
                 ? 'text-dark dark:text-white hover:text-primary'
                 : 'text-white hover:text-primary'
@@ -124,7 +118,7 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
               aria-label='Contact via WhatsApp'>
               <Icon icon={'ph:whatsapp-logo'} width={28} height={28} />
             </Link>
-            <div className={`hidden md:block`}>
+            <div className={`hidden lg:block`}>
               <Link href={phoneHref} target="_blank" rel="noreferrer" className={`text-base text-inherit flex items-center gap-2 border-r pr-6 ${isHomepage
                 ? sticky
                   ? 'text-dark dark:text-white hover:text-primary border-dark dark:border-white'
@@ -136,7 +130,7 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
                 {phone}
               </Link>
             </div>
-            <div>
+            <div className='lg:hidden'>
               <button
                 onClick={() => setNavbarOpen(!navbarOpen)}
                 className={`flex items-center gap-3 p-2 sm:px-5 sm:py-3 rounded-full font-semibold hover:cursor-pointer border ${isHomepage

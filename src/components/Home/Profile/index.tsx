@@ -22,7 +22,7 @@ const Profile = async () => {
   const ctaHref = section?.primaryCtaHref || ''
 
   return (
-    <section>
+    <section id="profile">
       <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
         <div className='grid lg:grid-cols-2 gap-10 items-center'>
           <div className='relative'>
