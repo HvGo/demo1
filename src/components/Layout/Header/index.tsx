@@ -118,18 +118,6 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
               aria-label='Contact via WhatsApp'>
               <Icon icon={'ph:whatsapp-logo'} width={28} height={28} />
             </Link>
-            <div className={`hidden lg:block`}>
-              <Link href={phoneHref} target="_blank" rel="noreferrer" className={`text-base text-inherit flex items-center gap-2 border-r pr-6 ${isHomepage
-                ? sticky
-                  ? 'text-dark dark:text-white hover:text-primary border-dark dark:border-white'
-                  : 'text-white hover:text-primary'
-                : 'text-dark hover:text-primary'
-                }`}
-              >
-                <Icon icon={'ph:phone-bold'} width={24} height={24} />
-                {phone}
-              </Link>
-            </div>
             <div className='lg:hidden'>
               <button
                 onClick={() => setNavbarOpen(!navbarOpen)}
