@@ -62,10 +62,10 @@ const Hero = async () => {
       <div className='absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-white/5 dark:to-black/25' />
     </div>
 
-<div className='container max-w-8xl mx-auto px-4 flex flex-col min-h-screen md:min-h-[90vh] pt-20 md:pt-32 pb-8 md:pb-32'> {/* Mobile: pb-8, Desktop: pb-32 */}
+<div className='container max-w-8xl mx-auto px-4 flex flex-col min-h-screen md:min-h-[90vh] pt-20 md:pt-32 pb-0 md:pb-32'> {/* Mobile: pb-8, Desktop: pb-32 */}
   
   <div className='relative text-white text-center z-10 mt-auto w-full'> {/* Solo mt-auto aquí */}
-    <p className="bg-black/5 backdrop-blur-sm p-6 rounded-xl text-white text-shadow">{subtitle}</p>
+    <p className="text-white text-lg leading-relaxed max-w-3xl mx-auto">{subtitle}</p>
     <h1 className='text-inherit text-4xl sm:text-5xl font-semibold -tracking-wider mx-auto mt-2 md:mt-4 mb-4 md:mb-6'>
       {title}
     </h1>
