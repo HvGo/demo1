@@ -47,7 +47,7 @@ export const TestimonialsSection = () => {
 
               {/* Quote */}
               <p className='text-gray-700 dark:text-gray-300 mb-6 italic leading-relaxed'>
-                "{testimonial.quote}"
+                &quot;{testimonial.quote}&quot;
               </p>
 
               {/* Author */}
