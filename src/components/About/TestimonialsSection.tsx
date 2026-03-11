@@ -67,7 +67,7 @@ export const TestimonialsSection = () => {
 
         {/* CTA Section */}
         <div className='mt-12 bg-gradient-to-r from-primary to-teal-500 rounded-lg p-8 md:p-12 text-white text-center'>
-          <h3 className='text-2xl md:text-3xl font-bold mb-4'>¿Listo para tu propia historia de éxito?</h3>
+          <h3 className='text-2xl md:text-3xl font-bold mb-4'>¿Listo para tu propia historia de &eacute;xito?</h3>
           <p className='text-lg opacity-90 mb-8 max-w-2xl mx-auto'>
             Únete a cientos de familias que han logrado sus sueños de propiedad con Blue Key Realty
           </p>

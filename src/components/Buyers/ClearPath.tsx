@@ -74,7 +74,7 @@ export const ClearPath = () => {
         {/* CTA */}
         <div className='mt-12 text-center'>
           <p className='text-gray-600 dark:text-gray-400 mb-6'>
-            Ready to start your journey? Let's schedule your Strategy Session today.
+            Ready to start your journey? Let&apos;s schedule your Strategy Session today.
           </p>
           <a href='#golden-questions' className='inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow'>
             <Icon icon='mdi:calendar' width={20} height={20} />

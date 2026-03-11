@@ -37,7 +37,7 @@ export const CommonDoubts = () => {
           </p>
           <div className='bg-gradient-to-r from-primary/10 to-teal-500/10 rounded-lg p-6 border border-primary/20'>
             <p className='text-gray-700 dark:text-gray-300 italic'>
-              "En el mercado de hoy, la desinformación es su mayor enemigo. Aquí le doy la realidad sobre los temas que más preocupan a mi comunidad."
+              &quot;En el mercado de hoy, la desinformación es su mayor enemigo. Aquí le doy la realidad sobre los temas que más preocupan a mi comunidad.&quot;
             </p>
           </div>
         </div>

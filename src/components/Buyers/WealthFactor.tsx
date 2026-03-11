@@ -22,13 +22,13 @@ export const WealthFactor = () => {
         <div className='text-center mb-12 md:mb-16'>
           <h2 className='text-3xl md:text-4xl font-bold mb-4'>The Wealth Factor</h2>
           <p className='text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto'>
-            Don't just buy a home; start an investment. At Blue Key Realty, we look for properties that work for you.
+            Don&apos;t just buy a home; start an investment. At Blue Key Realty, we look for properties that work for you.
           </p>
         </div>
 
         <div className='bg-gradient-to-r from-primary/10 to-teal-500/10 rounded-lg p-8 md:p-12 border border-primary/20 mb-12'>
           <p className='text-lg text-gray-700 dark:text-gray-300 leading-relaxed'>
-            We educate our buyers on how to turn a home into a <span className='font-semibold text-primary'>wealth-building machine</span>. Whether you're a first-time buyer or an experienced investor, we help you make strategic decisions that maximize your financial growth.
+            We educate our buyers on how to turn a home into a <span className='font-semibold text-primary'>wealth-building machine</span>. Whether you&apos;re a first-time buyer or an experienced investor, we help you make strategic decisions that maximize your financial growth.
           </p>
         </div>
 
