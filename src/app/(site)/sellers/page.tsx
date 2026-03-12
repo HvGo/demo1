@@ -1,4 +1,4 @@
-import HeroSub from '@/components/shared/HeroSub'
+import { HeroSection } from '@/components/Sellers/HeroSection'
 import { MarketIntelligence } from '@/components/Sellers/MarketIntelligence'
 import { MarketingPower } from '@/components/Sellers/MarketingPower'
 import { SellingProcess } from '@/components/Sellers/SellingProcess'
@@ -12,11 +12,7 @@ export const metadata = {
 export default function SellersPage() {
   return (
     <>
-      <HeroSub
-        title="Maximum Equity. Expert Strategy."
-        description="Venda su casa con un plan diseñado para ganar en el mercado de Utah."
-        badge="For Sellers"
-      />
+      <HeroSection />
       <MarketIntelligence />
       <MarketingPower />
       <SellingProcess />
