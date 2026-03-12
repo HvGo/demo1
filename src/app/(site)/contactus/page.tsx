@@ -20,7 +20,7 @@ export default async function ContactUs() {
   const phone = data.phone || "+1 0239 0310 1122"
   const email = data.email || "support@gleamer.com"
   const address = data.address || "Blane Street, Manchester"
-  const image = data.image || '/images/contactUs/contactUs.jpg'
+  const image = data.image || '/images/Gallery/IMG_7535.jpg'
   return (
     <div className='container max-w-8xl mx-auto px-5 2xl:px-0 pt-32 md:pt-44 pb-14 md:pb-28'>
       <div className='mb-16'>
@@ -49,13 +49,14 @@ export default async function ContactUs() {
       {/* form */}
       <div className='border border-black/10 dark:border-white/10 rounded-2xl p-4 shadow-xl dark:shadow-white/10'>
         <div className='flex flex-col lg:flex-row lg:items-center gap-12'>
-          <div className='relative w-fit'>
+          <div className='relative max-w-lg'>
             <Image
               src={image}
               alt='contact'
               width={497}
-              height={535}
-              className='rounded-2xl brightness-50 h-full'
+              height={700}
+              className='rounded-2xl brightness-50 w-full h-auto'
+              style={{ height: '500px' }}
               unoptimized={true}
             />
             <div className='absolute top-6 left-6 lg:top-12 lg:left-12 flex flex-col gap-2'>
