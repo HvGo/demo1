@@ -25,7 +25,7 @@ const VideoSection = async () => {
   if (section?.contentData && Array.isArray(section.contentData)) {
     items = section.contentData as GalleryItem[]
   } else {
-    // Default items if no data in BD
+    // Default items if no data in BD - 2 images + 1 video
     items = [
       {
         id: '1',
@@ -42,27 +42,6 @@ const VideoSection = async () => {
         category: 'Modern',
       },
       {
-        id: '3',
-        type: 'image',
-        url: '/images/Gallery/IMG_7531.jpg',
-        title: 'Property 3',
-        category: 'Contemporary',
-      },
-      {
-        id: '4',
-        type: 'image',
-        url: '/images/Gallery/IMG_7535.jpg',
-        title: 'Property 4',
-        category: 'Luxury',
-      },
-      {
-        id: '5',
-        type: 'image',
-        url: '/images/Gallery/IMG_7547.jpg',
-        title: 'Property 5',
-        category: 'Modern',
-      },
-      {
         id: '6',
         type: 'video',
         url: '/images/Gallery/2026-01-25-16-22-25-519.mov',
@@ -70,24 +49,6 @@ const VideoSection = async () => {
         title: 'Property Tour 1',
         category: 'Video Tour',
         duration: '2:30',
-      },
-      {
-        id: '7',
-        type: 'video',
-        url: '/images/Gallery/2026-01-25-16-23-02-366.mov',
-        thumbnail: '/images/Gallery/IMG_7529.jpg',
-        title: 'Property Tour 2',
-        category: 'Video Tour',
-        duration: '2:45',
-      },
-      {
-        id: '8',
-        type: 'video',
-        url: '/images/Gallery/2026-01-25-16-24-08-484.mov',
-        thumbnail: '/images/Gallery/IMG_7531.jpg',
-        title: 'Property Tour 3',
-        category: 'Video Tour',
-        duration: '2:20',
       },
     ]
   }

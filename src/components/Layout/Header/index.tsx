@@ -55,7 +55,8 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
   }, [handleScroll])
 
   const isHomepage = pathname === '/'
-  const useLightLogo = (isHomepage && !sticky) || theme === 'dark'
+  const isHeroPage = pathname === '/' || pathname === '/buyers' || pathname === '/sellers' || pathname === '/about'
+  const useLightLogo = (isHeroPage && !sticky) || theme === 'dark'
 
   const logoLight = config?.logoLight || '/images/header/logo1.png'
   const logoDark = config?.logoDark || '/images/header/logo1.png'
@@ -74,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
       <nav
         className={`container mx-auto max-w-8xl flex items-center justify-between py-4 duration-300 ${sticky
           ? "shadow-lg bg-white dark:bg-dark rounded-full top-5 px-4 "
-          : isHomepage
+          : isHeroPage
             ? "shadow-none top-0 rounded-full px-4 bg-white/25 dark:bg-black/25 backdrop-blur-md border border-white/30 dark:border-white/10"
             : "shadow-none top-0"
           }`}

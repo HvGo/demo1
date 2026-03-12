@@ -1,4 +1,4 @@
-import HeroSub from '@/components/shared/HeroSub'
+import { HeroSection } from '@/components/Buyers/HeroSection'
 import { FinancialPaths } from '@/components/Buyers/FinancialPaths'
 import { WealthFactor } from '@/components/Buyers/WealthFactor'
 import { ClearPath } from '@/components/Buyers/ClearPath'
@@ -12,11 +12,7 @@ export const metadata = {
 export default function BuyersPage() {
   return (
     <>
-      <HeroSub
-        title="Your Path to Homeownership"
-        description="Expert guidance for first-time home buyers in Utah. Learn about FHA, VA, and ITIN financing options."
-        badge="For Buyers"
-      />
+      <HeroSection />
       <FinancialPaths />
       <WealthFactor />
       <ClearPath />
