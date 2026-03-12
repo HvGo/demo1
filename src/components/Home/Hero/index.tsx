@@ -78,22 +78,21 @@ const Hero = async () => {
       </div>
     )}
 
-    {/* Botones sin cambios */}
+    {/* CTA Buttons */}
     {(primaryHref && primaryLabel) || (secondaryHref && secondaryLabel) ? (
-      <div className='flex flex-col xs:flex-row justify-center gap-4'>
-        {/* ... botones iguales ... */}
+      <div className='flex flex-col sm:flex-row justify-center gap-3 sm:gap-4'>
         {primaryLabel && (
-			  <Link href={whatsappHref} target="_blank" rel="noreferrer" className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors'>
-				<Icon icon="mdi:whatsapp" className="text-xl" />
-				{primaryLabel}
-			  </Link>
-			)}
-			{secondaryHref && secondaryLabel && (
-			  <Link href={secondaryHref} className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors'>
-				<Icon icon="mdi:email" className="text-xl" />
-				{secondaryLabel}
-			  </Link>
-			)}
+          <Link href={whatsappHref} target="_blank" rel="noreferrer" className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors whitespace-nowrap'>
+            <Icon icon="mdi:whatsapp" className="text-lg sm:text-xl flex-shrink-0" />
+            {primaryLabel}
+          </Link>
+        )}
+        {secondaryHref && secondaryLabel && (
+          <Link href={secondaryHref} className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors whitespace-nowrap'>
+            <Icon icon="mdi:email" className="text-lg sm:text-xl flex-shrink-0" />
+            {secondaryLabel}
+          </Link>
+        )}
       </div>
     ) : null}
   </div>

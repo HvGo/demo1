@@ -42,14 +42,16 @@ export const HeroSection = () => {
               </div>
 
               {/* CTA Buttons */}
-              <div className='flex flex-col xs:flex-row justify-center gap-4'>
-                <button onClick={() => setShowModal(true)} className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors'>
-                  <Icon icon='mdi:home' className='text-xl' />
-                  Down payment Assistance
+              <div className='flex flex-col sm:flex-row justify-center gap-3 sm:gap-4'>
+                <button onClick={() => setShowModal(true)} className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors whitespace-nowrap'>
+                  <Icon icon='mdi:home' className='text-lg sm:text-xl flex-shrink-0' />
+                  <span className='hidden sm:inline'>Down payment Assistance</span>
+                  <span className='sm:hidden'>Down Payment</span>
                 </button>
-                <a href='#clear-path' className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors'>
-                  <Icon icon='mdi:magnify' className='text-xl' />
-                  Start My Home Search
+                <a href='#clear-path' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors whitespace-nowrap'>
+                  <Icon icon='mdi:magnify' className='text-lg sm:text-xl flex-shrink-0' />
+                  <span className='hidden sm:inline'>Start My Home Search</span>
+                  <span className='sm:hidden'>Home Search</span>
                 </a>
               </div>
             </div>

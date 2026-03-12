@@ -35,14 +35,16 @@ export const HeroSection = () => {
             </div>
 
             {/* CTA Buttons */}
-            <div className='flex flex-col xs:flex-row justify-center gap-4'>
-              <a href='#market-intelligence' className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors'>
-                <Icon icon='mdi:chart-line' className='text-xl' />
-                Market Analysis
+            <div className='flex flex-col sm:flex-row justify-center gap-3 sm:gap-4'>
+              <a href='#market-intelligence' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors whitespace-nowrap'>
+                <Icon icon='mdi:chart-line' className='text-lg sm:text-xl flex-shrink-0' />
+                <span className='hidden sm:inline'>Market Analysis</span>
+                <span className='sm:hidden'>Analysis</span>
               </a>
-              <a href='#selling-process' className='px-8 py-4 rounded-full text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors'>
-                <Icon icon='mdi:phone' className='text-xl' />
-                Get Free Valuation
+              <a href='#selling-process' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors whitespace-nowrap'>
+                <Icon icon='mdi:phone' className='text-lg sm:text-xl flex-shrink-0' />
+                <span className='hidden sm:inline'>Get Free Valuation</span>
+                <span className='sm:hidden'>Free Valuation</span>
               </a>
             </div>
           </div>
