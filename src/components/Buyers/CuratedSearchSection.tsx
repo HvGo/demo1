@@ -50,7 +50,7 @@ export const CuratedSearchSection = () => {
         {/* Header */}
         <div className='text-center mb-12 md:mb-16'>
           <h1 className='text-4xl md:text-5xl font-bold text-black dark:text-white mb-4'>
-            Welcome Home. Let's Find Your Home.
+            Welcome Home. Let&apos;s Find Your Home.
           </h1>
           <h2 className='text-xl md:text-2xl font-semibold text-primary mb-6'>
             Tu búsqueda, tu legado: Busquemos propiedades que construyan riqueza.
@@ -63,7 +63,7 @@ export const CuratedSearchSection = () => {
             The Curated Search Strategy
           </h3>
           <p className='text-lg text-gray-700 dark:text-gray-300 leading-relaxed'>
-            <span className='font-semibold text-primary'>"Don't just look for a house. Look for an opportunity."</span> To find the right home in Utah's market, we look beyond the price tag. We identify properties that qualify for Down Payment Assistance and offer the best potential for Long-Term Equity.
+            <span className='font-semibold text-primary'>&quot;Don&apos;t just look for a house. Look for an opportunity.&quot;</span> To find the right home in Utah&apos;s market, we look beyond the price tag. We identify properties that qualify for Down Payment Assistance and offer the best potential for Long-Term Equity.
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export const CuratedSearchSection = () => {
           {/* Question 1: Reality Type */}
           <div className='mb-10'>
             <h4 className='text-lg font-semibold text-black dark:text-white mb-6'>
-              1. What type of "Reality" are we building?
+              1. What type of &quot;Reality&quot; are we building?
             </h4>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
               {realityOptions.map(option => (
@@ -128,7 +128,7 @@ export const CuratedSearchSection = () => {
             Unlock Your Personalized List
           </h3>
           <p className='text-lg text-gray-700 dark:text-gray-300 mb-8'>
-            <span className='font-semibold'>"Ser dueño de casa ya no es un sueño, es una realidad."</span> Enter your details to receive a curated list of homes that fit your family's budget and maximize your financial assistance options.
+            <span className='font-semibold'>&quot;Ser dueño de casa ya no es un sueño, es una realidad.&quot;</span> Enter your details to receive a curated list of homes that fit your family&apos;s budget and maximize your financial assistance options.
           </p>
 
           <form className='space-y-6'>

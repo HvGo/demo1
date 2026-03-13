@@ -178,7 +178,7 @@ export const ReportsOpenHouses = () => {
         {/* Question 4: High-Impact Plan */}
         <div className='bg-gradient-to-r from-primary/10 to-teal-500/10 dark:from-primary/5 dark:to-teal-500/5 rounded-lg p-8 md:p-12 border border-primary/20'>
           <h3 className='text-2xl font-bold text-black dark:text-white mb-4'>
-            4. Ready to see the full "High-Impact" Plan?
+            4. Ready to see the full &quot;High-Impact&quot; Plan?
           </h3>
           <p className='text-lg text-gray-700 dark:text-gray-300 mb-8 font-semibold'>
             ¿Listo para ver el plan completo de mercadeo?
