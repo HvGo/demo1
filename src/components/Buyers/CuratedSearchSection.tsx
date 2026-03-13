@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Icon } from '@iconify/react'
+import { validateCuratedSearchForm, ValidationError } from '@/lib/validators'
 
 export const CuratedSearchSection = () => {
   const [selectedReality, setSelectedReality] = useState('')
@@ -12,9 +13,76 @@ export const CuratedSearchSection = () => {
     email: ''
   })
 
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [errors, setErrors] = useState<ValidationError[]>([])
+  const [successMessage, setSuccessMessage] = useState('')
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    setErrors(errors.filter(err => err.field !== name))
+  }
+
+  const getFieldError = (fieldName: string) => {
+    return errors.find(err => err.field === fieldName)?.message
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setErrors([])
+    setSuccessMessage('')
+
+    const validation = validateCuratedSearchForm({
+      selectedReality,
+      selectedCounty,
+      ...formData
+    })
+
+    if (!validation.isValid) {
+      setErrors(validation.errors)
+      return
+    }
+
+    setLoading(true)
+    try {
+      const response = await fetch('/api/forms/curated-search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          selectedReality,
+          selectedCounty,
+          ...formData,
+          sessionId: typeof window !== 'undefined' ? localStorage.getItem('session_id') : ''
+        })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        if (data.errors) {
+          setErrors(data.errors)
+        } else {
+          setErrors([{ field: 'form', message: data.error || 'Error al guardar el formulario' }])
+        }
+        return
+      }
+
+      setSuccessMessage('¡Gracias! Nos pondremos en contacto pronto.')
+      setSelectedReality('')
+      setSelectedCounty('')
+      setFormData({ fullName: '', phone: '', email: '' })
+      setSubmitted(true)
+      setTimeout(() => {
+        setSubmitted(false)
+        setSuccessMessage('')
+      }, 3000)
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setErrors([{ field: 'form', message: 'Error de conexión. Por favor intenta de nuevo.' }])
+    } finally {
+      setLoading(false)
+    }
   }
 
   const realityOptions = [
@@ -82,7 +150,10 @@ export const CuratedSearchSection = () => {
               {realityOptions.map(option => (
                 <button
                   key={option.id}
-                  onClick={() => setSelectedReality(option.id)}
+                  onClick={() => {
+                    setSelectedReality(option.id)
+                    setErrors(errors.filter(err => err.field !== 'selectedReality'))
+                  }}
                   className={`p-6 rounded-lg border-2 transition-all text-left ${
                     selectedReality === option.id
                       ? 'border-primary bg-primary/5 dark:bg-primary/10'
@@ -97,6 +168,9 @@ export const CuratedSearchSection = () => {
                 </button>
               ))}
             </div>
+            {getFieldError('selectedReality') && (
+              <p className='text-red-500 text-sm mt-3'>{getFieldError('selectedReality')}</p>
+            )}
           </div>
 
           {/* Question 2: County Selection */}
@@ -112,13 +186,19 @@ export const CuratedSearchSection = () => {
                     name='county'
                     value={option.id}
                     checked={selectedCounty === option.id}
-                    onChange={(e) => setSelectedCounty(e.target.value)}
+                    onChange={(e) => {
+                      setSelectedCounty(e.target.value)
+                      setErrors(errors.filter(err => err.field !== 'selectedCounty'))
+                    }}
                     className='w-5 h-5 text-primary'
                   />
                   <span className='text-gray-700 dark:text-gray-300'>{option.label}</span>
                 </label>
               ))}
             </div>
+            {getFieldError('selectedCounty') && (
+              <p className='text-red-500 text-sm mt-3'>{getFieldError('selectedCounty')}</p>
+            )}
           </div>
         </div>
 
@@ -131,7 +211,7 @@ export const CuratedSearchSection = () => {
             <span className='font-semibold'>&quot;Ser dueño de casa ya no es un sueño, es una realidad.&quot;</span> Enter your details to receive a curated list of homes that fit your family&apos;s budget and maximize your financial assistance options.
           </p>
 
-          <form className='space-y-6'>
+          <form onSubmit={handleSubmit} className='space-y-6'>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
               <div>
                 <label className='block text-sm font-semibold text-black dark:text-white mb-2'>
@@ -145,6 +225,9 @@ export const CuratedSearchSection = () => {
                   placeholder='Your full name'
                   className='w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
                 />
+                {getFieldError('fullName') && (
+                  <p className='text-red-500 text-sm mt-1'>{getFieldError('fullName')}</p>
+                )}
               </div>
               <div>
                 <label className='block text-sm font-semibold text-black dark:text-white mb-2'>
@@ -158,6 +241,9 @@ export const CuratedSearchSection = () => {
                   placeholder='Your phone number'
                   className='w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
                 />
+                {getFieldError('phone') && (
+                  <p className='text-red-500 text-sm mt-1'>{getFieldError('phone')}</p>
+                )}
               </div>
               <div>
                 <label className='block text-sm font-semibold text-black dark:text-white mb-2'>
@@ -171,16 +257,43 @@ export const CuratedSearchSection = () => {
                   placeholder='Your email'
                   className='w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
                 />
+                {getFieldError('email') && (
+                  <p className='text-red-500 text-sm mt-1'>{getFieldError('email')}</p>
+                )}
               </div>
             </div>
 
+            {errors.some(err => err.field === 'form') && (
+              <div className='bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center gap-3'>
+                <Icon icon='mdi:alert-circle' width={24} height={24} className='text-red-600' />
+                <p className='text-red-700 dark:text-red-400'>{errors.find(err => err.field === 'form')?.message}</p>
+              </div>
+            )}
+
             <button
-              type='button'
-              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-4 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2'
+              type='submit'
+              disabled={loading}
+              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-4 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
             >
-              <Icon icon='mdi:home-search' width={20} height={20} />
-              VER PROPIEDADES AHORA
+              {loading ? (
+                <>
+                  <Icon icon='mdi:loading' width={20} height={20} className='animate-spin' />
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <Icon icon='mdi:home-search' width={20} height={20} />
+                  VER PROPIEDADES AHORA
+                </>
+              )}
             </button>
+
+            {submitted && successMessage && (
+              <div className='bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center gap-3'>
+                <Icon icon='mdi:check-circle' width={24} height={24} className='text-green-600' />
+                <p className='text-green-700 dark:text-green-400'>{successMessage}</p>
+              </div>
+            )}
           </form>
         </div>
       </div>

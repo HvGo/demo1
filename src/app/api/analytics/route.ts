@@ -13,6 +13,27 @@ function sanitizePage(page: string): string {
   return page.split('?')[0].slice(0, 512)
 }
 
+function parseUserAgent(ua: string) {
+  const lower = ua.toLowerCase()
+  const device_type = /mobile|android|iphone|ipad/.test(lower) ? 'mobile' : 'desktop'
+
+  let os = 'Unknown'
+  if (lower.includes('windows')) os = 'Windows'
+  else if (lower.includes('mac')) os = 'macOS'
+  else if (lower.includes('iphone') || lower.includes('ipad')) os = 'iOS'
+  else if (lower.includes('linux')) os = 'Linux'
+
+  let browser = 'Unknown'
+  if (lower.includes('edg')) browser = 'Edge'
+  else if (lower.includes('chrome')) browser = 'Chrome'
+  else if (lower.includes('safari') && !lower.includes('chrome')) browser = 'Safari'
+  else if (lower.includes('firefox')) browser = 'Firefox'
+  else if (lower.includes('opr') || lower.includes('opera')) browser = 'Opera'
+  else if (lower.includes('msie') || lower.includes('trident')) browser = 'IE'
+
+  return { device_type, os, browser }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as EngagementPayload
@@ -28,17 +49,25 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Obtener User Agent
+    const userAgent = req.headers.get('user-agent') || 'unknown'
+    const { device_type, os, browser } = parseUserAgent(userAgent)
+
     await sql(
       `
-      INSERT INTO session_engagement (session_id, page, depth_reached, active_ms, last_event_at)
-      VALUES ($1, $2, $3, $4, NOW())
+      INSERT INTO session_engagement (session_id, page, depth_reached, active_ms, device_type, os, browser, user_agent, last_event_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
       ON CONFLICT (session_id, page)
       DO UPDATE SET
         depth_reached = GREATEST(session_engagement.depth_reached, EXCLUDED.depth_reached),
         active_ms = session_engagement.active_ms + EXCLUDED.active_ms,
+        device_type = EXCLUDED.device_type,
+        os = EXCLUDED.os,
+        browser = EXCLUDED.browser,
+        user_agent = EXCLUDED.user_agent,
         last_event_at = NOW();
       `,
-      [sessionId, page, depth, activeMs]
+      [sessionId, page, depth, activeMs, device_type, os, browser, userAgent]
     )
 
     return NextResponse.json({ success: true })

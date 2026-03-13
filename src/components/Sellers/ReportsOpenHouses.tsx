@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Icon } from '@iconify/react'
+import { validateReportsOpenHousesForm, ValidationError } from '@/lib/validators'
 
 export const ReportsOpenHouses = () => {
   const [selectedRepairs, setSelectedRepairs] = useState('')
@@ -13,9 +14,79 @@ export const ReportsOpenHouses = () => {
     whatsapp: ''
   })
 
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [errors, setErrors] = useState<ValidationError[]>([])
+  const [successMessage, setSuccessMessage] = useState('')
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    setErrors(errors.filter(err => err.field !== name))
+  }
+
+  const getFieldError = (fieldName: string) => {
+    return errors.find(err => err.field === fieldName)?.message
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setErrors([])
+    setSuccessMessage('')
+
+    const validation = validateReportsOpenHousesForm({
+      selectedRepairs,
+      selectedMarketingTool,
+      selectedConcern,
+      ...formData
+    })
+
+    if (!validation.isValid) {
+      setErrors(validation.errors)
+      return
+    }
+
+    setLoading(true)
+    try {
+      const response = await fetch('/api/forms/reports-open-houses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          selectedRepairs,
+          selectedMarketingTool,
+          selectedConcern,
+          ...formData,
+          sessionId: typeof window !== 'undefined' ? localStorage.getItem('session_id') : ''
+        })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        if (data.errors) {
+          setErrors(data.errors)
+        } else {
+          setErrors([{ field: 'form', message: data.error || 'Error al guardar el formulario' }])
+        }
+        return
+      }
+
+      setSuccessMessage('¡Gracias! Nos pondremos en contacto pronto.')
+      setSelectedRepairs('')
+      setSelectedMarketingTool('')
+      setSelectedConcern('')
+      setFormData({ name: '', email: '', whatsapp: '' })
+      setSubmitted(true)
+      setTimeout(() => {
+        setSubmitted(false)
+        setSuccessMessage('')
+      }, 3000)
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setErrors([{ field: 'form', message: 'Error de conexión. Por favor intenta de nuevo.' }])
+    } finally {
+      setLoading(false)
+    }
   }
 
   const repairsOptions = [
@@ -105,7 +176,10 @@ export const ReportsOpenHouses = () => {
                   name='repairs'
                   value={option.id}
                   checked={selectedRepairs === option.id}
-                  onChange={(e) => setSelectedRepairs(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedRepairs(e.target.value)
+                    setErrors(errors.filter(err => err.field !== 'selectedRepairs'))
+                  }}
                   className='w-5 h-5 text-primary'
                 />
                 <Icon icon={option.icon} className='text-xl text-primary flex-shrink-0' />
@@ -113,6 +187,9 @@ export const ReportsOpenHouses = () => {
               </label>
             ))}
           </div>
+          {getFieldError('selectedRepairs') && (
+            <p className='text-red-500 text-sm mt-3'>{getFieldError('selectedRepairs')}</p>
+          )}
         </div>
 
         {/* Question 2: Marketing Tool Preference */}
@@ -135,7 +212,10 @@ export const ReportsOpenHouses = () => {
                   name='marketingTool'
                   value={tool.id}
                   checked={selectedMarketingTool === tool.id}
-                  onChange={(e) => setSelectedMarketingTool(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedMarketingTool(e.target.value)
+                    setErrors(errors.filter(err => err.field !== 'selectedMarketingTool'))
+                  }}
                   className='w-5 h-5 text-primary'
                 />
                 <Icon icon={tool.icon} className='text-xl text-primary flex-shrink-0' />
@@ -143,6 +223,9 @@ export const ReportsOpenHouses = () => {
               </label>
             ))}
           </div>
+          {getFieldError('selectedMarketingTool') && (
+            <p className='text-red-500 text-sm mt-3'>{getFieldError('selectedMarketingTool')}</p>
+          )}
         </div>
 
         {/* Question 3: Biggest Concern */}
@@ -165,7 +248,10 @@ export const ReportsOpenHouses = () => {
                   name='concern'
                   value={concern.id}
                   checked={selectedConcern === concern.id}
-                  onChange={(e) => setSelectedConcern(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedConcern(e.target.value)
+                    setErrors(errors.filter(err => err.field !== 'selectedConcern'))
+                  }}
                   className='w-5 h-5 text-primary'
                 />
                 <Icon icon={concern.icon} className='text-xl text-primary flex-shrink-0' />
@@ -173,6 +259,9 @@ export const ReportsOpenHouses = () => {
               </label>
             ))}
           </div>
+          {getFieldError('selectedConcern') && (
+            <p className='text-red-500 text-sm mt-3'>{getFieldError('selectedConcern')}</p>
+          )}
         </div>
 
         {/* Question 4: High-Impact Plan */}
@@ -184,7 +273,7 @@ export const ReportsOpenHouses = () => {
             ¿Listo para ver el plan completo de mercadeo?
           </p>
 
-          <form className='space-y-6'>
+          <form onSubmit={handleSubmit} className='space-y-6'>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
               <div>
                 <label className='block text-sm font-semibold text-black dark:text-white mb-2'>
@@ -198,6 +287,9 @@ export const ReportsOpenHouses = () => {
                   placeholder='Your full name'
                   className='w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
                 />
+                {getFieldError('name') && (
+                  <p className='text-red-500 text-sm mt-1'>{getFieldError('name')}</p>
+                )}
               </div>
               <div>
                 <label className='block text-sm font-semibold text-black dark:text-white mb-2'>
@@ -211,6 +303,9 @@ export const ReportsOpenHouses = () => {
                   placeholder='Your email'
                   className='w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
                 />
+                {getFieldError('email') && (
+                  <p className='text-red-500 text-sm mt-1'>{getFieldError('email')}</p>
+                )}
               </div>
               <div>
                 <label className='block text-sm font-semibold text-black dark:text-white mb-2'>
@@ -224,16 +319,43 @@ export const ReportsOpenHouses = () => {
                   placeholder='Your WhatsApp number'
                   className='w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
                 />
+                {getFieldError('whatsapp') && (
+                  <p className='text-red-500 text-sm mt-1'>{getFieldError('whatsapp')}</p>
+                )}
               </div>
             </div>
 
+            {errors.some(err => err.field === 'form') && (
+              <div className='bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center gap-3'>
+                <Icon icon='mdi:alert-circle' width={24} height={24} className='text-red-600' />
+                <p className='text-red-700 dark:text-red-400'>{errors.find(err => err.field === 'form')?.message}</p>
+              </div>
+            )}
+
             <button
-              type='button'
-              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-4 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2'
+              type='submit'
+              disabled={loading}
+              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-4 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
             >
-              <Icon icon='mdi:file-document-multiple' width={20} height={20} />
-              Ver Plan Completo
+              {loading ? (
+                <>
+                  <Icon icon='mdi:loading' width={20} height={20} className='animate-spin' />
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <Icon icon='mdi:file-document-multiple' width={20} height={20} />
+                  Ver Plan Completo
+                </>
+              )}
             </button>
+
+            {submitted && successMessage && (
+              <div className='bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center gap-3'>
+                <Icon icon='mdi:check-circle' width={24} height={24} className='text-green-600' />
+                <p className='text-green-700 dark:text-green-400'>{successMessage}</p>
+              </div>
+            )}
           </form>
         </div>
       </div>

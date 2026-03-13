@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Icon } from '@iconify/react'
+import { validateGoldenQuestionsForm, ValidationError } from '@/lib/validators'
 
 export const GoldenQuestionsForm = () => {
   const [formData, setFormData] = useState({
@@ -15,17 +16,76 @@ export const GoldenQuestionsForm = () => {
   })
 
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [errors, setErrors] = useState<ValidationError[]>([])
+  const [successMessage, setSuccessMessage] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    // Limpiar errores del campo cuando el usuario empieza a escribir
+    setErrors(errors.filter(err => err.field !== name))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
+    setErrors([])
+    setSuccessMessage('')
+
+    // Validar datos
+    const validation = validateGoldenQuestionsForm(formData)
+    if (!validation.isValid) {
+      setErrors(validation.errors)
+      return
+    }
+
+    setLoading(true)
+    try {
+      const response = await fetch('/api/forms/golden-questions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          sessionId: typeof window !== 'undefined' ? localStorage.getItem('session_id') : ''
+        })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        if (data.errors) {
+          setErrors(data.errors)
+        } else {
+          setErrors([{ field: 'form', message: data.error || 'Error al guardar el formulario' }])
+        }
+        return
+      }
+
+      setSuccessMessage('¡Gracias! Nos pondremos en contacto pronto.')
+      setFormData({
+        firstTimebuyer: '',
+        creditScore: '',
+        constructionType: '',
+        contactPreference: '',
+        name: '',
+        email: '',
+        phone: ''
+      })
+      setSubmitted(true)
+      setTimeout(() => {
+        setSubmitted(false)
+        setSuccessMessage('')
+      }, 3000)
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setErrors([{ field: 'form', message: 'Error de conexión. Por favor intenta de nuevo.' }])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getFieldError = (fieldName: string) => {
+    return errors.find(err => err.field === fieldName)?.message
   }
 
   return (
@@ -60,6 +120,9 @@ export const GoldenQuestionsForm = () => {
                   </label>
                 ))}
               </div>
+              {getFieldError('firstTimebuyer') && (
+                <p className='text-red-500 text-sm mt-2'>{getFieldError('firstTimebuyer')}</p>
+              )}
             </div>
 
             {/* Question 2 */}
@@ -79,6 +142,9 @@ export const GoldenQuestionsForm = () => {
                 <option value='700+'>700+</option>
                 <option value='750+'>750+</option>
               </select>
+              {getFieldError('creditScore') && (
+                <p className='text-red-500 text-sm mt-2'>{getFieldError('creditScore')}</p>
+              )}
             </div>
 
             {/* Question 3 */}
@@ -101,6 +167,9 @@ export const GoldenQuestionsForm = () => {
                   </label>
                 ))}
               </div>
+              {getFieldError('constructionType') && (
+                <p className='text-red-500 text-sm mt-2'>{getFieldError('constructionType')}</p>
+              )}
             </div>
 
             {/* Question 4 */}
@@ -119,6 +188,9 @@ export const GoldenQuestionsForm = () => {
                 <option value='email'>Email</option>
                 <option value='whatsapp'>WhatsApp</option>
               </select>
+              {getFieldError('contactPreference') && (
+                <p className='text-red-500 text-sm mt-2'>{getFieldError('contactPreference')}</p>
+              )}
             </div>
 
             {/* Question 5 - Personal Info */}
@@ -127,49 +199,79 @@ export const GoldenQuestionsForm = () => {
                 <span className='text-primary'>5.</span> Cuéntanos sobre ti
               </p>
               <div className='space-y-4'>
-                <input
-                  type='text'
-                  name='name'
-                  placeholder='Nombre completo'
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
-                />
-                <input
-                  type='email'
-                  name='email'
-                  placeholder='Email'
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
-                />
-                <input
-                  type='tel'
-                  name='phone'
-                  placeholder='Teléfono'
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
-                />
+                <div>
+                  <input
+                    type='text'
+                    name='name'
+                    placeholder='Nombre completo'
+                    value={formData.name}
+                    onChange={handleChange}
+                    className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
+                  />
+                  {getFieldError('name') && (
+                    <p className='text-red-500 text-sm mt-1'>{getFieldError('name')}</p>
+                  )}
+                </div>
+                <div>
+                  <input
+                    type='email'
+                    name='email'
+                    placeholder='Email'
+                    value={formData.email}
+                    onChange={handleChange}
+                    className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
+                  />
+                  {getFieldError('email') && (
+                    <p className='text-red-500 text-sm mt-1'>{getFieldError('email')}</p>
+                  )}
+                </div>
+                <div>
+                  <input
+                    type='tel'
+                    name='phone'
+                    placeholder='Teléfono'
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
+                  />
+                  {getFieldError('phone') && (
+                    <p className='text-red-500 text-sm mt-1'>{getFieldError('phone')}</p>
+                  )}
+                </div>
               </div>
             </div>
+
+            {/* Error Messages */}
+            {errors.some(err => err.field === 'form') && (
+              <div className='bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 flex items-center gap-3'>
+                <Icon icon='mdi:alert-circle' width={24} height={24} className='text-red-600' />
+                <p className='text-red-700 dark:text-red-400'>{errors.find(err => err.field === 'form')?.message}</p>
+              </div>
+            )}
 
             {/* Submit Button */}
             <button
               type='submit'
-              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2'
+              disabled={loading}
+              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
             >
-              <Icon icon='mdi:send' width={20} height={20} />
-              Enviar Respuestas
+              {loading ? (
+                <>
+                  <Icon icon='mdi:loading' width={20} height={20} className='animate-spin' />
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <Icon icon='mdi:send' width={20} height={20} />
+                  Enviar Respuestas
+                </>
+              )}
             </button>
 
-            {submitted && (
+            {submitted && successMessage && (
               <div className='bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center gap-3'>
                 <Icon icon='mdi:check-circle' width={24} height={24} className='text-green-600' />
-                <p className='text-green-700 dark:text-green-400'>¡Gracias! Nos pondremos en contacto pronto.</p>
+                <p className='text-green-700 dark:text-green-400'>{successMessage}</p>
               </div>
             )}
           </form>
