@@ -21,16 +21,13 @@ export const HeroSection = () => {
         {/* Content */}
         <div className='container max-w-8xl mx-auto px-4 flex flex-col min-h-screen md:min-h-[90vh] pt-20 md:pt-32 pb-0 md:pb-10'>
           <div className='relative text-white text-center z-10 mt-auto w-full'>
-            <p className='text-white text-lg leading-relaxed max-w-3xl mx-auto mb-4'>
-              Maximize Your Property&apos;s Value
-            </p>
             <h1 className='text-inherit text-4xl sm:text-5xl font-semibold -tracking-wider mx-auto mt-2 md:mt-4 mb-4 md:mb-6'>
-              Sell Your Home with Confidence
+              Maximum Equity. Expert Strategy.
             </h1>
             
             <div className='mb-4 md:mb-6 max-w-4xl mx-auto'>
               <p className='text-base sm:text-lg md:text-xl font-normal leading-relaxed text-white/90'>
-                Strategic marketing and expert negotiation to get you the best price. We handle everything.
+                Venda su casa con un plan diseñado para ganar en el mercado de Utah.
               </p>
             </div>
 
@@ -38,13 +35,18 @@ export const HeroSection = () => {
             <div className='flex flex-col sm:flex-row justify-center gap-3 sm:gap-4'>
               <a href='#market-intelligence' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors whitespace-nowrap'>
                 <Icon icon='mdi:chart-line' className='text-lg sm:text-xl flex-shrink-0' />
-                <span className='hidden sm:inline'>Market Analysis</span>
-                <span className='sm:hidden'>Analysis</span>
+                <span className='hidden sm:inline'>Mi Análisis de Plusvalía</span>
+                <span className='sm:hidden'>Análisis</span>
               </a>
-              <a href='#selling-process' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors whitespace-nowrap'>
-                <Icon icon='mdi:phone' className='text-lg sm:text-xl flex-shrink-0' />
-                <span className='hidden sm:inline'>Get Free Valuation</span>
-                <span className='sm:hidden'>Free Valuation</span>
+              <a href='#reports-open-houses' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors whitespace-nowrap'>
+                <Icon icon='mdi:file-document' className='text-lg sm:text-xl flex-shrink-0' />
+                <span className='hidden sm:inline'>Ver Mi Plan de Marketing</span>
+                <span className='sm:hidden'>Plan Marketing</span>
+              </a>
+              <a href='https://wa.me' target='_blank' rel='noreferrer' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-green-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-green-600 transition-colors whitespace-nowrap'>
+                <Icon icon='mdi:whatsapp' className='text-lg sm:text-xl flex-shrink-0' />
+                <span className='hidden sm:inline'>Let's chat on WhatsApp</span>
+                <span className='sm:hidden'>WhatsApp</span>
               </a>
             </div>
           </div>

@@ -29,7 +29,7 @@ export const CMAForm = () => {
   }
 
   return (
-    <section id='cma-form' className='py-16 md:py-24 bg-gray-50 dark:bg-dark/50'>
+    <section id='market-intelligence' className='py-16 md:py-24 bg-gray-50 dark:bg-dark/50'>
       <div className='container max-w-4xl mx-auto px-5 2xl:px-0'>
         <div className='text-center mb-12 md:mb-16'>
           <h2 className='text-3xl md:text-4xl font-bold mb-4'>Análisis de Plusvalía (CMA)</h2>
