@@ -64,7 +64,7 @@ const Categories = async () => {
                   unoptimized={true}
                 />
               </Link>
-              <Link href="/residential-homes" className="absolute w-full h-full bg-gradient-to-b from-black/0 to-black/80 top-full flex flex-col justify-between pl-5 sm:pl-10 pb-5 sm:pb-10 group-hover:top-0 duration-500">
+              <Link href="/residential-homes" className="absolute w-full h-full bg-gradient-to-b from-primary/20 to-primary/80 top-full flex flex-col justify-between pl-5 sm:pl-10 pb-5 sm:pb-10 group-hover:top-0 duration-500">
                 <div className="flex justify-end mt-4 sm:mt-6 mr-4 sm:mr-6">
                   <div className="bg-white text-dark rounded-full w-fit p-2 sm:p-4">
                     <Icon icon="ph:arrow-right" width={20} height={20} className="sm:w-6 sm:h-6" />
@@ -93,7 +93,7 @@ const Categories = async () => {
                   unoptimized={true}
                 />
               </Link>
-              <Link href="/luxury-villa" className="absolute w-full h-full bg-gradient-to-b from-black/0 to-black/80 top-full flex flex-col justify-between pl-5 sm:pl-10 pb-5 sm:pb-10 group-hover:top-0 duration-500">
+              <Link href="/luxury-villa" className="absolute w-full h-full bg-gradient-to-b from-primary/20 to-primary/80 top-full flex flex-col justify-between pl-5 sm:pl-10 pb-5 sm:pb-10 group-hover:top-0 duration-500">
                 <div className="flex justify-end mt-4 sm:mt-6 mr-4 sm:mr-6">
                   <div className="bg-white text-dark rounded-full w-fit p-2 sm:p-4">
                     <Icon icon="ph:arrow-right" width={20} height={20} className="sm:w-6 sm:h-6" />
@@ -122,7 +122,7 @@ const Categories = async () => {
                   unoptimized={true}
                 />
               </Link>
-              <Link href="/appartment" className="absolute w-full h-full bg-gradient-to-b from-black/0 to-black/80 top-full flex flex-col justify-between pl-5 sm:pl-10 pb-5 sm:pb-10 group-hover:top-0 duration-500">
+              <Link href="/appartment" className="absolute w-full h-full bg-gradient-to-b from-primary/20 to-primary/80 top-full flex flex-col justify-between pl-5 sm:pl-10 pb-5 sm:pb-10 group-hover:top-0 duration-500">
                 <div className="flex justify-end mt-4 sm:mt-6 mr-4 sm:mr-6">
                   <div className="bg-white text-dark rounded-full w-fit p-2 sm:p-4">
                     <Icon icon="ph:arrow-right" width={20} height={20} className="sm:w-6 sm:h-6" />
@@ -151,7 +151,7 @@ const Categories = async () => {
                   unoptimized={true}
                 />
               </Link>
-              <Link href="/office-spaces" className="absolute w-full h-full bg-gradient-to-b from-black/0 to-black/80 top-full flex flex-col justify-between pl-5 sm:pl-10 pb-5 sm:pb-10 group-hover:top-0 duration-500">
+              <Link href="/office-spaces" className="absolute w-full h-full bg-gradient-to-b from-primary/20 to-primary/80 top-full flex flex-col justify-between pl-5 sm:pl-10 pb-5 sm:pb-10 group-hover:top-0 duration-500">
                 <div className="flex justify-end mt-4 sm:mt-6 mr-4 sm:mr-6">
                   <div className="bg-white text-dark rounded-full w-fit p-2 sm:p-4">
                     <Icon icon="ph:arrow-right" width={20} height={20} className="sm:w-6 sm:h-6" />

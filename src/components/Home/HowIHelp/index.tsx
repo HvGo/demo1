@@ -60,7 +60,7 @@ const HowIHelp = async () => {
             {services.map((service, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg transition duration-300 space-y-4"
+                className="bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg transition duration-300 space-y-4 border border-primary/20"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
@@ -71,7 +71,7 @@ const HowIHelp = async () => {
                       className="text-primary sm:w-7 sm:h-7"
                     />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-dark dark:text-white">
+                  <h3 className="text-lg sm:text-xl font-bold text-blue-600 dark:text-blue-400">
                     {service.title}
                   </h3>
                 </div>

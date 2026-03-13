@@ -59,9 +59,9 @@ const Stats = async () => {
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-gray-800/50 border border-dark/5 dark:border-white/5 rounded-2xl p-6 sm:p-8 text-center shadow-sm hover:shadow-md transition duration-300"
+                className="bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-2xl p-6 sm:p-8 text-center shadow-sm hover:shadow-md transition duration-300"
               >
-                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-3">
+                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600 dark:text-blue-400 mb-3">
                   {stat.value}
                 </h3>
                 <p className="text-sm sm:text-base text-dark/70 dark:text-white/70 font-medium">
