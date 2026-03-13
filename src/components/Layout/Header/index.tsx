@@ -24,6 +24,15 @@ type HeaderProps = {
   isVisible?: boolean
 }
 
+function normalizePhoneNumber(phone: string): string {
+  if (!phone) return ''
+  const digits = phone.replace(/\D/g, '')
+  if (digits.length === 10) {
+    return `1${digits}`
+  }
+  return digits
+}
+
 const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
   if (isVisible === false) return null
 
@@ -66,7 +75,8 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
     ? config.navLinks
     : defaultNavLinks
 
-  const phoneDigits = (config?.whatsAppNumber || phone || '').replace(/\D/g, '')
+  const whatsAppPhone = config?.whatsAppNumber || config?.phone || phone || ''
+  const phoneDigits = normalizePhoneNumber(whatsAppPhone)
   const whatsappMessage = encodeURIComponent('Hola, quisiera más información')
   const phoneHref = phoneDigits ? `https://wa.me/${phoneDigits}?text=${whatsappMessage}` : `tel:${phone}`
 

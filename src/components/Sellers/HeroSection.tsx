@@ -1,7 +1,24 @@
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
+import { getSiteSectionByKey } from '@/lib/queries/content'
 
-export const HeroSection = () => {
+function normalizePhoneNumber(phone: string): string {
+  if (!phone) return ''
+  const digits = phone.replace(/\D/g, '')
+  if (digits.length === 10) {
+    return `1${digits}`
+  }
+  return digits
+}
+
+export const HeroSection = async () => {
+  const contactSection = await getSiteSectionByKey('contact_page')
+  const contactConfig = contactSection?.contentData || {}
+  const whatsAppNumber = contactConfig.phone || '+1-801-707-0787'
+  const phoneDigits = normalizePhoneNumber(whatsAppNumber)
+  const whatsappMessage = encodeURIComponent('Hola, quisiera más información')
+  const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}?text=${whatsappMessage}` : 'https://wa.me'
+
   return (
     <section className='!py-0'>
       <div className='overflow-hidden relative'>
@@ -43,7 +60,7 @@ export const HeroSection = () => {
                 <span className='hidden sm:inline'>Ver Mi Plan de Marketing</span>
                 <span className='sm:hidden'>Plan Marketing</span>
               </a>
-              <a href='https://wa.me' target='_blank' rel='noreferrer' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-green-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-green-600 transition-colors whitespace-nowrap'>
+              <a href={whatsappHref} target='_blank' rel='noreferrer' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-green-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-green-600 transition-colors whitespace-nowrap'>
                 <Icon icon='mdi:whatsapp' className='text-lg sm:text-xl flex-shrink-0' />
                 <span className='hidden sm:inline'>Let&apos;s chat on WhatsApp</span>
                 <span className='sm:hidden'>WhatsApp</span>

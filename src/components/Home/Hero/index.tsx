@@ -7,6 +7,15 @@ import { getSchemaMarkupByKey } from '@/lib/queries/schema'
 import { SchemaMarkup } from '@/components/SchemaMarkup'
 import SearchBar from './SearchBar'
 
+function normalizePhoneNumber(phone: string): string {
+  if (!phone) return ''
+  const digits = phone.replace(/\D/g, '')
+  if (digits.length === 10) {
+    return `1${digits}`
+  }
+  return digits
+}
+
 const Hero = async () => {
   const section = await getSiteSectionByKey('home_hero')
   const taglineSection = await getSiteSectionByKey('home_hero_tagline')
@@ -28,8 +37,8 @@ const Hero = async () => {
 
   // WhatsApp configuration from contact page
   const contactConfig = contactSection?.contentData || {}
-  const whatsAppNumber = contactConfig.whatsAppNumber || '+1-801-707-0787'
-  const phoneDigits = (whatsAppNumber || '').replace(/\D/g, '')
+  const whatsAppNumber = contactConfig.phone || '+1-801-707-0787'
+  const phoneDigits = normalizePhoneNumber(whatsAppNumber)
   const whatsappMessage = encodeURIComponent('Hola, quisiera más información')
   const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}?text=${whatsappMessage}` : primaryHref
 
