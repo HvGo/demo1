@@ -71,7 +71,7 @@ const HowIHelp = async () => {
                       className="text-primary sm:w-7 sm:h-7"
                     />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-blue-600 dark:text-blue-400">
+                  <h3 className="text-lg sm:text-xl font-bold" style={{ color: '#045cb4' }}>
                     {service.title}
                   </h3>
                 </div>
