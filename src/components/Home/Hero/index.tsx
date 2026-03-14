@@ -17,6 +17,7 @@ function normalizePhoneNumber(phone: string): string {
 }
 
 const Hero = async () => {
+  // Revalidate every 60 seconds to pick up image changes from DB
   const section = await getSiteSectionByKey('home_hero')
   const taglineSection = await getSiteSectionByKey('home_hero_tagline')
   const organizationSchema = await getSchemaMarkupByKey('organization')

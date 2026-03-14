@@ -1,25 +1,56 @@
+'use client'
+
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
+import { useEffect, useState } from 'react'
+
+function isSafari(): boolean {
+  if (typeof window === 'undefined') return false
+  const ua = navigator.userAgent.toLowerCase()
+  return /safari/.test(ua) && !/chrome/.test(ua) && !/firefox/.test(ua)
+}
 
 export const HeroSection = () => {
+  const [isSafariBrowser, setIsSafariBrowser] = useState(false)
+
+  useEffect(() => {
+    setIsSafariBrowser(isSafari())
+  }, [])
+
   return (
     <section className='!py-0'>
       <div className='overflow-hidden relative'>
-        {/* Background Image */}
+        {/* Background Image/Video */}
         <div className='absolute inset-0 -z-[1]'>
-          <Image
-            src='/images/Gallery/IMG_7525.jpg'
-            alt='Buyers Hero'
-            fill
-            priority={true}
-            unoptimized={false}
-            className='object-cover object-center'
-          />
+          {isSafariBrowser ? (
+            // Safari: mostrar solo imagen
+            <Image
+              src='/images/Gallery/IMG_7525.jpg'
+              alt='Buyers Hero'
+              fill
+              priority={true}
+              unoptimized={false}
+              className='object-cover object-center'
+            />
+          ) : (
+            // Otros navegadores: mostrar video con imagen de fallback
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster='/images/Gallery/IMG_7525.jpg'
+              className='w-full h-full object-cover'
+            >
+              <source src='/images/Gallery/output.webm' type='video/webm' />
+              Tu navegador no soporta video.
+            </video>
+          )}
           <div className='absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/20 dark:to-black/40' />
         </div>
 
         {/* Content */}
-        <div className='container max-w-8xl mx-auto px-4 flex flex-col min-h-screen md:min-h-[90vh] pt-20 md:pt-32 pb-0 md:pb-10'>
+        <div className='container max-w-8xl mx-auto px-4 flex flex-col min-h-screen md:min-h-[90vh] pt-20 md:pt-32 pb-0 md:pb-[200px]'>
           <div className='relative text-white text-center z-10 mt-auto w-full'>
             <p className='text-white text-lg leading-relaxed max-w-3xl mx-auto mb-4'>
               Ser dueño de casa ya no es un sueño, es una realidad.

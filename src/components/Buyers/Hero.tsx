@@ -1,18 +1,49 @@
+'use client'
+
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
+
+function isSafari(): boolean {
+  if (typeof window === 'undefined') return false
+  const ua = navigator.userAgent.toLowerCase()
+  return /safari/.test(ua) && !/chrome/.test(ua) && !/firefox/.test(ua)
+}
 
 export const Hero = () => {
+  const [isSafariBrowser, setIsSafariB] = useState(false)
+
+  useEffect(() => {
+    setIsSafariB(isSafari())
+  }, [])
+
   return (
     <section className='!py-0'>
       <div className='overflow-hidden relative'>
         <div className='absolute inset-0 -z-[1]'>
-          <Image
-            src='/images/hero/heroBanner.png'
-            alt='Buyers Hero'
-            fill
-            priority={true}
-            unoptimized={true}
-            className='object-cover object-center'
-          />
+          {isSafariBrowser ? (
+            // Safari: mostrar solo imagen
+            <Image
+              src='/images/hero/heroBanner.png'
+              alt='Buyers Hero'
+              fill
+              priority={true}
+              unoptimized={true}
+              className='object-cover object-center'
+            />
+          ) : (
+            // Otros navegadores: mostrar video con imagen de fallback
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster='/images/hero/heroBanner.png'
+              className='w-full h-full object-cover'
+            >
+              <source src='/images/Gallery/output.webm' type='video/webm' />
+              Tu navegador no soporta video.
+            </video>
+          )}
           <div className='absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-white/5 dark:to-black/25' />
         </div>
         <div className='container max-w-8xl mx-auto px-5 2xl:px-0 pt-12 md:pt-[28rem] pb-16 md:pb-40 flex flex-col'>
