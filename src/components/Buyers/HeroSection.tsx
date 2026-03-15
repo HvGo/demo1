@@ -42,7 +42,7 @@ export const HeroSection = () => {
               poster='/images/Gallery/IMG_7525.jpg'
               className='w-full h-full object-cover'
             >
-              <source src='/images/Gallery/output.webm' type='video/webm' />
+              <source src='/images/Gallery/buyers.webm' type='video/webm' />
               Tu navegador no soporta video.
             </video>
           )}
