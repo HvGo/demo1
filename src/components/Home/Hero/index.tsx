@@ -75,14 +75,14 @@ const Hero = async () => {
 <div className='container max-w-8xl mx-auto px-4 flex flex-col min-h-screen md:min-h-[90vh] pt-90 md:pt-80 pb-0 md:pb-10'> {/* Mobile: pt-80, Desktop: pt-80 */}
   
   <div className='relative text-white text-center z-10 mt-auto w-full'> {/* Solo mt-auto aquí */}
-    <p className="text-white text-lg leading-relaxed max-w-3xl mx-auto pb-0 md:pb-0">{subtitle}</p>
+    <p className="text-white text-xl sm:text-2xl font-bold leading-relaxed max-w-3xl mx-auto pb-0 md:pb-0" style={{ filter: 'drop-shadow(-1px -1px 0 #003d99) drop-shadow(1px -1px 0 #003d99) drop-shadow(-1px 1px 0 #003d99) drop-shadow(1px 1px 0 #003d99)' } as React.CSSProperties}>{subtitle}</p>
     <h1 className='text-inherit text-4xl sm:text-5xl font-semibold -tracking-wider mx-auto mt-2 md:mt-4 mb-4 md:mb-6 pb-0 md:pb-0'>
       {title}
     </h1>
     
     {bottomText && (
       <div className='mb-4 md:mb-6 max-w-4xl mx-auto'>
-        <p className="bg-black/3 backdrop-blur-sm p-6 rounded-xl text-white text-shadow">
+        <p className="bg-black/3 backdrop-blur-sm p-6 rounded-xl text-white text-shadow font-bold">
           {bottomText}
         </p>
       </div>
@@ -98,7 +98,7 @@ const Hero = async () => {
           </Link>
         )}
         {secondaryHref && secondaryLabel && (
-          <Link href={secondaryHref} className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors whitespace-nowrap'>
+          <Link href={secondaryHref} className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 shadow-lg shadow-black/25 ring-1 ring-white/10 transition-colors whitespace-nowrap' style={{ backgroundColor: '#FDCB6E', color: '#067ff9' }}>
             <Icon icon="mdi:email" className="text-lg sm:text-xl flex-shrink-0" />
             {secondaryLabel}
           </Link>

@@ -37,7 +37,7 @@ const Testimonial = ({ testimonials }: Props) => {
     };
 
     return (
-        <section className="bg-dark relative overflow-hidden" id="testimonial">
+        <section className="relative overflow-hidden" id="testimonial" style={{ backgroundColor: '#88bcf0' }}>
             <div className="absolute right-0">
                 <Image
                     src="/images/testimonial/Vector.png"
@@ -48,8 +48,8 @@ const Testimonial = ({ testimonials }: Props) => {
                 />
             </div>
             <div className="container max-w-8xl mx-auto px-5 2xl:px-0">
-                <div>
-                    <p className="text-white text-base font-semibold flex gap-2">
+                <div className="text-center">
+                    <p className="text-white text-base font-semibold flex gap-2 justify-center">
                         <Icon icon="ph:house-simple-fill" className="text-2xl text-primary" />
                         Testimonials
                     </p>

@@ -45,8 +45,8 @@ const Stats = async () => {
     <section>
       <div className="container max-w-8xl mx-auto px-5 2xl:px-0">
         <div className="space-y-8">
-          <div className="space-y-4">
-            <p className="text-dark/75 dark:text-white/75 text-base font-semibold flex gap-2.5">
+          <div className="space-y-4 text-center">
+            <p className="text-dark/75 dark:text-white/75 text-base font-semibold flex gap-2.5 justify-center">
               <Icon icon="ph:chart-bar-fill" className="text-2xl text-primary" />
               {badge}
             </p>
