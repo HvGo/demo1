@@ -4,7 +4,11 @@ import { useState } from 'react'
 import { Icon } from '@iconify/react'
 import { validateCMAForm, ValidationError } from '@/lib/validators'
 
-export const CMAForm = () => {
+interface CMAFormProps {
+  onSuccess?: () => void
+}
+
+export const CMAForm = ({ onSuccess }: CMAFormProps = {}) => {
   const [formData, setFormData] = useState({
     address: '',
     sellingGoal: '',
@@ -77,6 +81,9 @@ export const CMAForm = () => {
       setTimeout(() => {
         setSubmitted(false)
         setSuccessMessage('')
+        if (onSuccess) {
+          onSuccess()
+        }
       }, 3000)
     } catch (error) {
       console.error('Error submitting form:', error)

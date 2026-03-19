@@ -9,7 +9,11 @@ import { useTheme } from 'next-themes'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 
-type HeaderLink = { label: string; href: string }
+interface DropdownState {
+  [key: number]: boolean
+}
+
+type HeaderLink = { label: string; href: string; submenu?: HeaderLink[] }
 type HeaderConfig = {
   logoLight?: string
   logoDark?: string
@@ -38,6 +42,7 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
 
   const [sticky, setSticky] = useState(false)
   const [navbarOpen, setNavbarOpen] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState<DropdownState>({})
   const { theme, setTheme } = useTheme()
   const pathname = usePathname()
 
@@ -71,6 +76,7 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
   const logoDark = config?.logoDark || '/images/header/logo1.png'
   const phone = config?.phone || '+1-212-456-789'
   const email = config?.email || 'hello@homely.com'
+  // Use navLinks from BD, fallback to defaultNavLinks if not available
   const navLinks = Array.isArray(config?.navLinks) && config?.navLinks.length > 0
     ? config.navLinks
     : defaultNavLinks
@@ -105,20 +111,48 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
           </div>
           <div className='flex items-center gap-6'>
             <nav className='hidden lg:flex items-center gap-8'>
-              {navLinks.map((item, index) => (
-                <Link 
-                  key={index}
-                  href={item.href}
-                  className={`text-base font-medium transition-colors ${isHomepage
-                    ? sticky
-                      ? 'text-dark dark:text-white hover:text-primary'
-                      : 'text-white hover:text-primary'
-                    : 'text-dark dark:text-white hover:text-primary'
-                  } ${pathname === item.href ? 'text-primary font-semibold' : ''}`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navLinks.map((item, index) => {
+                const hasSubmenu = item.submenu && item.submenu.length > 0
+                const isDropdownOpen = dropdownOpen[index] || false
+                return (
+                  <div 
+                    key={index} 
+                    className='relative'
+                    onMouseEnter={() => hasSubmenu && setDropdownOpen({ ...dropdownOpen, [index]: true })}
+                    onMouseLeave={() => setDropdownOpen({ ...dropdownOpen, [index]: false })}
+                  >
+                    <Link 
+                      href={item.href}
+                      className={`text-base font-medium transition-colors flex items-center gap-1 ${isHomepage
+                        ? sticky
+                          ? 'text-dark dark:text-white hover:text-primary'
+                          : 'text-white hover:text-primary'
+                        : 'text-dark dark:text-white hover:text-primary'
+                      } ${pathname === item.href ? 'text-primary font-semibold' : ''}`}
+                    >
+                      {item.label}
+                      {hasSubmenu && (
+                        <Icon icon='ph:caret-down' width={14} height={14} className={`transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                      )}
+                    </Link>
+                    {hasSubmenu && (
+                      <div className={`absolute left-0 top-full pt-2 w-56 bg-white dark:bg-dark rounded-lg shadow-lg transition-all duration-300 z-50 py-2 ${
+                        isDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                      }`}>
+                        {item.submenu?.map((subitem, subindex) => (
+                          <Link
+                            key={subindex}
+                            href={subitem.href}
+                            className={`block px-4 py-2 text-sm font-medium text-dark dark:text-white hover:text-primary hover:bg-gray-100 dark:hover:bg-dark/50 transition-colors ${pathname === subitem.href ? 'text-primary font-semibold' : ''}`}
+                          >
+                            {subitem.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
             </nav>
             <Link href={phoneHref} target="_blank" rel="noreferrer" className={`lg:hidden hover:cursor-pointer ${isHomepage
               ? sticky

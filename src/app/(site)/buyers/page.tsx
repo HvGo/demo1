@@ -1,6 +1,4 @@
 import { HeroSection } from '@/components/Buyers/HeroSection'
-import { GoldenQuestionsForm } from '@/components/Buyers/GoldenQuestionsForm'
-import { CuratedSearchSection } from '@/components/Buyers/CuratedSearchSection'
 import { FinancialPaths } from '@/components/Buyers/FinancialPaths'
 import { WealthFactor } from '@/components/Buyers/WealthFactor'
 import { ClearPath } from '@/components/Buyers/ClearPath'
@@ -15,8 +13,6 @@ export default function BuyersPage() {
   return (
     <>
       <HeroSection />
-      <GoldenQuestionsForm />
-      <CuratedSearchSection />
       <FinancialPaths />
       <WealthFactor />
       <ClearPath />

@@ -4,7 +4,11 @@ import { useState } from 'react'
 import { Icon } from '@iconify/react'
 import { validateCuratedSearchForm, ValidationError } from '@/lib/validators'
 
-export const CuratedSearchSection = () => {
+interface CuratedSearchSectionProps {
+  onSuccess?: () => void
+}
+
+export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = {}) => {
   const [selectedReality, setSelectedReality] = useState('')
   const [selectedCounty, setSelectedCounty] = useState('')
   const [formData, setFormData] = useState({
@@ -76,6 +80,9 @@ export const CuratedSearchSection = () => {
       setTimeout(() => {
         setSubmitted(false)
         setSuccessMessage('')
+        if (onSuccess) {
+          onSuccess()
+        }
       }, 3000)
     } catch (error) {
       console.error('Error submitting form:', error)

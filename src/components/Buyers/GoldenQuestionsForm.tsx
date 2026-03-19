@@ -4,7 +4,11 @@ import { useState } from 'react'
 import { Icon } from '@iconify/react'
 import { validateGoldenQuestionsForm, ValidationError } from '@/lib/validators'
 
-export const GoldenQuestionsForm = () => {
+interface GoldenQuestionsFormProps {
+  onSuccess?: () => void
+}
+
+export const GoldenQuestionsForm = ({ onSuccess }: GoldenQuestionsFormProps = {}) => {
   const [formData, setFormData] = useState({
     firstTimebuyer: '',
     creditScore: '',
@@ -75,6 +79,9 @@ export const GoldenQuestionsForm = () => {
       setTimeout(() => {
         setSubmitted(false)
         setSuccessMessage('')
+        if (onSuccess) {
+          onSuccess()
+        }
       }, 3000)
     } catch (error) {
       console.error('Error submitting form:', error)

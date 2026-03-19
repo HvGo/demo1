@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import { useEffect, useState } from 'react'
+import { GoldenQuestionsModal } from './GoldenQuestionsModal'
+import { CuratedSearchModal } from './CuratedSearchModal'
 
 function isSafari(): boolean {
   if (typeof window === 'undefined') return false
@@ -12,6 +14,8 @@ function isSafari(): boolean {
 
 export const HeroSection = () => {
   const [isSafariBrowser, setIsSafariBrowser] = useState(false)
+  const [isGoldenQuestionsModalOpen, setIsGoldenQuestionsModalOpen] = useState(false)
+  const [isCuratedSearchModalOpen, setIsCuratedSearchModalOpen] = useState(false)
 
   useEffect(() => {
     setIsSafariBrowser(isSafari())
@@ -67,20 +71,22 @@ export const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className='flex flex-col sm:flex-row justify-center gap-3 sm:gap-4'>
-              <a href='#golden-questions' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors whitespace-nowrap'>
+              <button onClick={() => setIsGoldenQuestionsModalOpen(true)} className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors whitespace-nowrap'>
                 <Icon icon='mdi:home' className='text-lg sm:text-xl flex-shrink-0' />
                 <span className='hidden sm:inline'>Down payment Assistance</span>
                 <span className='sm:hidden'>Down Payment</span>
-              </a>
-              <a href='#curated-search' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors whitespace-nowrap'>
+              </button>
+              <button onClick={() => setIsCuratedSearchModalOpen(true)} className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors whitespace-nowrap'>
                 <Icon icon='mdi:magnify' className='text-lg sm:text-xl flex-shrink-0' />
                 <span className='hidden sm:inline'>Start My Home Search</span>
                 <span className='sm:hidden'>Home Search</span>
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </div>
+      <GoldenQuestionsModal isOpen={isGoldenQuestionsModalOpen} onClose={() => setIsGoldenQuestionsModalOpen(false)} />
+      <CuratedSearchModal isOpen={isCuratedSearchModalOpen} onClose={() => setIsCuratedSearchModalOpen(false)} />
     </section>
   )
 }

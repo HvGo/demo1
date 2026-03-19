@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import { useEffect, useState } from 'react'
+import { CMAFormModal } from './CMAFormModal'
+import { ReportsOpenHousesModal } from './ReportsOpenHousesModal'
 
 function isSafari(): boolean {
   if (typeof window === 'undefined') return false
@@ -16,6 +18,8 @@ interface HeroSectionClientProps {
 
 const HeroSectionClient = ({ whatsappHref }: HeroSectionClientProps) => {
   const [isSafariBrowser, setIsSafariBrowser] = useState(false)
+  const [isCMAFormModalOpen, setIsCMAFormModalOpen] = useState(false)
+  const [isReportsOpenHousesModalOpen, setIsReportsOpenHousesModalOpen] = useState(false)
 
   useEffect(() => {
     setIsSafariBrowser(isSafari())
@@ -68,25 +72,27 @@ const HeroSectionClient = ({ whatsappHref }: HeroSectionClientProps) => {
 
             {/* CTA Buttons */}
             <div className='flex flex-col sm:flex-row justify-center gap-3 sm:gap-4'>
-              <a href='#market-intelligence' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors whitespace-nowrap'>
+              <button onClick={() => setIsCMAFormModalOpen(true)} className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors whitespace-nowrap'>
                 <Icon icon='mdi:chart-line' className='text-lg sm:text-xl flex-shrink-0' />
                 <span className='hidden sm:inline'>Mi Análisis de Plusvalía</span>
                 <span className='sm:hidden'>Análisis</span>
-              </a>
-              <a href='#reports-open-houses' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors whitespace-nowrap'>
+              </button>
+              <button onClick={() => setIsReportsOpenHousesModalOpen(true)} className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 bg-primary text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-primary/90 transition-colors whitespace-nowrap'>
                 <Icon icon='mdi:file-document' className='text-lg sm:text-xl flex-shrink-0' />
                 <span className='hidden sm:inline'>Ver Mi Plan de Marketing</span>
                 <span className='sm:hidden'>Plan Marketing</span>
-              </a>
+              </button>
               <a href={whatsappHref} target='_blank' rel='noreferrer' className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-green-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-green-600 transition-colors whitespace-nowrap'>
                 <Icon icon='mdi:whatsapp' className='text-lg sm:text-xl flex-shrink-0' />
-                <span className='hidden sm:inline'>Let&apos;s chat on WhatsApp</span>
+                <span className='hidden sm:inline'>Let&apos;s chat with Ivan</span>
                 <span className='sm:hidden'>WhatsApp</span>
               </a>
             </div>
           </div>
         </div>
       </div>
+      <CMAFormModal isOpen={isCMAFormModalOpen} onClose={() => setIsCMAFormModalOpen(false)} />
+      <ReportsOpenHousesModal isOpen={isReportsOpenHousesModalOpen} onClose={() => setIsReportsOpenHousesModalOpen(false)} />
     </section>
   )
 }
