@@ -11,6 +11,7 @@ import GetInTouch from '@/components/Home/GetInTouch'
 import Stats from '@/components/Home/Stats'
 import HowIHelp from '@/components/Home/HowIHelp'
 import VideoSection from '@/components/Home/VideoSection'
+import LocalExpertise from '@/components/Home/LocalExpertise'
 
 export const SECTION_COMPONENTS: Record<string, React.ComponentType<any>> = {
   'home_hero': Hero,
@@ -23,8 +24,11 @@ export const SECTION_COMPONENTS: Record<string, React.ComponentType<any>> = {
   'home_profile': Profile,
   'home_featured_property': FeaturedProperty,
   'home_properties': Properties,
-  'home_categories': Services,
+  'home_services': Services,
   'home_video_section': VideoSection,
+  'home_local_expertise': LocalExpertise,
+  // Compatibilidad: algunos contenidos usan `home_categories` como key histórico.
+  'home_categories': Services,
 };
 
 export function getSectionComponent(key: string) {

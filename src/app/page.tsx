@@ -2,6 +2,7 @@ import { getAllSiteSections, getFaqs } from '@/lib/queries/content'
 import { getSectionComponent, isValidSectionKey } from '@/lib/sectionComponents'
 import { getSchemaMarkupByKey } from '@/lib/queries/schema'
 import { SchemaMarkup } from '@/components/SchemaMarkup'
+import { FloatingBubbles } from '@/components/Home/FloatingBubbles'
 
 export const revalidate = 600
 
@@ -44,6 +45,8 @@ export default async function Home() {
 
           return <Component key={section.key} />
         })}
+      
+      <FloatingBubbles />
     </main>
   )
 }
