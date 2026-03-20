@@ -54,7 +54,10 @@ const Profile = async () => {
               <div>
                 <Link
                   href={ctaHref}
-                  className='py-4 px-8 bg-primary text-base leading-4 block w-fit text-white rounded-full font-semibold hover:bg-dark duration-300'
+                  className='py-4 px-8 text-base leading-4 block w-fit text-white rounded-full font-semibold duration-300'
+                  style={{
+                    backgroundColor: 'rgba(0, 168, 107, 1)'
+                  }}
                 >
                   {ctaLabel}
                 </Link>

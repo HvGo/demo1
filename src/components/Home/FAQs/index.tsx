@@ -31,6 +31,7 @@ const FAQ = async () => {
                             width={680}
                             height={644}
                             className='lg:w-full'
+                            style={{ borderRadius: '0px' }}
                             unoptimized={true}
                         />
                     </div>

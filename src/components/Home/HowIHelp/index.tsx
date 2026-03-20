@@ -44,11 +44,14 @@ const HowIHelp = async () => {
       <div className="container max-w-8xl mx-auto px-5 2xl:px-0">
         <div className="space-y-8">
           <div className="space-y-4">
-            <p className="text-dark/75 dark:text-white/75 text-base font-semibold flex gap-2.5">
+            <p className="text-dark/75 dark:text-white/75 text-base font-semibold flex gap-2.5 justify-center items-center text-center">
               <Icon icon="ph:handshake-fill" className="text-2xl text-primary" />
               {badge}
             </p>
-            <h2 className="lg:text-52 text-40 font-medium leading-[1.2] text-dark dark:text-white">
+            <h2
+              className="lg:text-52 text-40 font-medium leading-[1.2] text-dark dark:text-white text-center"
+              style={{ position: 'center' as any, textAlign: 'midle' as any, fontFamily: '"Bricolage Grotesque"' }}
+            >
               {title}
             </h2>
             <p className="text-dark/50 dark:text-white/50">

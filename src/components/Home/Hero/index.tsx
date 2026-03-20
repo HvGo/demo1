@@ -76,13 +76,13 @@ const Hero = async () => {
   
   <div className='relative text-white text-center z-10 mt-auto w-full'> {/* Solo mt-auto aquí */}
     <p className="text-xl sm:text-2xl font-bold mx-auto pb-0 md:pb-0 uppercase text-center" style={{ fontFamily: "'Oswald', system-ui, sans-serif", color: '#FFFFFF', textShadow: '-2px -2px 0 #1a1a1a, 2px -2px 0 #1a1a1a, -2px 2px 0 #1a1a1a, 2px 2px 0 #1a1a1a, -2px 0 0 #1a1a1a, 2px 0 0 #1a1a1a, 0 -2px 0 #1a1a1a, 0 2px 0 #1a1a1a, 0 4px 8px rgba(0,0,0,0.9)' } as React.CSSProperties}>{subtitle}</p>
-    <h1 className='text-4xl sm:text-5xl font-black mx-auto mt-2 md:mt-4 mb-4 md:mb-6 pb-0 md:pb-0 capitalize' style={{ fontFamily: "'Anton', 'Oswald', system-ui, sans-serif", color: '#fad057', letterSpacing: '0.02em', textShadow: '-2px -2px 0 #1a1a1a, 2px -2px 0 #1a1a1a, -2px 2px 0 #1a1a1a, 2px 2px 0 #1a1a1a, -3px 0 0 #1a1a1a, 3px 0 0 #1a1a1a, 0 -3px 0 #1a1a1a, 0 3px 0 #1a1a1a, 0 4px 8px rgba(0,0,0,0.8)' } as React.CSSProperties}>
+    <h1 className='text-4xl sm:text-5xl font-black mx-auto mt-2 md:mt-4 mb-4 md:mb-6 pb-0 md:pb-0 capitalize' style={{ fontFamily: '"Noto Color Emoji"', color: '#fad057', letterSpacing: '0.02em', textShadow: '-2px -2px 0 #1a1a1a, 2px -2px 0 #1a1a1a, -2px 2px 0 #1a1a1a, 2px 2px 0 #1a1a1a, -3px 0 0 #1a1a1a, 3px 0 0 #1a1a1a, 0 -3px 0 #1a1a1a, 0 3px 0 #1a1a1a, 0 4px 8px rgba(0,0,0,0.8)' } as React.CSSProperties}>
       {title}
     </h1>
     
     {bottomText && (
       <div className='mb-4 md:mb-6 max-w-4xl mx-auto'>
-        <p className="bg-black/3 backdrop-blur-sm p-6 rounded-xl text-white text-shadow font-bold">
+        <p className="backdrop-blur-sm p-6 rounded-xl text-white text-shadow font-bold opacity-[10]" style={{ backgroundColor: 'unset', background: 'unset' }}>
           {bottomText}
         </p>
       </div>
@@ -92,7 +92,7 @@ const Hero = async () => {
     {(primaryHref && primaryLabel) || (secondaryHref && secondaryLabel) ? (
       <div className='flex flex-col sm:flex-row justify-center gap-3 sm:gap-4'>
         {primaryLabel && (
-          <Link href={whatsappHref} target="_blank" rel="noreferrer" className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 bg-teal-500 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 hover:bg-teal-600 transition-colors whitespace-nowrap'>
+          <Link href={whatsappHref} target="_blank" rel="noreferrer" className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 transition-colors whitespace-nowrap' style={{ backgroundColor: 'rgba(0, 168, 107, 1)' }}>
             <Icon icon="mdi:whatsapp" className="text-lg sm:text-xl flex-shrink-0" />
             {primaryLabel}
           </Link>

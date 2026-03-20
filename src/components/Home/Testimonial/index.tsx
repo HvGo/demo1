@@ -37,7 +37,7 @@ const Testimonial = ({ testimonials }: Props) => {
     };
 
     return (
-        <section className="relative overflow-hidden" id="testimonial" style={{ backgroundColor: '#88bcf0' }}>
+        <section className="relative overflow-hidden" id="testimonial" style={{ background: 'linear-gradient(90deg, rgba(39, 59, 168, 1) 0%, rgba(254, 188, 89, 1) 100%)' }}>
             <div className="absolute right-0">
                 <Image
                     src="/images/testimonial/Vector.png"
@@ -68,11 +68,9 @@ const Testimonial = ({ testimonials }: Props) => {
                             <CarouselItem key={index} className="mt-9">
                                 <div className="lg:flex items-center gap-11">
                                     <div className="flex items-start gap-11 lg:pr-20">
+                                        <div />
                                         <div>
-                                            <Icon icon="ph:house-simple" width={32} height={32} className="text-primary" />
-                                        </div>
-                                        <div>
-                                            <h4 className="text-white lg:text-3xl text-2xl">{item.review}</h4>
+                                            <h4 className="text-[rgba(255,255,240,1)] lg:text-3xl text-2xl">{item.review}</h4>
                                             <div className="flex items-center mt-8 gap-6">
                                                 <Image
                                                     src={item.image}
