@@ -1,8 +1,6 @@
-'use client'
-
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { getSiteSectionByKey } from '@/lib/queries/content'
 
 function normalizePhoneNumber(phone: string): string {
   if (!phone) return ''
@@ -13,27 +11,14 @@ function normalizePhoneNumber(phone: string): string {
   return digits
 }
 
-export const FloatingBubbles = () => {
-  const [whatsappHref, setWhatsappHref] = useState<string>('https://wa.me/1234567890')
-
-  useEffect(() => {
-    const fetchContactInfo = async () => {
-      try {
-        const response = await fetch('/api/contact-info')
-        const data = await response.json()
-        
-        if (data.phone) {
-          const phoneDigits = normalizePhoneNumber(data.phone)
-          const whatsappMessage = encodeURIComponent('Hola, quisiera más información')
-          setWhatsappHref(`https://wa.me/${phoneDigits}?text=${whatsappMessage}`)
-        }
-      } catch (error) {
-        console.error('Error fetching contact info:', error)
-      }
-    }
-
-    fetchContactInfo()
-  }, [])
+export const FloatingBubbles = async () => {
+  // Get contact info from DB (same as Hero component)
+  const contactSection = await getSiteSectionByKey('contact_page')
+  const contactConfig = contactSection?.contentData || {}
+  const whatsAppNumber = contactConfig.phone || '+1-801-707-0787'
+  const phoneDigits = normalizePhoneNumber(whatsAppNumber)
+  const whatsappMessage = encodeURIComponent('Hola, quisiera más información')
+  const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}?text=${whatsappMessage}` : 'https://wa.me'
 
   return (
     <div className='fixed bottom-6 right-6 z-40 flex flex-col gap-4'>
