@@ -92,7 +92,7 @@ export default function BlueKeyRealtyTeam() {
             </p>
             <div className="flex items-center justify-center gap-2 text-primary font-semibold">
               <Icon icon="mdi:check-circle" width={24} height={24} />
-              <span>Ready to build your strategy? Let's talk.</span>
+              <span>Ready to build your strategy? Let&apos;s talk.</span>
             </div>
           </div>
 
@@ -130,7 +130,7 @@ export default function BlueKeyRealtyTeam() {
               className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow"
             >
               <Icon icon="mdi:phone" width={20} height={20} />
-              Let's chat with Ivan
+              Let&apos;s chat with Ivan
             </a>
           </div>
         </div>
