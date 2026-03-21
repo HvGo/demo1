@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@iconify/react"
 import { FooterLinks } from "@/app/api/footerlinks";
 import { getSiteSectionByKey, getContactInfo } from "@/lib/queries/content";
@@ -45,6 +46,15 @@ const Footer = async () => {
                 <br />
                 {subtitle}
               </h2>
+              <div className="mt-6">
+                <Image
+                  src="/images/testimonial/Vector3.png"
+                  alt="Logo"
+                  width={300}
+                  height={300}
+                  className="object-contain"
+                />
+              </div>
             </div>
             <div className="md:col-span-3 sm:col-span-6 col-span-12">
               <div className="flex flex-col gap-6">
@@ -99,14 +109,8 @@ const Footer = async () => {
         </div>
         <div className="flex lg:items-center justify-between items-end lg:gap-11 py-6 border-b border-white/10 lg:flex-nowrap flex-wrap gap-6">
           <div className="flex lg:flex-row flex-col items-center lg:gap-10 gap-3">
-            <div className="flex gap-2 lg:order-1 order-2">
-              <input type="email" placeholder="Enter Your Email" className="rounded-full py-4 px-6 bg-white/10 placeholder:text-white text-white focus-visible:outline-0" />
-              <button className="text-dark bg-white py-4 px-8 font-semibold rounded-full hover:bg-primary hover:text-white duration-300 hover:cursor-pointer">
-                Subscribe
-              </button>
-            </div>
-            <p className="text-white/40 text-sm lg:max-w-[45%] order-1 lg:order-2">
-              By subscribing, you agree to receive our promotional emails. You can unsubscribe  at any time.
+            <p className="text-white/60 text-base lg:text-lg font-medium whitespace-nowrap">
+              Areas Served: <span className="text-white text-lg lg:text-xl">Proudly serving Salt Lake, Utah, Davis, Weber, and Tooele Counties.</span>
             </p>
           </div>
           <div className="flex items-center gap-6">
