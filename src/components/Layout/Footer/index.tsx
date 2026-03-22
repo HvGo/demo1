@@ -64,14 +64,17 @@ const Footer = async () => {
                     {contactInfo.email && (
                       <div className="flex items-center gap-2">
                         <Icon icon="ph:envelope" width={18} height={18} className="text-primary" />
-                        <a href={`mailto:${contactInfo.email}`} className="text-white/40 text-sm hover:text-white">
-                          {contactInfo.email}
-                        </a>
+                        <p className="text-white/40 text-sm">Email:</p>
+                          <a href={`mailto:${contactInfo.email}`} className="text-white/40 text-sm hover:text-white">
+                            {contactInfo.email}
+                          </a>
+                        
                       </div>
                     )}
                     {contactInfo.phone && (
                       <div className="flex items-center gap-2">
                         <Icon icon="ph:phone" width={18} height={18} className="text-primary" />
+                        <p className="text-white/40 text-sm">Phone:</p>
                         <a href={`tel:${contactInfo.phone}`} className="text-white/40 text-sm hover:text-white">
                           {contactInfo.phone}
                         </a>
@@ -80,6 +83,7 @@ const Footer = async () => {
                     {contactInfo.address && (
                       <div className="flex items-start gap-2">
                         <Icon icon="ph:map-pin" width={18} height={18} className="text-primary mt-0.5" />
+                        <p className="text-white/40 text-sm">Office:</p>
                         <p className="text-white/40 text-sm">
                           {contactInfo.address}
                         </p>
@@ -116,7 +120,7 @@ const Footer = async () => {
           <div className="flex items-center gap-6">
             {socialLinks.map((item, idx) => (
               <Link key={idx} href={item.href} aria-label={item.label || 'social link'}>
-                <Icon icon={item.icon} width={24} height={24} className="text-white hover:text-primary duration-300" />
+                <Icon icon={item.icon} width={32} height={32} className="text-white hover:text-primary duration-300" />
               </Link>
             ))}
           </div>

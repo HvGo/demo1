@@ -27,18 +27,18 @@ const GetInTouch: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-full py-5 bg-primary rounded-b-2xl overflow-hidden">
-                    <div className="flex items-center gap-40 animate-slide">
-                        <p className='text-white whitespace-nowrap relative after:absolute after:w-20 after:h-px after:bg-white after:top-3 after:-right-32'>
+                <div className="w-full py-5 bg-primary rounded-b-2xl overflow-x-hidden">
+                    <div className="flex items-center gap-6 sm:gap-16 lg:gap-40 animate-slide">
+                        <p className='text-white whitespace-nowrap relative after:absolute after:w-20 after:h-px after:bg-white after:top-3 after:-right-32 text-xs sm:text-sm lg:text-base'>
                             GET A FREE PROPERTY VALUATION—SELL YOUR HOME WITH CONFIDENCE!
                         </p>
-                        <p className='text-white whitespace-nowrap relative after:absolute after:w-20 after:h-px after:bg-white after:top-3 after:-right-32'>
+                        <p className='text-white whitespace-nowrap relative after:absolute after:w-20 after:h-px after:bg-white after:top-3 after:-right-32 text-xs sm:text-sm lg:text-base'>
                             BROWSE THOUSANDS OF LISTINGS IN PRIME LOCATIONS AT GREAT PRICES!
                         </p>
-                        <p className='text-white whitespace-nowrap relative after:absolute after:w-20 after:h-px after:bg-white after:top-3 after:-right-32'>
+                        <p className='text-white whitespace-nowrap relative after:absolute after:w-20 after:h-px after:bg-white after:top-3 after:-right-32 text-xs sm:text-sm lg:text-base'>
                             GET A FREE PROPERTY VALUATION—SELL YOUR HOME WITH CONFIDENCE!
                         </p>
-                        <p className='text-white whitespace-nowrap relative after:absolute after:w-20 after:h-px after:bg-white after:top-3 after:-right-32'>
+                        <p className='text-white whitespace-nowrap relative after:absolute after:w-20 after:h-px after:bg-white after:top-3 after:-right-32 text-xs sm:text-sm lg:text-base'>
                             BROWSE THOUSANDS OF LISTINGS IN PRIME LOCATIONS AT GREAT PRICES!
                         </p>
                     </div>
