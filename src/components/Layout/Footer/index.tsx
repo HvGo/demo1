@@ -112,12 +112,12 @@ const Footer = async () => {
           </div>
         </div>
         <div className="flex lg:items-center justify-between items-end lg:gap-11 py-6 border-b border-white/10 lg:flex-nowrap flex-wrap gap-6">
-          <div className="flex lg:flex-row flex-col items-center lg:gap-10 gap-3">
-            <p className="text-white/60 text-base lg:text-lg font-medium whitespace-nowrap">
+          <div className="flex lg:flex-row flex-col items-start lg:items-center lg:gap-10 gap-3">
+            <p className="text-white/60 text-base lg:text-lg font-medium">
               Areas Served: <span className="text-white text-lg lg:text-xl">Proudly serving Salt Lake, Utah, Davis, Weber, and Tooele Counties.</span>
             </p>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 flex-wrap justify-end">
             {socialLinks.map((item, idx) => (
               <Link key={idx} href={item.href} aria-label={item.label || 'social link'}>
                 <Icon icon={item.icon} width={32} height={32} className="text-white hover:text-primary duration-300" />
