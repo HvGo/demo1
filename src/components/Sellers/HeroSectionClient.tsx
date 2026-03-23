@@ -33,7 +33,7 @@ const HeroSectionClient = ({ whatsappHref }: HeroSectionClientProps) => {
           {isSafariBrowser ? (
             // Safari: mostrar solo imagen
             <Image
-              src='/images/Gallery/IMG_7531.jpg'
+              src='/images/Gallery/casa1.png'
               alt='Sellers Hero'
               fill
               priority={true}
@@ -47,7 +47,7 @@ const HeroSectionClient = ({ whatsappHref }: HeroSectionClientProps) => {
               loop
               muted
               playsInline
-              poster='/images/Gallery/IMG_7531.jpg'
+              poster='/images/Gallery/casa1.png'
               className='w-full h-full object-cover'
             >
               <source src='/images/Gallery/sellers.webm' type='video/webm' />

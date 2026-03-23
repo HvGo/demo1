@@ -29,7 +29,7 @@ export const HeroSection = () => {
           {isSafariBrowser ? (
             // Safari: mostrar solo imagen
             <Image
-              src='/images/Gallery/IMG_7525.jpg'
+              src='/images/Gallery/casa2.png'
               alt='Buyers Hero'
               fill
               priority={true}
@@ -43,7 +43,7 @@ export const HeroSection = () => {
               loop
               muted
               playsInline
-              poster='/images/Gallery/IMG_7525.jpg'
+              poster='/images/Gallery/casa2.png'
               className='w-full h-full object-cover'
             >
               <source src='/images/Gallery/buyers.webm' type='video/webm' />

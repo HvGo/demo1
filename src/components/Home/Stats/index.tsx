@@ -84,7 +84,7 @@ const Stats = async () => {
               className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow" style={{ backgroundImage: 'linear-gradient(to right, #273ba8, #febc59 )' }}
             >
               <Icon icon="mdi:phone" width={20} height={20} />
-              Let&apos;s chat with Ivan
+              Let&apos;s talk with Ivan
             </Link>
           </div>
         </div>
