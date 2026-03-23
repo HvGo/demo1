@@ -3,6 +3,7 @@ import { FinancialPaths } from '@/components/Buyers/FinancialPaths'
 import { WealthFactor } from '@/components/Buyers/WealthFactor'
 import { ClearPath } from '@/components/Buyers/ClearPath'
 import { CommonDoubts } from '@/components/Buyers/CommonDoubts'
+import { FloatingBubbles } from '@/components/Home/FloatingBubbles'
 
 export const metadata = {
   title: 'Your Path to Homeownership | Utah First-Time Buyer Expert',
@@ -17,6 +18,7 @@ export default function BuyersPage() {
       <WealthFactor />
       <ClearPath />
       <CommonDoubts />
+      <FloatingBubbles />
     </>
   )
 }

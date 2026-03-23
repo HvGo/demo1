@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Metadata } from "next";
 import ContactForm from '@/components/ContactForm'
 import { getSiteSectionByKey } from '@/lib/queries/content'
+import { FloatingBubbles } from '@/components/Home/FloatingBubbles'
 
 export const metadata: Metadata = {
     title: "Contact Us | Homely",
@@ -22,6 +23,7 @@ export default async function ContactUs() {
   const address = data.address || "Blane Street, Manchester"
   const image = data.image || '/images/Gallery/IMG_7535.jpg'
   return (
+    <>
     <div className='container max-w-8xl mx-auto px-5 2xl:px-0 pt-32 md:pt-44 pb-14 md:pb-28'>
       <div className='mb-16'>
         <div className='flex gap-2.5 items-center justify-center mb-3'>
@@ -98,5 +100,7 @@ export default async function ContactUs() {
         </div>
       </div>
     </div>
+    <FloatingBubbles />
+    </>
   )
 }

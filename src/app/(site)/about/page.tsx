@@ -2,6 +2,7 @@ import HeroSub from '@/components/shared/HeroSub'
 import { IvanProfile } from '@/components/About/IvanProfile'
 import { TeamSection } from '@/components/About/TeamSection'
 import { TestimonialsSection } from '@/components/About/TestimonialsSection'
+import { FloatingBubbles } from '@/components/Home/FloatingBubbles'
 
 export const metadata = {
   title: 'About Us | Blue Key Realty - Team & Authority',
@@ -19,6 +20,7 @@ export default function AboutPage() {
       <IvanProfile />
       <TeamSection />
       <TestimonialsSection />
+      <FloatingBubbles />
     </>
   )
 }

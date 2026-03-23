@@ -1,8 +1,12 @@
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import HeroSub from "@/components/shared/HeroSub";
+import { getSchemaMarkupByKey } from "@/lib/queries/schema";
+import { SchemaMarkup } from "@/components/SchemaMarkup";
+import { FloatingBubbles } from "@/components/Home/FloatingBubbles";
 
-export default function BlueKeyRealtyTeam() {
+export default async function BlueKeyRealtyTeam() {
+  const personSchema = await getSchemaMarkupByKey('person_ivan')
   const teamMembers = [
     {
       name: "Ivan Navincopa",
@@ -47,6 +51,7 @@ export default function BlueKeyRealtyTeam() {
 
   return (
     <>
+      <SchemaMarkup schema={personSchema?.schemaData} />
       <HeroSub
         title="The Blue Key Realty Team"
         description="Professional. Bilingual. Infrastructure-Driven. A 22-year legacy built on a strong foundation."
@@ -136,6 +141,7 @@ export default function BlueKeyRealtyTeam() {
         </div>
       </section>
       </main>
+      <FloatingBubbles />
     </>
   );
 }

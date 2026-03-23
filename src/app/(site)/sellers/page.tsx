@@ -1,6 +1,7 @@
 import { HeroSection } from '@/components/Sellers/HeroSection'
 import { MarketingPower } from '@/components/Sellers/MarketingPower'
 import { SellingProcess } from '@/components/Sellers/SellingProcess'
+import { FloatingBubbles } from '@/components/Home/FloatingBubbles'
 
 export const metadata = {
   title: 'Maximum Equity. Expert Strategy. | Sell Your Home in Utah',
@@ -13,6 +14,7 @@ export default function SellersPage() {
       <HeroSection />
       <MarketingPower />
       <SellingProcess />
+      <FloatingBubbles />
     </>
   )
 }

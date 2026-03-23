@@ -1,6 +1,7 @@
 import BlogList from "@/components/Blog";
 import HeroSub from "@/components/shared/HeroSub";
 import { Metadata } from "next";
+import { FloatingBubbles } from "@/components/Home/FloatingBubbles";
 
 export const revalidate = 60;
 
@@ -18,6 +19,7 @@ const Blog = () => {
                 badge="Blog"
             />
             <BlogList />
+            <FloatingBubbles />
         </>
     );
 };

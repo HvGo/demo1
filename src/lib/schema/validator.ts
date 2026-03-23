@@ -34,6 +34,11 @@ const SCHEMA_REQUIREMENTS: Record<string, {
     required: ['@context', '@type', 'mainEntity'],
     optional: [],
     type: 'FAQPage'
+  },
+  Person: {
+    required: ['@context', '@type', 'name', 'image'],
+    optional: ['url', 'jobTitle', 'affiliation', 'aggregateRating', 'review', 'email', 'telephone'],
+    type: 'Person'
   }
 }
 

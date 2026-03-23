@@ -11,6 +11,7 @@ export default async function Home() {
   const organizationSchema = await getSchemaMarkupByKey('organization')
   const breadcrumbSchema = await getSchemaMarkupByKey('breadcrumb_list')
   const faqSchema = await getSchemaMarkupByKey('faq_page')
+  const personSchema = await getSchemaMarkupByKey('person_ivan')
   const faqs = await getFaqs('home')
 
   // Enriquecer FAQPage schema con FAQs reales
@@ -31,6 +32,7 @@ export default async function Home() {
       <SchemaMarkup schema={organizationSchema?.schemaData} />
       <SchemaMarkup schema={breadcrumbSchema?.schemaData} />
       <SchemaMarkup schema={enrichedFaqSchema} />
+      <SchemaMarkup schema={personSchema?.schemaData} />
       
       {allSections
         .filter((section) => section.isVisible)

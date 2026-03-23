@@ -2,6 +2,7 @@ import HeroSub from "@/components/shared/HeroSub";
 import PropertiesListing from "@/components/Properties/PropertyList";
 import React from "react";
 import { Metadata } from "next";
+import { FloatingBubbles } from "@/components/Home/FloatingBubbles";
 
 export const revalidate = 60;
 
@@ -18,6 +19,7 @@ const page = () => {
                 badge="Properties"
             />
             <PropertiesListing />
+            <FloatingBubbles />
         </>
     );
 };
