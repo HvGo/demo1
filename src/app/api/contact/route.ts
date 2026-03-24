@@ -8,24 +8,34 @@ function isValidEmail(email: string): boolean {
 }
 
 async function getGeo(ip: string) {
-  // Fallback HTTP lookup (ipapi.co free tier) to evitar dependencias locales
   try {
-    const pureIp = ip.split(',')[0].trim()
-    if (!pureIp || pureIp === '0.0.0.0') return { country: null, region: null, city: null }
+    console.log('[CONTACT_GEO] Trying ipinfo.io...')
+    
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 5000)
+    
+    const res = await fetch('https://ipinfo.io/json', {
+      signal: controller.signal,
+      cache: 'no-store',
+    })
 
-    const res = await fetch(`https://ipapi.co/${pureIp}/json/`, { cache: 'no-store' })
+    clearTimeout(timeoutId)
+    
     if (!res.ok) {
-      console.warn(`[GEO_LOOKUP_HTTP_FAILED] status ${res.status}`)
+      console.warn('[CONTACT_GEO] ipinfo.io status:', res.status)
       return { country: null, region: null, city: null }
     }
+    
     const data = await res.json()
+    console.log('[CONTACT_GEO] ipinfo.io success:', { country: data.country, city: data.city })
+    
     return {
-      country: data.country_name || null,
-      region: data.region || null,
+      country: data.country || null,
+      region: null,
       city: data.city || null,
     }
   } catch (err) {
-    console.warn('[GEO_LOOKUP_HTTP_FAILED]', err)
+    console.warn('[CONTACT_GEO] ipinfo.io failed:', err instanceof Error ? err.message : err)
     return { country: null, region: null, city: null }
   }
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import { useGeoLocation } from '@/hooks/useGeoLocation'
 
 const SESSION_KEY = 'session_id'
 const THRESHOLDS = [25, 50, 75, 90]
@@ -27,6 +28,10 @@ async function sendEngagement(payload: {
   page: string
   depthReached?: number
   activeMs?: number
+  geoCountry?: string | null
+  geoCity?: string | null
+  geoLatitude?: number | null
+  geoLongitude?: number | null
 }) {
   try {
     const body = JSON.stringify(payload)
@@ -52,11 +57,23 @@ async function sendEngagement(payload: {
 
 export default function EngagementTracker() {
   const pathname = usePathname()
+  const { location } = useGeoLocation()
   const thresholdsReached = useRef<Record<number, boolean>>({})
   const lastActivityRef = useRef<number>(Date.now())
   const pendingActiveMs = useRef<number>(0)
   const sessionIdRef = useRef<string>('')
   const pageRef = useRef<string>('')
+  const geoRef = useRef({ country: location.country, city: location.city, latitude: location.latitude, longitude: location.longitude })
+
+  useEffect(() => {
+    // Actualizar geo ref cuando location cambia
+    geoRef.current = {
+      country: location.country,
+      city: location.city,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    }
+  }, [location])
 
   useEffect(() => {
     const sessionId = getSessionId()
@@ -78,7 +95,15 @@ export default function EngagementTracker() {
       for (const t of THRESHOLDS) {
         if (!thresholdsReached.current[t] && depth >= t) {
           thresholdsReached.current[t] = true
-          sendEngagement({ sessionId, page: pageRef.current, depthReached: t })
+          sendEngagement({
+            sessionId,
+            page: pageRef.current,
+            depthReached: t,
+            geoCountry: geoRef.current.country,
+            geoCity: geoRef.current.city,
+            geoLatitude: geoRef.current.latitude,
+            geoLongitude: geoRef.current.longitude,
+          })
         }
       }
     }
@@ -93,6 +118,10 @@ export default function EngagementTracker() {
           sessionId,
           page: pageRef.current,
           activeMs: pendingActiveMs.current,
+          geoCountry: geoRef.current.country,
+          geoCity: geoRef.current.city,
+          geoLatitude: geoRef.current.latitude,
+          geoLongitude: geoRef.current.longitude,
         })
         pendingActiveMs.current = 0
       }
@@ -104,6 +133,10 @@ export default function EngagementTracker() {
           sessionId,
           page: pageRef.current,
           activeMs: pendingActiveMs.current,
+          geoCountry: geoRef.current.country,
+          geoCity: geoRef.current.city,
+          geoLatitude: geoRef.current.latitude,
+          geoLongitude: geoRef.current.longitude,
         })
         pendingActiveMs.current = 0
       }
@@ -147,7 +180,15 @@ export default function EngagementTracker() {
       for (const t of THRESHOLDS) {
         if (!thresholdsReached.current[t] && depth >= t) {
           thresholdsReached.current[t] = true
-          sendEngagement({ sessionId: sessionIdRef.current, page: pageRef.current, depthReached: t })
+          sendEngagement({
+            sessionId: sessionIdRef.current,
+            page: pageRef.current,
+            depthReached: t,
+            geoCountry: geoRef.current.country,
+            geoCity: geoRef.current.city,
+            geoLatitude: geoRef.current.latitude,
+            geoLongitude: geoRef.current.longitude,
+          })
         }
       }
     }
