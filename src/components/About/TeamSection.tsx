@@ -7,28 +7,28 @@ const teamMembers = [
     role: 'Founder & Broker-Owner',
     specialty: 'Vision y Estrategia',
     description: 'Lidera la visión de Blue Key Realty con 23+ años de experiencia en bienes raíces.',
-    icon: 'mdi:crown'
+    image: '/images/team/ivan.jpg'
   },
   {
     name: 'Freddy Villanueva',
     role: 'Buyers Specialist',
     specialty: 'Especialista de Compradores',
     description: 'Experto en financiamiento FHA, VA e ITIN. Guía a compradores primerizos hacia el éxito.',
-    icon: 'mdi:home-heart'
+    image: '/images/team/freddy.jpg'
   },
   {
     name: 'Lissy Quiroz',
     role: 'Operations Manager',
     specialty: 'Operaciones y Precisión',
     description: 'Garantiza que cada transacción sea perfecta. Experta en detalles y cumplimiento.',
-    icon: 'mdi:clipboard-check'
+    image: '/images/team/lissy.jpg'
   },
   {
     name: 'Gabi Belisario',
     role: 'Marketing Director',
     specialty: 'Directora de Marketing',
     description: 'Crea estrategias de marketing innovadoras que posicionan propiedades para máxima exposición.',
-    icon: 'mdi:bullhorn'
+    image: '/images/team/gabi.jpg'
   }
 ]
 
@@ -46,13 +46,18 @@ export const TeamSection = () => {
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
           {teamMembers.map((member, index) => (
             <div key={index} className='bg-white dark:bg-dark rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow'>
-              <div className='bg-gradient-to-r from-primary to-teal-500 p-6 text-white text-center'>
-                <Icon icon={member.icon} width={48} height={48} className='mx-auto mb-4' />
-                <h3 className='text-xl font-bold mb-1'>{member.name}</h3>
-                <p className='text-sm font-semibold opacity-90'>{member.role}</p>
+              <div className='relative w-full h-48 bg-gray-200 dark:bg-gray-700'>
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  fill
+                  className='object-cover object-center'
+                />
               </div>
               <div className='p-6'>
-                <p className='text-primary font-semibold mb-3'>{member.specialty}</p>
+                <h3 className='text-lg font-bold mb-1'>{member.name}</h3>
+                <p className='text-sm font-semibold text-primary mb-3'>{member.role}</p>
+                <p className='text-primary font-semibold mb-2 text-sm'>{member.specialty}</p>
                 <p className='text-gray-600 dark:text-gray-400 text-sm leading-relaxed'>
                   {member.description}
                 </p>
