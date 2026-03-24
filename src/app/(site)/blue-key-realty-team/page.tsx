@@ -12,25 +12,25 @@ export default async function BlueKeyRealtyTeam() {
       name: "Ivan Navincopa",
       role: "Owner & Principal Broker",
       specialty: "Vision & Strategy",
-      image: "/images/contactUs/ivan.jpg"
+      image: "/images/team/ivan.jpg"
     },
     {
       name: "Freddy Villanueva",
       role: "Realtor Associate",
       specialty: "Buyer Specialist",
-      image: "/images/contactUs/Freddy.png"
+      image: "/images/team/Freddy.png"
     },
     {
       name: "Lissy Quiroz",
       role: "Office Manager",
       specialty: "Operations & Accuracy",
-      image: "/images/contactUs/lissy.png"
+      image: "/images/team/lissy.png"
     },
     {
       name: "Gabi Belisario",
       role: "Marketing Director",
       specialty: "Digital Exposure",
-      image: "/images/contactUs/gabi.png"
+      image: "/images/team/gabi.png"
     }
   ];
 
