@@ -10,6 +10,20 @@ interface GeoLocationData {
   success: boolean
 }
 
+async function getClientIP(): Promise<string | null> {
+  try {
+    // Intentar obtener IP del cliente desde un servicio externo
+    const response = await fetch('https://api.ipify.org?format=json', { 
+      signal: AbortSignal.timeout(3000) 
+    })
+    if (!response.ok) return null
+    const data = await response.json()
+    return data.ip || null
+  } catch {
+    return null
+  }
+}
+
 export function useGeoLocation() {
   const [location, setLocation] = useState<GeoLocationData>({
     country: null,
@@ -26,8 +40,13 @@ export function useGeoLocation() {
       try {
         console.log('[GEO_LOCATION] Fetching geolocation from backend...')
         
-        // Llamar al endpoint backend que a su vez llama a Point Pin API
-        const response = await fetch('/api/geolocation')
+        // Obtener IP del cliente
+        const clientIP = await getClientIP()
+        console.log('[GEO_LOCATION] Client IP:', clientIP)
+        
+        // Llamar al endpoint backend con la IP del cliente
+        const url = clientIP ? `/api/geolocation?ip=${encodeURIComponent(clientIP)}` : '/api/geolocation'
+        const response = await fetch(url)
         
         console.log('[GEO_LOCATION] Backend response status:', response.status)
         

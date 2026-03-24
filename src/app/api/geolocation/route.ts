@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-async function fetchFromIPINFO() {
+async function fetchFromIPINFO(ip: string | null) {
   try {
-    console.log('[GEOLOCATION_API] Trying ipinfo.io...')
+    console.log('[GEOLOCATION_API] Trying ipinfo.io with IP:', ip)
     
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 5000)
     
-    const response = await fetch('https://ipinfo.io/json', {
+    // Si se proporciona IP, usarla; si no, ipinfo.io usa la IP del servidor
+    const url = ip ? `https://ipinfo.io/${ip}/json` : 'https://ipinfo.io/json'
+    
+    const response = await fetch(url, {
       signal: controller.signal,
     })
 
@@ -19,7 +22,7 @@ async function fetchFromIPINFO() {
     }
 
     const data = await response.json()
-    console.log('[GEOLOCATION_API] ipinfo.io response:', { country: data.country, city: data.city })
+    console.log('[GEOLOCATION_API] ipinfo.io response:', { country: data.country, city: data.city, ip: data.ip })
     
     const [latitude, longitude] = data.loc ? data.loc.split(',') : [null, null]
     
@@ -39,8 +42,12 @@ export async function GET(request: NextRequest) {
   try {
     console.log('[GEOLOCATION_API] Fetching geolocation...')
 
+    // Obtener IP del cliente desde parámetro de query
+    const clientIP = request.nextUrl.searchParams.get('ip')
+    console.log('[GEOLOCATION_API] Received client IP:', clientIP)
+
     // Usar ipinfo.io (100k req/mes gratis, sin API key requerida)
-    const data = await fetchFromIPINFO()
+    const data = await fetchFromIPINFO(clientIP)
 
     if (!data) {
       console.warn('[GEOLOCATION_API] ipinfo.io failed, returning empty response')
