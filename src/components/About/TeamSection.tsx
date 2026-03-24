@@ -7,28 +7,28 @@ const teamMembers = [
     role: 'Founder & Broker-Owner',
     specialty: 'Vision y Estrategia',
     description: 'Lidera la visión de Blue Key Realty con 23+ años de experiencia en bienes raíces.',
-    image: '/images/team/ivan.jpg'
+    image: '/images/team/ivan.png'
   },
   {
     name: 'Freddy Villanueva',
     role: 'Buyers Specialist',
     specialty: 'Especialista de Compradores',
     description: 'Experto en financiamiento FHA, VA e ITIN. Guía a compradores primerizos hacia el éxito.',
-    image: '/images/team/freddy.jpg'
+    image: '/images/team/freddy.png'
   },
   {
     name: 'Lissy Quiroz',
     role: 'Operations Manager',
     specialty: 'Operaciones y Precisión',
     description: 'Garantiza que cada transacción sea perfecta. Experta en detalles y cumplimiento.',
-    image: '/images/team/lissy.jpg'
+    image: '/images/team/lissy.png'
   },
   {
     name: 'Gabi Belisario',
     role: 'Marketing Director',
     specialty: 'Directora de Marketing',
     description: 'Crea estrategias de marketing innovadoras que posicionan propiedades para máxima exposición.',
-    image: '/images/team/gabi.jpg'
+    image: '/images/team/gabi.png'
   }
 ]
 
