@@ -32,14 +32,26 @@ const HeroSectionClient = ({ whatsappHref }: HeroSectionClientProps) => {
         <div className='absolute inset-0 -z-[1]'>
           {isSafariBrowser ? (
             // Safari: mostrar solo imagen
-            <Image
-              src='/images/Gallery/casa1.png'
-              alt='Sellers Hero'
-              fill
-              priority={true}
-              unoptimized={false}
-              className='object-cover object-center'
-            />
+            <>
+              {/* Mobile Image */}
+              <Image
+                src='/images/Gallery/casa3_mobile.png'
+                alt='Sellers Hero'
+                fill
+                priority={true}
+                unoptimized={false}
+                className='object-cover object-center md:hidden'
+              />
+              {/* Desktop Image */}
+              <Image
+                src='/images/Gallery/IMG_7547.jpg'
+                alt='Sellers Hero'
+                fill
+                priority={true}
+                unoptimized={false}
+                className='hidden md:block object-cover object-center'
+              />
+            </>
           ) : (
             // Otros navegadores: mostrar video con imagen de fallback
             <video
@@ -47,7 +59,7 @@ const HeroSectionClient = ({ whatsappHref }: HeroSectionClientProps) => {
               loop
               muted
               playsInline
-              poster='/images/Gallery/casa1.png'
+              poster='/images/Gallery/IMG_7547.jpg'
               className='w-full h-full object-cover'
             >
               <source src='/images/Gallery/sellers.webm' type='video/webm' />

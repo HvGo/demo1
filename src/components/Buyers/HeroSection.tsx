@@ -28,14 +28,26 @@ export const HeroSection = () => {
         <div className='absolute inset-0 -z-[1]'>
           {isSafariBrowser ? (
             // Safari: mostrar solo imagen
-            <Image
-              src='/images/Gallery/casa2.png'
-              alt='Buyers Hero'
-              fill
-              priority={true}
-              unoptimized={false}
-              className='object-cover object-center'
-            />
+            <>
+              {/* Mobile Image */}
+              <Image
+                src='/images/Gallery/casa5_mobile.png'
+                alt='Buyers Hero'
+                fill
+                priority={true}
+                unoptimized={false}
+                className='object-cover object-center md:hidden'
+              />
+              {/* Desktop Image */}
+              <Image
+                src='/images/Gallery/IMG_7535.jpg'
+                alt='Buyers Hero'
+                fill
+                priority={true}
+                unoptimized={false}
+                className='hidden md:block object-cover object-center'
+              />
+            </>
           ) : (
             // Otros navegadores: mostrar video con imagen de fallback
             <video
@@ -43,7 +55,7 @@ export const HeroSection = () => {
               loop
               muted
               playsInline
-              poster='/images/Gallery/casa2.png'
+              poster='/images/Gallery/IMG_7535.jpg'
               className='w-full h-full object-cover'
             >
               <source src='/images/Gallery/buyers.webm' type='video/webm' />
