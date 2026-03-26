@@ -104,12 +104,21 @@ const HowIHelp = async () => {
                 <p className='text-gray-600 dark:text-gray-400 mb-6'>{service.description}</p>
                 {service.features && Array.isArray(service.features) && (
                   <ul className='space-y-3'>
-                    {service.features.map((feature: string, idx: number) => (
-                      <li key={idx} className='flex items-start gap-3'>
-                        <Icon icon='mdi:check-circle' width={20} height={20} className='text-teal-500 flex-shrink-0 mt-0.5' />
-                        <span className='text-sm'>{feature}</span>
-                      </li>
-                    ))}
+                    {service.features.map((feature: string, idx: number) => {
+                      const colonIndex = feature.indexOf(':');
+                      const boldPart = colonIndex !== -1 ? feature.substring(0, colonIndex + 1) : '';
+                      const restPart = colonIndex !== -1 ? feature.substring(colonIndex + 1) : feature;
+                      
+                      return (
+                        <li key={idx} className='flex items-start gap-3'>
+                          <Icon icon='mdi:check-circle' width={20} height={20} className='text-teal-500 flex-shrink-0 mt-0.5' />
+                          <span className='text-sm'>
+                            {boldPart && <strong>{boldPart}</strong>}
+                            {restPart}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
                 {service.showButton && (

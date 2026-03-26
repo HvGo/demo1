@@ -1,11 +1,11 @@
 import { Icon } from '@iconify/react'
 
 const steps = [
-  { number: 1, title: 'Consultoría y CMA', description: 'Análisis comparativo de mercado y estrategia personalizada' },
-  { number: 2, title: 'Optimización', description: 'Preparación y staging de la propiedad' },
-  { number: 3, title: 'Lanzamiento Digital', description: 'Exposición en múltiples plataformas y redes sociales' },
-  { number: 4, title: 'Gestión de Mercado', description: 'Negociación y seguimiento de ofertas' },
-  { number: 5, title: 'Cierre y Legado', description: 'Finalización y transición exitosa' },
+  { number: 1, title: 'Consulting and CMA', description: 'Comparative Market Analysis and Customized Strategy' },
+  { number: 2, title: 'Optimization', description: 'Preparing and staging the property' },
+  { number: 3, title: 'Digital Release', description: 'Exposure across multiple platforms and social media' },
+  { number: 4, title: 'Market Management', description: 'Negotiation and tracking of bids' },
+  { number: 5, title: 'Closure and Legacy', description: 'Successful completion and transition' },
 ]
 
 export const SellingProcess = () => {
@@ -13,9 +13,9 @@ export const SellingProcess = () => {
     <section id='process' className='py-16 md:py-24 bg-white dark:bg-dark'>
       <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
         <div className='text-center mb-12 md:mb-16'>
-          <h2 className='text-3xl md:text-4xl font-bold mb-4'>Proceso de 5 Pasos para Vender</h2>
+          <h2 className='text-3xl md:text-4xl font-bold mb-4'>5-Step Process for Selling</h2>
           <p className='text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto'>
-            Estrategia comprobada para maximizar el valor de tu propiedad
+            A proven strategy for maximizing the value of your property
           </p>
         </div>
 

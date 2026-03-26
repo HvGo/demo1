@@ -37,7 +37,7 @@ export const ReportsOpenHousesModal = ({ isOpen, onClose }: ReportsOpenHousesMod
           {/* Content - Scrollable */}
           <div className='overflow-y-auto flex-1'>
             <div className='px-4 sm:px-6 py-6'>
-              <ReportsOpenHouses />
+              <ReportsOpenHouses onClose={onClose} />
             </div>
           </div>
         </div>

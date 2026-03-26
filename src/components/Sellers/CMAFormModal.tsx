@@ -37,7 +37,7 @@ export const CMAFormModal = ({ isOpen, onClose }: CMAFormModalProps) => {
           {/* Content - Scrollable */}
           <div className='overflow-y-auto flex-1'>
             <div className='px-4 sm:px-6 py-6'>
-              <CMAForm onSuccess={onClose} />
+              <CMAForm onClose={onClose} />
             </div>
           </div>
         </div>

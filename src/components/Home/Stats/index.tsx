@@ -81,8 +81,7 @@ const Stats = async () => {
           <div className="flex justify-center mt-12">
             <Link
               href="/contactus"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow" style={{ backgroundImage: 'linear-gradient(to right, #273ba8, #febc59 )' }}
-            >
+              className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer flex items-center justify-center gap-2 text-white shadow-lg shadow-black/25 ring-1 ring-white/10 transition-colors whitespace-nowrap' style={{ backgroundColor: 'rgba(0, 168, 107, 1)' }}>
               <Icon icon="mdi:phone" width={20} height={20} />
               Let&apos;s talk with Ivan
             </Link>

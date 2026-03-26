@@ -4,7 +4,11 @@ import { useState } from 'react'
 import { Icon } from '@iconify/react'
 import { validateReportsOpenHousesForm, ValidationError } from '@/lib/validators'
 
-export const ReportsOpenHouses = () => {
+interface ReportsOpenHousesProps {
+  onClose?: () => void
+}
+
+export const ReportsOpenHouses = ({ onClose }: ReportsOpenHousesProps = {}) => {
   const [selectedRepairs, setSelectedRepairs] = useState('')
   const [selectedMarketingTool, setSelectedMarketingTool] = useState('')
   const [selectedConcern, setSelectedConcern] = useState('')
@@ -18,6 +22,8 @@ export const ReportsOpenHouses = () => {
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<ValidationError[]>([])
   const [successMessage, setSuccessMessage] = useState('')
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [showForm, setShowForm] = useState(true)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -71,16 +77,16 @@ export const ReportsOpenHouses = () => {
         return
       }
 
+      console.log('[REPORTS_FORM] Form submitted successfully')
       setSuccessMessage('¡Gracias! Nos pondremos en contacto pronto.')
       setSelectedRepairs('')
       setSelectedMarketingTool('')
       setSelectedConcern('')
       setFormData({ name: '', email: '', whatsapp: '' })
       setSubmitted(true)
-      setTimeout(() => {
-        setSubmitted(false)
-        setSuccessMessage('')
-      }, 3000)
+      setShowSuccessModal(true)
+      setShowForm(false)
+      console.log('[REPORTS_FORM] showForm set to false')
     } catch (error) {
       console.error('Error submitting form:', error)
       setErrors([{ field: 'form', message: 'Error de conexión. Por favor intenta de nuevo.' }])
@@ -143,7 +149,10 @@ export const ReportsOpenHouses = () => {
     }
   ]
 
+  console.log('[REPORTS_FORM] Current showForm state:', showForm)
+
   return (
+    <>
     <section id='reports-open-houses' className='py-16 md:py-24 bg-white dark:bg-dark'>
       <div className='container max-w-6xl mx-auto px-5 2xl:px-0'>
         {/* Header */}
@@ -266,18 +275,18 @@ export const ReportsOpenHouses = () => {
 
         {/* Question 4: High-Impact Plan */}
         <div className='bg-gradient-to-r from-primary/10 to-teal-500/10 dark:from-primary/5 dark:to-teal-500/5 rounded-lg p-8 md:p-12 border border-primary/20'>
-          <h3 className='text-2xl font-bold text-black dark:text-white mb-4'>
-            4. Ready to see the full &quot;High-Impact&quot; Plan?
-          </h3>
-          <p className='text-lg text-gray-700 dark:text-gray-300 mb-8 font-semibold'>
-            ¿Listo para ver el plan completo de mercadeo?
-          </p>
+            <h3 className='text-2xl font-bold text-black dark:text-white mb-4'>
+              4. Ready to see the full &quot;High-Impact&quot; Plan?
+            </h3>
+            <p className='text-lg text-gray-700 dark:text-gray-300 mb-8 font-semibold'>
+              ¿Listo para ver el plan completo de mercadeo?
+            </p>
 
-          <form onSubmit={handleSubmit} className='space-y-6'>
+            <form onSubmit={handleSubmit} className='space-y-6'>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
               <div>
                 <label className='block text-sm font-semibold text-black dark:text-white mb-2'>
-                  Name
+                  Full Name
                 </label>
                 <input
                   type='text'
@@ -289,22 +298,6 @@ export const ReportsOpenHouses = () => {
                 />
                 {getFieldError('name') && (
                   <p className='text-red-500 text-sm mt-1'>{getFieldError('name')}</p>
-                )}
-              </div>
-              <div>
-                <label className='block text-sm font-semibold text-black dark:text-white mb-2'>
-                  Email
-                </label>
-                <input
-                  type='email'
-                  name='email'
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder='Your email'
-                  className='w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
-                />
-                {getFieldError('email') && (
-                  <p className='text-red-500 text-sm mt-1'>{getFieldError('email')}</p>
                 )}
               </div>
               <div>
@@ -321,6 +314,22 @@ export const ReportsOpenHouses = () => {
                 />
                 {getFieldError('whatsapp') && (
                   <p className='text-red-500 text-sm mt-1'>{getFieldError('whatsapp')}</p>
+                )}
+              </div>
+              <div>
+                <label className='block text-sm font-semibold text-black dark:text-white mb-2'>
+                  Email
+                </label>
+                <input
+                  type='email'
+                  name='email'
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder='Your email'
+                  className='w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
+                />
+                {getFieldError('email') && (
+                  <p className='text-red-500 text-sm mt-1'>{getFieldError('email')}</p>
                 )}
               </div>
             </div>
@@ -345,20 +354,51 @@ export const ReportsOpenHouses = () => {
               ) : (
                 <>
                   <Icon icon='mdi:file-document-multiple' width={20} height={20} />
-                  Ver Plan Completo
+                  Enviar Formulario
                 </>
               )}
             </button>
 
-            {submitted && successMessage && (
-              <div className='bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center gap-3'>
-                <Icon icon='mdi:check-circle' width={24} height={24} className='text-green-600' />
-                <p className='text-green-700 dark:text-green-400'>{successMessage}</p>
-              </div>
-            )}
-          </form>
+            </form>
         </div>
       </div>
     </section>
+
+    {/* Success Modal - Outside section so it displays when form is hidden */}
+    {showSuccessModal && (
+      <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
+        <div className='bg-white dark:bg-dark rounded-lg shadow-2xl max-w-md w-full p-8 text-center animate-in fade-in zoom-in duration-300'>
+          <div className='mb-6 flex justify-center'>
+            <div className='bg-green-100 dark:bg-green-900/30 rounded-full p-4'>
+              <Icon icon='mdi:check-circle' width={48} height={48} className='text-green-600' />
+            </div>
+          </div>
+          
+          <h3 className='text-2xl font-bold text-black dark:text-white mb-4'>
+            ¡Formulario Enviado!
+          </h3>
+          
+          <p className='text-gray-700 dark:text-gray-300 mb-8 leading-relaxed'>
+            Muchas gracias por completar el formulario.
+            <br />
+            <br />
+            Me pondré en contacto contigo para comentarte las mejores opciones para ti.
+          </p>
+          
+          <button
+            onClick={() => {
+              setShowSuccessModal(false)
+              if (onClose) {
+                onClose()
+              }
+            }}
+            className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow'
+          >
+            Entendido
+          </button>
+        </div>
+      </div>
+    )}
+    </>
   )
 }

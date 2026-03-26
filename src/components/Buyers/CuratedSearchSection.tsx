@@ -21,6 +21,7 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<ValidationError[]>([])
   const [successMessage, setSuccessMessage] = useState('')
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -77,13 +78,7 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
       setSelectedCounty('')
       setFormData({ fullName: '', phone: '', email: '' })
       setSubmitted(true)
-      setTimeout(() => {
-        setSubmitted(false)
-        setSuccessMessage('')
-        if (onSuccess) {
-          onSuccess()
-        }
-      }, 3000)
+      setShowSuccessModal(true)
     } catch (error) {
       console.error('Error submitting form:', error)
       setErrors([{ field: 'form', message: 'Error de conexión. Por favor intenta de nuevo.' }])
@@ -134,17 +129,14 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
 
         {/* Section 1: The Curated Search Strategy */}
         <div className='mb-12 md:mb-16 bg-white dark:bg-dark/50 rounded-lg p-8 border border-gray-200 dark:border-gray-700'>
-          <h3 className='text-2xl md:text-3xl font-bold text-black dark:text-white mb-4'>
-            The Curated Search Strategy
-          </h3>
-          <p className='text-lg text-gray-700 dark:text-gray-300 leading-relaxed'>
-            <span className='font-semibold text-primary'>&quot;Don&apos;t just look for a house. Look for an opportunity.&quot;</span> To find the right home in Utah&apos;s market, we look beyond the price tag. We identify properties that qualify for Down Payment Assistance and offer the best potential for Long-Term Equity.
+             <p className='text-lg text-gray-700 dark:text-gray-300 leading-relaxed'>
+            <span className='font-semibold text-primary'>No te limites a buscar una casa. Busca una oportunidad.</span> To find the right home in Utah&apos;s market, we look beyond the price tag. We identify properties that qualify for Down Payment Assistance and offer the best potential for Long-Term Equity.
           </p>
         </div>
 
         {/* Section 2: Define Your Opportunity */}
         <div className='mb-12 md:mb-16'>
-          <h3 className='text-2xl md:text-3xl font-bold text-black dark:text-white mb-8'>
+          <h3 className='text-center text-2xl md:text-3xl font-bold text-black dark:text-white mb-8'>
             Define Your Opportunity
           </h3>
 
@@ -290,20 +282,50 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
               ) : (
                 <>
                   <Icon icon='mdi:home-search' width={20} height={20} />
-                  VER PROPIEDADES AHORA
+                  ENVIAR FORMULARIO
                 </>
               )}
             </button>
 
-            {submitted && successMessage && (
-              <div className='bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center gap-3'>
-                <Icon icon='mdi:check-circle' width={24} height={24} className='text-green-600' />
-                <p className='text-green-700 dark:text-green-400'>{successMessage}</p>
-              </div>
-            )}
           </form>
         </div>
       </div>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
+          <div className='bg-white dark:bg-dark rounded-lg shadow-2xl max-w-md w-full p-8 text-center animate-in fade-in zoom-in duration-300'>
+            <div className='mb-6 flex justify-center'>
+              <div className='bg-green-100 dark:bg-green-900/30 rounded-full p-4'>
+                <Icon icon='mdi:check-circle' width={48} height={48} className='text-green-600' />
+              </div>
+            </div>
+            
+            <h3 className='text-2xl font-bold text-black dark:text-white mb-4'>
+              ¡Formulario Enviado!
+            </h3>
+            
+            <p className='text-gray-700 dark:text-gray-300 mb-8 leading-relaxed'>
+              Muchas gracias por completar el formulario.
+              <br />
+              <br />
+              Me pondré en contacto contigo para comentarte las mejores opciones para ti.
+            </p>
+            
+            <button
+              onClick={() => {
+                setShowSuccessModal(false)
+                if (onSuccess) {
+                  onSuccess()
+                }
+              }}
+              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow'
+            >
+              Entendido
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

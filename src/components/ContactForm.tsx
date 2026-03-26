@@ -6,6 +6,7 @@ import { Icon } from '@iconify/react'
 
 interface FormState {
   name: string
+  phone: string
   email: string
   message: string
 }
@@ -57,6 +58,7 @@ function getStoredUTM(): UTMData {
 export default function ContactForm() {
   const [formData, setFormData] = useState<FormState>({
     name: '',
+    phone: '',
     email: '',
     message: ''
   })
@@ -98,6 +100,12 @@ export default function ContactForm() {
       newErrors.name = 'Name is required'
     } else if (formData.name.length > 100) {
       newErrors.name = 'Name must be less than 100 characters'
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Phone is required'
+    } else if (formData.phone.length > 20) {
+      newErrors.phone = 'Phone must be less than 20 characters'
     }
 
     if (!formData.email.trim()) {
@@ -183,6 +191,7 @@ export default function ContactForm() {
         // Limpiar formulario
         setFormData({
           name: '',
+          phone: '',
           email: '',
           message: ''
         })
@@ -262,6 +271,27 @@ export default function ContactForm() {
           />
           {errors.name && (
             <p className='text-red-500 dark:text-red-400 text-sm mt-1'>{errors.name}</p>
+          )}
+        </div>
+
+        {/* Phone Input */}
+        <div>
+          <input
+            type='tel'
+            name='phone'
+            id='phone'
+            placeholder='Phone*'
+            value={formData.phone}
+            onChange={handleChange}
+            disabled={status.type === 'loading'}
+            className={`px-6 py-3.5 border rounded-full outline-primary focus:outline w-full transition ${
+              errors.phone 
+                ? 'border-red-500 dark:border-red-400' 
+                : 'border-black/10 dark:border-white/10'
+            } disabled:opacity-50 disabled:cursor-not-allowed`}
+          />
+          {errors.phone && (
+            <p className='text-red-500 dark:text-red-400 text-sm mt-1'>{errors.phone}</p>
           )}
         </div>
 

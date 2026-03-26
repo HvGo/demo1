@@ -6,9 +6,10 @@ import { validateCMAForm, ValidationError } from '@/lib/validators'
 
 interface CMAFormProps {
   onSuccess?: () => void
+  onClose?: () => void
 }
 
-export const CMAForm = ({ onSuccess }: CMAFormProps = {}) => {
+export const CMAForm = ({ onSuccess, onClose }: CMAFormProps = {}) => {
   const [formData, setFormData] = useState({
     address: '',
     sellingGoal: '',
@@ -23,6 +24,7 @@ export const CMAForm = ({ onSuccess }: CMAFormProps = {}) => {
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<ValidationError[]>([])
   const [successMessage, setSuccessMessage] = useState('')
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -78,13 +80,7 @@ export const CMAForm = ({ onSuccess }: CMAFormProps = {}) => {
         phone: ''
       })
       setSubmitted(true)
-      setTimeout(() => {
-        setSubmitted(false)
-        setSuccessMessage('')
-        if (onSuccess) {
-          onSuccess()
-        }
-      }, 3000)
+      setShowSuccessModal(true)
     } catch (error) {
       console.error('Error submitting form:', error)
       setErrors([{ field: 'form', message: 'Error de conexión. Por favor intenta de nuevo.' }])
@@ -94,6 +90,7 @@ export const CMAForm = ({ onSuccess }: CMAFormProps = {}) => {
   }
 
   return (
+    <>
     <section id='market-intelligence' className='py-16 md:py-24 bg-gray-50 dark:bg-dark/50'>
       <div className='container max-w-4xl mx-auto px-5 2xl:px-0'>
         <div className='text-center mb-12 md:mb-16'>
@@ -203,19 +200,6 @@ export const CMAForm = ({ onSuccess }: CMAFormProps = {}) => {
                 </div>
                 <div>
                   <input
-                    type='email'
-                    name='email'
-                    placeholder='Email'
-                    value={formData.email}
-                    onChange={handleChange}
-                    className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
-                  />
-                  {getFieldError('email') && (
-                    <p className='text-red-500 text-sm mt-1'>{getFieldError('email')}</p>
-                  )}
-                </div>
-                <div>
-                  <input
                     type='tel'
                     name='phone'
                     placeholder='Teléfono'
@@ -225,6 +209,19 @@ export const CMAForm = ({ onSuccess }: CMAFormProps = {}) => {
                   />
                   {getFieldError('phone') && (
                     <p className='text-red-500 text-sm mt-1'>{getFieldError('phone')}</p>
+                  )}
+                </div>
+                <div>
+                  <input
+                    type='email'
+                    name='email'
+                    placeholder='Email'
+                    value={formData.email}
+                    onChange={handleChange}
+                    className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark focus:outline-none focus:ring-2 focus:ring-primary'
+                  />
+                  {getFieldError('email') && (
+                    <p className='text-red-500 text-sm mt-1'>{getFieldError('email')}</p>
                   )}
                 </div>
               </div>
@@ -256,15 +253,46 @@ export const CMAForm = ({ onSuccess }: CMAFormProps = {}) => {
               )}
             </button>
 
-            {submitted && successMessage && (
-              <div className='bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center gap-3'>
-                <Icon icon='mdi:check-circle' width={24} height={24} className='text-green-600' />
-                <p className='text-green-700 dark:text-green-400'>{successMessage}</p>
-              </div>
-            )}
           </form>
         </div>
       </div>
     </section>
+
+    {/* Success Modal */}
+    {showSuccessModal && (
+      <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
+        <div className='bg-white dark:bg-dark rounded-lg shadow-2xl max-w-md w-full p-8 text-center animate-in fade-in zoom-in duration-300'>
+          <div className='mb-6 flex justify-center'>
+            <div className='bg-green-100 dark:bg-green-900/30 rounded-full p-4'>
+              <Icon icon='mdi:check-circle' width={48} height={48} className='text-green-600' />
+            </div>
+          </div>
+          
+          <h3 className='text-2xl font-bold text-black dark:text-white mb-4'>
+            ¡Formulario Enviado!
+          </h3>
+          
+          <p className='text-gray-700 dark:text-gray-300 mb-8 leading-relaxed'>
+            Muchas gracias por completar el formulario.
+            <br />
+            <br />
+            Me pondré en contacto contigo para comentarte las mejores opciones para ti.
+          </p>
+          
+          <button
+            onClick={() => {
+              setShowSuccessModal(false)
+              if (onClose) {
+                onClose()
+              }
+            }}
+            className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow'
+          >
+            Entendido
+          </button>
+        </div>
+      </div>
+    )}
+    </>
   )
 }
