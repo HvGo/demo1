@@ -53,12 +53,72 @@ export default async function BlueKeyRealtyTeam() {
     <>
       <SchemaMarkup schema={personSchema?.schemaData} />
       <HeroSub
+        title="Our Mission"    //"The Blue Key Realty Team"
+        description="At Blue Key Realty, our mission is simple: to guide families through every step of buying or selling a home with confidence and clarity."
+        badge="Our Mission"
+      />
+
+      <main className="bg-white dark:bg-dark">
+      {/* Mission Section */}
+      <section className="py-12 md:py-16 bg-gray-50 dark:bg-dark/50">
+        <div className="container max-w-8xl mx-auto px-5 2xl:px-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+
+            {/* Content */}
+            <div className="order-2 lg:order-1">
+              <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p>
+                  With over 22 years of experience and $150 million in closed sales, we&apos;ve helped more than 1,100 Utah families achieve their real estate goals. As a Utah Top 500 Realtor and proud member of NAHREP, our success comes from combining market expertise, strong negotiation skills, and a genuine care for people.
+                </p>
+
+                <p>
+                  We are a bilingual, community-driven team serving Salt Lake, Utah, Davis, Weber, and Tooele Counties. We specialize in:
+                </p>
+
+                <ul className="space-y-2 ml-4">
+                  <li className="flex items-start gap-3">
+                    <Icon icon="mdi:check-circle" width={20} height={20} className="text-primary flex-shrink-0 mt-0.5" />
+                    <span>First-time homebuyers (including ITIN solutions)</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Icon icon="mdi:check-circle" width={20} height={20} className="text-primary flex-shrink-0 mt-0.5" />
+                    <span>New-construction and move-up homes</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Icon icon="mdi:check-circle" width={20} height={20} className="text-primary flex-shrink-0 mt-0.5" />
+                    <span>Sellers ready to maximize their return</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <Icon icon="mdi:check-circle" width={20} height={20} className="text-primary flex-shrink-0 mt-0.5" />
+                    <span>Investors building long-term wealth</span>
+                  </li>
+                </ul>
+
+                <p>
+                  We believe education empowers clients to make smart, informed decisions—because when you understand the process, every move feels right. Whether you&apos;re buying your first home, selling, or investing, Ivan Navincopa-Tu, Realtor Latino de confianza, and our team are here to deliver a smooth, professional, and personalized experience.
+                </p>
+              </div>
+            </div>
+            {/* Image */}
+            <div className="order-1 lg:order-2">
+              <div className="w-full h-96 md:h-[500px] bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden relative">
+                <Image
+                  src="/images/team/500SL.png"
+                  alt="Blue Key Realty Team"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+      <HeroSub
         title="The Blue Key Realty Team"
         description="Professional. Bilingual. Infrastructure-Driven. A 22-year legacy built on a strong foundation."
         badge="Our Team"
       />
-
-      <main className="bg-white dark:bg-dark">
       {/* About Section */}
       <section className="py-8 md:py-12">
         <div className="container max-w-8xl mx-auto px-5 2xl:px-0">
@@ -132,10 +192,9 @@ export default async function BlueKeyRealtyTeam() {
             </p>
             <a
               href="/contactus"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow"
-            >
+              className="inline-flex items-center gap-2 px-8 py-3 from-primary to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow"  style={{ backgroundColor: '#00A86B' }}       >
               <Icon icon="mdi:phone" width={20} height={20} />
-              Let&apos;s chat with Ivan
+              Let&apos;s talk with Ivan
             </a>
           </div>
         </div>

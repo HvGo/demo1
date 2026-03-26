@@ -123,7 +123,7 @@ const HowIHelp = async () => {
                 )}
                 {service.showButton && (
                   <div className='mt-12 text-center'>
-                    <a href={service.buttonHref || '#golden-questions'} className='inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow' style={{ backgroundImage: 'linear-gradient(to right, #273ba8, #febc59 )' }}>
+                    <a href={service.buttonHref || '#golden-questions'} className='inline-flex items-center gap-2 px-8 py-3  from-primary to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow' style={{ backgroundColor: '#00A86B' }}>
                       {service.buttonIcon && <Icon icon={service.buttonIcon} width={20} height={20} />}
                       {service.buttonLabel || 'Schedule Your Session'}
                     </a>

@@ -343,7 +343,10 @@ export default function ContactForm() {
         <button 
           type='submit'
           disabled={status.type === 'loading'}
-          className='px-8 py-4 rounded-full bg-primary text-white text-base font-semibold w-full mobile:w-fit hover:cursor-pointer hover:bg-primary/90 duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
+          className='px-8 py-4 rounded-full text-white text-base font-semibold w-full mobile:w-fit hover:cursor-pointer duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
+          style={{ backgroundColor: '#00A86B' }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#16a34a')}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#00A86B')}
         >
           {status.type === 'loading' && (
             <Icon icon='ph:spinner' width={20} height={20} className='animate-spin' />
