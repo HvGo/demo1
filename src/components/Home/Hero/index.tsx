@@ -99,7 +99,7 @@ const Hero = async () => {
         )}
         {secondaryHref && secondaryLabel && (
           <Link href={secondaryHref} className='px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:cursor-pointer text-center flex items-center justify-center gap-2 shadow-lg shadow-black/25 ring-1 ring-white/10 transition-colors whitespace-nowrap' style={{ backgroundColor: '#FDCB6E', color: '#067ff9' }}>
-            <Icon icon="mdi:email" className="text-lg sm:text-xl flex-shrink-0" />
+            <Icon icon="mdi:home" className="text-lg sm:text-xl flex-shrink-0" />
             {secondaryLabel}
           </Link>
         )}
