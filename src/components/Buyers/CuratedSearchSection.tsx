@@ -282,7 +282,7 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
               ) : (
                 <>
                   <Icon icon='mdi:home-search' width={20} height={20} />
-                  ENVIAR FORMULARIO
+                  START YOUR PLAN
                 </>
               )}
             </button>
