@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getPropertyDetailBySlug } from '@/lib/queries/content';
 import MapComponent from '@/components/Map';
+import { MatterportViewer } from '@/components/Properties/MatterportViewer';
 
 export default async function Details({ params }: any) {
     const data = await params;
@@ -96,6 +97,17 @@ export default async function Details({ params }: any) {
                         )}
                     </div>
                 </div>
+
+                {/* 3D Virtual Tour - MATTERPORT */}
+                {item.matterportUrl && (
+                    <div className="mt-12 bg-gray-50 dark:bg-dark/50 p-8 rounded-2xl">
+                        <MatterportViewer 
+                            matterportUrl={item.matterportUrl}
+                            title='3D Virtual Tour'
+                        />
+                    </div>
+                )}
+
                 <div className="grid grid-cols-12 gap-8 mt-10">
                     <div className="lg:col-span-8 col-span-12">
                         <h3 className='text-xl font-medium'>Property details</h3>

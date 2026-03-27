@@ -381,6 +381,7 @@ export async function getPropertyDetailBySlug(slug: string) {
     status: string | null;
     seller_message: string | null;
     cta_label: string | null;
+    matterport_url: string | null;
     testimonial_content: string | null;
     testimonial_author_name: string | null;
     testimonial_author_title: string | null;
@@ -388,7 +389,7 @@ export async function getPropertyDetailBySlug(slug: string) {
   }>(
     `
     select p.id, p.slug, p.title, p.description, p.address, p.price, p.currency, p.bedrooms, p.bathrooms, p.area_m2,
-           p.status, p.seller_message, p.cta_label,
+           p.status, p.seller_message, p.cta_label, p.matterport_url,
            t.content as testimonial_content,
            t.author_name as testimonial_author_name,
            t.author_title as testimonial_author_title,
@@ -451,6 +452,7 @@ export async function getPropertyDetailBySlug(slug: string) {
     status: row.status || "available",
     sellerMessage: row.seller_message || "",
     ctaLabel: row.cta_label || "Get in touch",
+    matterportUrl: row.matterport_url || "",
     testimonial:
       row.testimonial_content && row.testimonial_author_name
         ? {
