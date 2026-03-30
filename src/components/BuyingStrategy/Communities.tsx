@@ -80,14 +80,14 @@ export default function Communities() {
               className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-dark/50 dark:to-dark/30 rounded-lg p-8 border border-gray-200 dark:border-gray-700"
             >
               <div className="flex items-start gap-4 mb-4">
-                <div className="bg-teal-500/20 dark:bg-teal-500/30 p-3 rounded-lg flex-shrink-0">
-                  <Icon icon="mdi:map-marker" width={24} height={24} className="text-teal-500" />
+                <div className="p-3 rounded-lg flex-shrink-0" style={{ backgroundColor: 'rgba(0, 168, 107, 0.2)' }}>
+                  <Icon icon="mdi:map-marker" width={24} height={24} style={{ color: '#00A86B' }} />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-dark dark:text-white">
                     {county.name}
                   </h3>
-                  <p className="text-lg font-semibold text-primary mb-1">
+                  <p className="text-lg font-semibold mb-1" style={{ color: '#00A86B' }}>
                     {county.subtitle}
                   </p>
                   <p className="text-sm italic text-gray-600 dark:text-gray-400">
@@ -120,7 +120,8 @@ export default function Communities() {
                     {county.majorCities.map((city, idx) => (
                       <span
                         key={idx}
-                        className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-teal-400 px-3 py-1 rounded-full text-sm"
+                        className="px-3 py-1 rounded-full text-sm"
+                        style={{ backgroundColor: 'rgba(0, 168, 107, 0.1)', color: '#00A86B' }}
                       >
                         {city}
                       </span>
@@ -148,7 +149,7 @@ export default function Communities() {
         </div>
 
         {/* Search Section */}
-        <div className="bg-gradient-to-r from-primary/10 to-teal-500/10 dark:from-primary/5 dark:to-teal-500/5 rounded-lg p-8 border border-primary/20 dark:border-primary/30 text-center">
+        <div className="rounded-lg p-8 text-center" style={{ backgroundColor: 'rgba(0, 168, 107, 0.1)', borderColor: 'rgba(0, 168, 107, 0.2)', border: '1px solid rgba(0, 168, 107, 0.2)' }}>
           <h3 className="text-2xl font-bold text-dark dark:text-white mb-4">
             Find Your Zip Code
           </h3>
@@ -157,7 +158,10 @@ export default function Communities() {
           </p>
           <Link
             href="/properties"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-teal-500 text-white font-semibold rounded-lg hover:bg-teal-600 transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg transition-colors"
+            style={{ backgroundColor: '#00A86B' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#008C5A'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00A86B'}
           >
             <Icon icon="mdi:home-search" width={20} height={20} className="text-white" />
             Search Homes by City

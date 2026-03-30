@@ -77,8 +77,8 @@ export default function ITINLoans() {
                 className="bg-white dark:bg-dark rounded-lg p-8 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow"
               >
                 <div className="flex items-start gap-4">
-                  <div className="bg-teal-500/20 dark:bg-teal-500/30 p-3 rounded-lg flex-shrink-0">
-                    <Icon icon="mdi:check-circle" width={24} height={24} className="text-teal-500" />
+                  <div className="p-3 rounded-lg flex-shrink-0" style={{ backgroundColor: 'rgba(0, 168, 107, 0.2)' }}>
+                    <Icon icon="mdi:check-circle" width={24} height={24} style={{ color: '#00A86B' }} />
                   </div>
                   <div>
                     <h4 className="text-lg font-bold text-dark dark:text-white mb-2">
@@ -104,11 +104,12 @@ export default function ITINLoans() {
             {qualificationSteps.map((step, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-teal-500/5 to-teal-500/5 dark:from-teal-500/10 dark:to-teal-500/10 rounded-lg p-8 border border-teal-500/20 dark:border-teal-500/30"
+                className="rounded-lg p-8 border"
+                style={{ backgroundColor: 'rgba(0, 168, 107, 0.05)', borderColor: 'rgba(0, 168, 107, 0.2)' }}
               >
                 <div className="flex items-start gap-4">
-                  <div className="bg-teal-500/20 dark:bg-teal-500/30 p-3 rounded-lg flex-shrink-0">
-                    <span className="text-teal-500 font-bold text-lg">{index + 1}</span>
+                  <div className="p-3 rounded-lg flex-shrink-0" style={{ backgroundColor: 'rgba(0, 168, 107, 0.2)' }}>
+                    <span className="font-bold text-lg" style={{ color: '#00A86B' }}>{index + 1}</span>
                   </div>
                   <div>
                     <h4 className="text-lg font-bold text-dark dark:text-white mb-2">
@@ -125,7 +126,7 @@ export default function ITINLoans() {
         </div>
 
         {/* Closing Message */}
-        <div className="bg-gradient-to-r from-primary/10 to-teal-500/10 dark:from-primary/5 dark:to-teal-500/5 rounded-lg p-8 border border-primary/20 dark:border-primary/30 text-center mb-12">
+        <div className="rounded-lg p-8 text-center mb-12" style={{ backgroundColor: 'rgba(0, 168, 107, 0.1)', borderColor: 'rgba(0, 168, 107, 0.2)', border: '1px solid rgba(0, 168, 107, 0.2)' }}>
           <h3 className="text-2xl font-bold text-dark dark:text-white mb-4">
             Hablamos su idioma. Conocemos el camino.
           </h3>
@@ -141,7 +142,10 @@ export default function ITINLoans() {
         <div className="text-center">
           <Link
             href="/contactus"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-teal-500 text-white font-semibold rounded-lg hover:bg-teal-600 transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg transition-colors"
+            style={{ backgroundColor: '#00A86B' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#008C5A'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00A86B'}
           >
             <Icon icon="mdi:phone" width={20} height={20} className="text-white" />
             Schedule Your Strategy Session

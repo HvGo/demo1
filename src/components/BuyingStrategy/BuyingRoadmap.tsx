@@ -71,12 +71,13 @@ export default function BuyingRoadmap() {
           {steps.map((step, index) => (
             <div
               key={index}
-              className="bg-gradient-to-r from-primary/5 to-teal-500/5 dark:from-primary/10 dark:to-teal-500/10 rounded-lg p-8 border border-primary/20 dark:border-primary/30"
+              className="rounded-lg p-8 border"
+              style={{ backgroundColor: 'rgba(0, 168, 107, 0.05)', borderColor: 'rgba(0, 168, 107, 0.2)' }}
             >
               <div className="flex items-start gap-6">
                 {/* Step Number Circle */}
                 <div className="flex-shrink-0">
-                  <div className="flex items-center justify-center w-16 h-16 bg-teal-500 rounded-full">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full" style={{ backgroundColor: '#00A86B' }}>
                     <span className="text-white font-bold text-2xl">{step.number}</span>
                   </div>
                 </div>
@@ -88,11 +89,11 @@ export default function BuyingRoadmap() {
                       <h3 className="text-2xl font-bold text-dark dark:text-white mb-1">
                         {step.title}
                       </h3>
-                      <p className="text-lg font-semibold text-primary">
+                      <p className="text-lg font-semibold" style={{ color: '#00A86B' }}>
                         {step.subtitle}
                       </p>
                     </div>
-                    <Icon icon={step.icon} width={32} height={32} className="text-teal-500 flex-shrink-0" />
+                    <Icon icon={step.icon} width={32} height={32} className="flex-shrink-0" style={{ color: '#00A86B' }} />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -118,7 +119,7 @@ export default function BuyingRoadmap() {
 
               {/* Connector Line */}
               {index < steps.length - 1 && (
-                <div className="ml-8 mt-6 h-8 border-l-2 border-primary/30 dark:border-primary/20"></div>
+                <div className="ml-8 mt-6 h-8 border-l-2" style={{ borderColor: 'rgba(0, 168, 107, 0.3)' }}></div>
               )}
             </div>
           ))}
@@ -128,7 +129,10 @@ export default function BuyingRoadmap() {
         <div className="text-center">
           <Link
             href="/contactus"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-teal-500 text-white font-semibold rounded-lg hover:bg-teal-600 transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg transition-colors"
+            style={{ backgroundColor: '#00A86B' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#008C5A'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00A86B'}
           >
             <Icon icon="mdi:phone" width={20} height={20} className="text-white" />
             Start Your Journey Today

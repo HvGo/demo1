@@ -79,10 +79,11 @@ export default function PaymentCalculator() {
                 step="10000"
                 value={purchasePrice}
                 onChange={(e) => setPurchasePrice(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                style={{ accentColor: '#00A86B' }}
               />
               <div className="flex justify-between items-center mt-4">
-                <span className="text-3xl font-bold text-teal-500">
+                <span className="text-3xl font-bold" style={{ color: '#00A86B' }}>
                   ${(purchasePrice / 1000).toFixed(0)}K
                 </span>
                 <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -104,7 +105,8 @@ export default function PaymentCalculator() {
                     value="dpa"
                     checked={downPaymentOption === 'dpa'}
                     onChange={(e) => setDownPaymentOption(e.target.value)}
-                    className="w-4 h-4 text-primary"
+                    className="w-4 h-4"
+                    style={{ accentColor: '#00A86B' }}
                   />
                   <span className="ml-3 flex-1">
                     <span className="font-semibold text-dark dark:text-white">Utah Housing (DPA)</span>
@@ -119,7 +121,8 @@ export default function PaymentCalculator() {
                     value="grant"
                     checked={downPaymentOption === 'grant'}
                     onChange={(e) => setDownPaymentOption(e.target.value)}
-                    className="w-4 h-4 text-primary"
+                    className="w-4 h-4"
+                    style={{ accentColor: '#00A86B' }}
                   />
                   <span className="ml-3 flex-1">
                     <span className="font-semibold text-dark dark:text-white">$20,000 New Construction Grant</span>
@@ -134,7 +137,8 @@ export default function PaymentCalculator() {
                     value="itin"
                     checked={downPaymentOption === 'itin'}
                     onChange={(e) => setDownPaymentOption(e.target.value)}
-                    className="w-4 h-4 text-primary"
+                    className="w-4 h-4"
+                    style={{ accentColor: '#00A86B' }}
                   />
                   <span className="ml-3 flex-1">
                     <span className="font-semibold text-dark dark:text-white">ITIN Path</span>
@@ -156,10 +160,11 @@ export default function PaymentCalculator() {
                 step="0.1"
                 value={interestRate}
                 onChange={(e) => setInterestRate(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                style={{ accentColor: '#00A86B' }}
               />
               <div className="flex justify-between items-center mt-4">
-                <span className="text-3xl font-bold text-teal-500">
+                <span className="text-3xl font-bold" style={{ color: '#00A86B' }}>
                   {interestRate.toFixed(2)}%
                 </span>
                 <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -180,9 +185,10 @@ export default function PaymentCalculator() {
                     onClick={() => setLoanTerm(term)}
                     className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-colors ${
                       loanTerm === term
-                        ? 'bg-teal-500 text-white'
+                        ? 'text-white'
                         : 'bg-gray-200 dark:bg-gray-700 text-dark dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600'
                     }`}
+                    style={loanTerm === term ? { backgroundColor: '#00A86B' } : {}}
                   >
                     {term} Years
                   </button>
@@ -192,13 +198,14 @@ export default function PaymentCalculator() {
 
             {/* PMI Toggle (ITIN Exclusive) */}
             {downPaymentOption === 'itin' && (
-              <div className="mb-8 p-4 bg-teal-500/10 dark:bg-teal-500/20 rounded-lg border border-teal-500/20">
+              <div className="mb-8 p-4 rounded-lg border" style={{ backgroundColor: 'rgba(0, 168, 107, 0.1)', borderColor: 'rgba(0, 168, 107, 0.2)' }}>
                 <label className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     checked={!includePMI}
                     onChange={(e) => setIncludePMI(!e.target.checked)}
-                    className="w-4 h-4 text-teal-500 rounded"
+                    className="w-4 h-4 rounded"
+                    style={{ accentColor: '#00A86B' }}
                   />
                   <span className="ml-3 flex-1">
                     <span className="font-semibold text-dark dark:text-white">No PMI (Exclusive ITIN)</span>
@@ -213,15 +220,15 @@ export default function PaymentCalculator() {
 
           {/* Results Panel */}
           <div className="lg:col-span-1">
-            <div className="bg-gradient-to-br from-primary/10 to-teal-500/10 dark:from-primary/5 dark:to-teal-500/5 rounded-lg p-8 border border-primary/20 dark:border-primary/30 sticky top-8">
+            <div className="rounded-lg p-8 sticky top-8" style={{ backgroundColor: 'rgba(0, 168, 107, 0.1)', borderColor: 'rgba(0, 168, 107, 0.2)', border: '1px solid rgba(0, 168, 107, 0.2)' }}>
               <h3 className="text-xl font-bold text-dark dark:text-white mb-6">
                 Your Estimate
               </h3>
 
               {/* Down Payment Info */}
-              <div className="mb-6 pb-6 border-b border-teal-500/20">
+              <div className="mb-6 pb-6 border-b" style={{ borderColor: 'rgba(0, 168, 107, 0.2)' }}>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Down Payment</p>
-                <p className="text-2xl font-bold text-teal-500">
+                <p className="text-2xl font-bold" style={{ color: '#00A86B' }}>
                   ${downPaymentAmount.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                 </p>
                 <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
@@ -230,7 +237,7 @@ export default function PaymentCalculator() {
               </div>
 
               {/* Loan Amount */}
-              <div className="mb-6 pb-6 border-b border-teal-500/20">
+              <div className="mb-6 pb-6 border-b" style={{ borderColor: 'rgba(0, 168, 107, 0.2)' }}>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Loan Amount</p>
                 <p className="text-2xl font-bold text-dark dark:text-white">
                   ${loanAmount.toLocaleString('en-US', { maximumFractionDigits: 0 })}
@@ -238,7 +245,7 @@ export default function PaymentCalculator() {
               </div>
 
               {/* Monthly Payment Breakdown */}
-              <div className="mb-6 pb-6 border-b border-teal-500/20">
+              <div className="mb-6 pb-6 border-b" style={{ borderColor: 'rgba(0, 168, 107, 0.2)' }}>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Monthly Payment Breakdown</p>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
@@ -263,9 +270,9 @@ export default function PaymentCalculator() {
               </div>
 
               {/* Total Monthly Payment */}
-              <div className="mb-8 p-4 bg-teal-500/20 dark:bg-teal-500/30 rounded-lg">
+              <div className="mb-8 p-4 rounded-lg" style={{ backgroundColor: 'rgba(0, 168, 107, 0.2)' }}>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Estimated Total Monthly Payment</p>
-                <p className="text-4xl font-bold text-teal-500">
+                <p className="text-4xl font-bold" style={{ color: '#00A86B' }}>
                   ${totalMonthlyPayment.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                 </p>
               </div>
@@ -273,7 +280,10 @@ export default function PaymentCalculator() {
               {/* CTA */}
               <Link
                 href="/contactus"
-                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-teal-500 text-white font-semibold rounded-lg hover:bg-teal-600 transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 text-white font-semibold rounded-lg transition-colors"
+                style={{ backgroundColor: '#00A86B' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#008C5A'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00A86B'}
               >
                 <Icon icon="mdi:phone" width={18} height={18} className="text-white" />
                 Get My Personalized Quote

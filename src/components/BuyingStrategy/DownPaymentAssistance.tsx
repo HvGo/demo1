@@ -78,14 +78,14 @@ export default function DownPaymentAssistance() {
               <ul className="space-y-3 mb-4">
                 {program.features.map((feature, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <Icon icon="mdi:bullet" width={20} height={20} className="text-primary flex-shrink-0 mt-0.5" />
+                    <Icon icon="mdi:bullet" width={20} height={20} className="flex-shrink-0 mt-0.5" style={{ color: '#00A86B' }} />
                     <span className="text-gray-700 dark:text-gray-300">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               {program.spanishNote && (
-                <p className="text-sm italic text-primary dark:text-teal-400 pt-4 border-t border-primary/20">
+                <p className="text-sm italic pt-4 border-t" style={{ color: '#00A86B', borderColor: 'rgba(0, 168, 107, 0.2)' }}>
                   {program.spanishNote}
                 </p>
               )}
@@ -97,7 +97,10 @@ export default function DownPaymentAssistance() {
         <div className="text-center">
           <Link
             href="/contactus"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-teal-500 text-white font-semibold rounded-lg hover:bg-teal-600 transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg transition-colors"
+            style={{ backgroundColor: '#00A86B' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#008C5A'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00A86B'}
           >
             <Icon icon="mdi:phone" width={20} height={20} className="text-white" />
             Schedule Your Strategy Session

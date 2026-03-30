@@ -50,7 +50,7 @@ export default function SuccessStories() {
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
             Historias de Éxito
           </p>
-          <p className="text-xl font-semibold text-primary mb-6">
+          <p className="text-xl font-semibold mb-6" style={{ color: '#00A86B' }}>
             Real Stories. Real Wealth. Real Results.
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
@@ -69,12 +69,12 @@ export default function SuccessStories() {
                 <h3 className="text-xl font-bold text-dark dark:text-white mb-2">
                   {story.title}
                 </h3>
-                <p className="text-sm font-semibold text-primary">
+                <p className="text-sm font-semibold" style={{ color: '#00A86B' }}>
                   {story.subtitle}
                 </p>
               </div>
 
-              <blockquote className="border-l-4 border-primary pl-4 mb-6">
+              <blockquote className="border-l-4 pl-4 mb-6" style={{ borderColor: '#00A86B' }}>
                 <p className="text-gray-700 dark:text-gray-300 italic mb-2">
                   {story.quote}
                 </p>
@@ -83,13 +83,13 @@ export default function SuccessStories() {
                 </p>
               </blockquote>
 
-              <div className="bg-primary/5 dark:bg-primary/10 rounded-lg p-4 mb-4">
+              <div className="rounded-lg p-4 mb-4" style={{ backgroundColor: 'rgba(0, 168, 107, 0.1)' }}>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
                   <span className="font-semibold text-dark dark:text-white">The Strategy:</span> {story.strategy}
                 </p>
               </div>
 
-              <p className="text-sm italic text-primary dark:text-teal-400">
+              <p className="text-sm italic" style={{ color: '#00A86B' }}>
                 {story.spanishTip}
               </p>
             </div>
@@ -97,7 +97,7 @@ export default function SuccessStories() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-primary/10 to-teal-500/10 dark:from-primary/5 dark:to-teal-500/5 rounded-lg p-8 border border-primary/20 dark:border-primary/30 text-center">
+        <div className="rounded-lg p-8 text-center" style={{ backgroundColor: 'rgba(0, 168, 107, 0.1)', borderColor: 'rgba(0, 168, 107, 0.2)', border: '1px solid rgba(0, 168, 107, 0.2)' }}>
           <h3 className="text-2xl font-bold text-dark dark:text-white mb-4">
             Ready to write your own Success Story?
           </h3>
@@ -106,7 +106,10 @@ export default function SuccessStories() {
           </p>
           <Link
             href="/contactus"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-teal-500 text-white font-semibold rounded-lg hover:bg-teal-600 transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg transition-colors"
+            style={{ backgroundColor: '#00A86B' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#008C5A'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00A86B'}
           >
             <Icon icon="mdi:calendar" width={20} height={20} className="text-white" />
             Schedule My Strategy Session
