@@ -54,7 +54,7 @@ export default function SuccessStories() {
             Real Stories. Real Wealth. Real Results.
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            "En Blue Key Realty, no cerramos transacciones; abrimos puertas al futuro." With over 22 years of experience in Salt Lake County, we've helped more than 1,100 families achieve the American Dream. Their success is the best proof of our strategy.
+            &quot;Real families, real results, real dreams realized.&quot; Meet the families who&apos;ve transformed their lives through homeownership with our guidance.
           </p>
         </div>
 
@@ -102,7 +102,7 @@ export default function SuccessStories() {
             Ready to write your own Success Story?
           </h3>
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-            "Hablamos tu idioma. Brindamos resultados." Whether you are buying your first home in West Valley or selling a horse property in South Jordan, your goals are our priority.
+            &quot;Hablamos tu idioma. Brindamos resultados.&quot; Whether you are buying your first home in West Valley or selling a horse property in South Jordan, your goals are our priority.
           </p>
           <Link
             href="/contactus"

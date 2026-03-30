@@ -1,5 +1,3 @@
-import { Icon } from '@iconify/react'
-import Link from 'next/link'
 import { FloatingBubbles } from '@/components/Home/FloatingBubbles'
 import BuyingStrategyHero from '@/components/BuyingStrategy/Hero'
 import DownPaymentAssistance from '@/components/BuyingStrategy/DownPaymentAssistance'

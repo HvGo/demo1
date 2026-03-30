@@ -57,7 +57,7 @@ export default function ITINLoans() {
             Dignity & Homeownership (Dignidad y Patrimonio)
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            "Su trabajo duro merece un hogar propio." 15% to 20% of our business is dedicated to helping families who file taxes with an ITIN. We believe that everyone who contributes to the growth of Utah deserves a clear, legal path to homeownership.
+            &quot;Su trabajo duro merece un hogar propio.&quot; 15% to 20% of our business is dedicated to helping families who file taxes with an ITIN. We believe that everyone who contributes to the growth of Utah deserves a clear, legal path to homeownership.
           </p>
         </div>
 
@@ -66,8 +66,8 @@ export default function ITINLoans() {
           <h3 className="text-2xl font-bold text-dark dark:text-white mb-8 text-center">
             Why an ITIN Loan? (Las Ventajas del Programa)
           </h3>
-          <p className="text-gray-700 dark:text-gray-300 mb-8 text-center max-w-3xl mx-auto">
-            We maintain direct relationships with local credit unions and specialized lenders who understand the unique needs of our community.
+          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            &quot;ITIN loans are a game-changer for non-traditional borrowers.&quot; We maintain direct relationships with local credit unions and specialized lenders who understand the unique needs of our community.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

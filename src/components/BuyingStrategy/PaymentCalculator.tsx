@@ -60,7 +60,7 @@ export default function PaymentCalculator() {
             Strategic Payment Estimator
           </h2>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            "No solo calcule su pago; planee su inversión." Use our calculator to explore different scenarios and understand your buying power.
+            &quot;See your numbers before you commit.&quot; Our interactive calculator shows you exactly what your monthly payment will be with different down payment strategies, interest rates, and loan terms.
           </p>
         </div>
 

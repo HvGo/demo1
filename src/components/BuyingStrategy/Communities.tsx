@@ -68,7 +68,7 @@ export default function Communities() {
             Áreas de Servicio Estratégicas
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            "Dondequiera que esté su sueño, nosotros conocemos el camino." Success in the Utah market requires more than just a license; it requires Local Market Intelligence. From the booming tech corridors of the Silicon Slopes to the historic streets of Ogden, I provide the data-driven strategy you need to win in every zip code across the Wasatch Front.
+            &quot;Dondequiera que esté su sueño, nosotros conocemos el camino.&quot; Success in the Utah market requires more than just a license; it requires Local Market Intelligence. From the booming tech corridors of the Silicon Slopes to the historic streets of Ogden, I provide the data-driven strategy you need to win in every zip code across the Wasatch Front.
           </p>
         </div>
 
@@ -93,12 +93,14 @@ export default function Communities() {
                   <p className="text-sm italic text-gray-600 dark:text-gray-400">
                     {county.spanishSubtitle}
                   </p>
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
+                    {county.description}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    &quot;We don&apos;t just know the market, we know your neighbors.&quot;
+                  </p>
                 </div>
               </div>
-
-              <p className="text-gray-700 dark:text-gray-300 mb-4">
-                {county.description}
-              </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                 <div>
@@ -106,7 +108,7 @@ export default function Communities() {
                   <p className="text-gray-700 dark:text-gray-300">{county.vibe}</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-dark dark:text-white mb-2">Ivan's Insight:</p>
+                  <p className="font-semibold text-dark dark:text-white mb-2">Ivan&apos;s Insight:</p>
                   <p className="text-gray-700 dark:text-gray-300">{county.insight}</p>
                 </div>
               </div>
@@ -150,8 +152,8 @@ export default function Communities() {
           <h3 className="text-2xl font-bold text-dark dark:text-white mb-4">
             Find Your Zip Code
           </h3>
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-            "No importa el área, nosotros tenemos la estrategia." Whether you are looking for an ITIN-friendly credit union in West Valley or a New Construction Grant in Saratoga Springs, we serve the entire Wasatch Front with bilingual excellence.
+          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            &quot;No importa el área, nosotros tenemos la estrategia.&quot; From Salt Lake City to Park City, from Provo to Ogden, we know every market, every lender, and every opportunity.
           </p>
           <Link
             href="/properties"

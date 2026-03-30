@@ -62,7 +62,7 @@ export default function BuyingRoadmap() {
             5 Pasos Sencillos para Construir tu Legado
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            "Simplificamos el proceso. Usted se enfoca en el futuro."
+            &quot;Your journey to homeownership starts here.&quot; Follow these five proven steps to turn your dream into reality.
           </p>
         </div>
 

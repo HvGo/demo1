@@ -51,7 +51,7 @@ export default function DownPaymentAssistance() {
         {/* Header */}
         <div className="text-center mb-16">
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            "No deje que el pago inicial detenga su sueño." In Utah, you don't need 20% down to own a home. We specialize in leveraging state and city programs to keep your savings in your pocket.
+            &quot;No deje que el pago inicial detenga su sueño.&quot; In Utah, you don&apos;t need 20% down to own a home. We specialize in leveraging state and city programs to keep your savings in your pocket.
           </p>
         </div>
 
