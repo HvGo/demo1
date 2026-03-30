@@ -69,7 +69,7 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
   }, [handleScroll])
 
   const isHomepage = pathname === '/'
-  const isHeroPage = pathname === '/' || pathname === '/buyers' || pathname === '/sellers' || pathname === '/about'
+  const isHeroPage = pathname === '/' || pathname === '/buyers' || pathname === '/sellers' || pathname === '/about' || pathname === '/buying-strategy'
   const useLightLogo = (isHeroPage && !sticky) || theme === 'dark'
 
   const logoLight = config?.logoLight || '/images/header/logo1.png'
