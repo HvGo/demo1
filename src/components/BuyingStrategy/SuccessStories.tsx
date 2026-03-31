@@ -40,7 +40,7 @@ export default function SuccessStories() {
   ]
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50 dark:bg-dark/50">
+    <section id="success-stories" className="py-16 md:py-24 bg-gray-50 dark:bg-dark/50">
       <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
         {/* Header */}
         <div className="text-center mb-16">

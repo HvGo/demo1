@@ -8,12 +8,14 @@ import NavLink from './Navigation/NavLink'
 import { useTheme } from 'next-themes'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
+import { GoldenQuestionsModal } from '@/components/Buyers/GoldenQuestionsModal'
+import { CuratedSearchModal } from '@/components/Buyers/CuratedSearchModal'
 
 interface DropdownState {
   [key: number]: boolean
 }
 
-type HeaderLink = { label: string; href: string; submenu?: HeaderLink[] }
+type HeaderLink = { label: string; href: string; submenu?: HeaderLink[]; action?: 'openGoldenQuestions' | 'openCuratedSearch' }
 type HeaderConfig = {
   logoLight?: string
   logoDark?: string
@@ -43,6 +45,8 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
   const [sticky, setSticky] = useState(false)
   const [navbarOpen, setNavbarOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState<DropdownState>({})
+  const [isGoldenQuestionsModalOpen, setIsGoldenQuestionsModalOpen] = useState(false)
+  const [isCuratedSearchModalOpen, setIsCuratedSearchModalOpen] = useState(false)
   const { theme, setTheme } = useTheme()
   const pathname = usePathname()
 
@@ -139,15 +143,35 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
                       <div className={`absolute left-0 top-full pt-2 w-56 bg-white dark:bg-dark rounded-lg shadow-lg transition-all duration-300 z-50 py-2 ${
                         isDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
                       }`}>
-                        {item.submenu?.map((subitem, subindex) => (
-                          <Link
-                            key={subindex}
-                            href={subitem.href}
-                            className={`block px-4 py-2 text-sm font-medium text-dark dark:text-white hover:text-primary hover:bg-gray-100 dark:hover:bg-dark/50 transition-colors ${pathname === subitem.href ? 'text-primary font-semibold' : ''}`}
-                          >
-                            {subitem.label}
-                          </Link>
-                        ))}
+                        {item.submenu?.map((subitem, subindex) => {
+                          const handleSubitemClick = (e: React.MouseEvent) => {
+                            if (subitem.action === 'openGoldenQuestions') {
+                              e.preventDefault()
+                              setIsGoldenQuestionsModalOpen(true)
+                            } else if (subitem.action === 'openCuratedSearch') {
+                              e.preventDefault()
+                              setIsCuratedSearchModalOpen(true)
+                            }
+                          }
+                          
+                          return subitem.action ? (
+                            <button
+                              key={subindex}
+                              onClick={handleSubitemClick}
+                              className={`w-full text-left block px-4 py-2 text-sm font-medium text-dark dark:text-white hover:text-primary hover:bg-gray-100 dark:hover:bg-dark/50 transition-colors`}
+                            >
+                              {subitem.label}
+                            </button>
+                          ) : (
+                            <Link
+                              key={subindex}
+                              href={subitem.href}
+                              className={`block px-4 py-2 text-sm font-medium text-dark dark:text-white hover:text-primary hover:bg-gray-100 dark:hover:bg-dark/50 transition-colors ${pathname === subitem.href ? 'text-primary font-semibold' : ''}`}
+                            >
+                              {subitem.label}
+                            </Link>
+                          )
+                        })}
                       </div>
                     )}
                   </div>
@@ -239,6 +263,8 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
           </div>
         </div>
       </div>
+      <GoldenQuestionsModal isOpen={isGoldenQuestionsModalOpen} onClose={() => setIsGoldenQuestionsModalOpen(false)} />
+      <CuratedSearchModal isOpen={isCuratedSearchModalOpen} onClose={() => setIsCuratedSearchModalOpen(false)} />
     </header >
   )
 }
