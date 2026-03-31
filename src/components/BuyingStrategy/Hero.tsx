@@ -29,7 +29,7 @@ export default function BuyingStrategyHero() {
             <>
               {/* Mobile Image */}
               <Image
-                src='/images/Gallery/casa5_mobile.png'
+                src='/images/Gallery/IMG_MOBILE_BUYERS.png'
                 alt='Buying Strategy Hero'
                 fill
                 priority={true}

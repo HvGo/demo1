@@ -35,7 +35,7 @@ const HeroSectionClient = ({ whatsappHref }: HeroSectionClientProps) => {
             <>
               {/* Mobile Image */}
               <Image
-                src='/images/Gallery/casa3_mobile.png'
+                src='/images/Gallery/IMG_MOBILE_SELLERS.png'
                 alt='Sellers Hero'
                 fill
                 priority={true}
