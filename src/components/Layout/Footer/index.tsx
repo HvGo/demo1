@@ -36,7 +36,7 @@ const Footer = async () => {
   const filteredLinks = FooterLinks.filter(link => !linksToRemove.includes(link.label));
 
   return (
-    <footer className="relative z-10 bg-dark">
+    <footer className="relative z-10" style={{ backgroundColor: '#172043' }}>
       <div className="container mx-auto max-w-8xl pt-14 px-4 sm:px-6 lg:px-0">
         <div className="py-16 border-b border-white/10">
           <div className="grid grid-cols-12 sm:gap-10 gap-y-6">
