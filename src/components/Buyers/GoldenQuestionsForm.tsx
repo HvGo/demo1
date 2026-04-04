@@ -94,13 +94,16 @@ export const GoldenQuestionsForm = ({ onSuccess }: GoldenQuestionsFormProps = {}
     <section id='golden-questions' className='py-16 md:py-24 bg-white dark:bg-dark'>
       <div className='container max-w-4xl mx-auto px-5 2xl:px-0'>
         <div className='text-center mb-12 md:mb-16'>
-          <h2 className='text-3xl md:text-4xl font-bold mb-4'>The 5 Golden Questions</h2>
+          <h2 className='text-3xl md:text-4xl font-bold mb-4'>No dejes que el pago inicial detenga tus sueños!</h2>
           <p className='text-lg text-gray-600 dark:text-gray-400'>
-            Responde estas preguntas para conocer tu elegibilidad y encontrar la mejor ruta de financiamiento
+            In Utah, you don't need 20% down to own a home. We specialize in leveraging state and city programs to keep your savings in your pocket.
           </p>
+          <hr className='my-4 border-gray-300 dark:border-gray-600'/>
+          <p className='text-lg text-gray-600 dark:text-gray-400'>Reponde estás preguntas para conocer la mejor ruta de financiamiento.</p>
         </div>
 
         <div className='bg-gradient-to-br from-primary/5 to-teal-500/5 rounded-lg p-8 md:p-12 border border-primary/20'>
+        
           <form onSubmit={handleSubmit} className='space-y-6'>
             {/* Question 1 */}
             <div>
@@ -255,8 +258,8 @@ export const GoldenQuestionsForm = ({ onSuccess }: GoldenQuestionsFormProps = {}
             <button
               type='submit'
               disabled={loading}
-              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
-            >
+              className='w-full  from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
+              style={{ backgroundColor: '#2937b0' }}>
               {loading ? (
                 <>
                   <Icon icon='mdi:loading' width={20} height={20} className='animate-spin' />
@@ -264,7 +267,7 @@ export const GoldenQuestionsForm = ({ onSuccess }: GoldenQuestionsFormProps = {}
                 </>
               ) : (
                 <>
-                  <Icon icon='mdi:send' width={20} height={20} />
+                  <Icon icon='mdi:send' width={20} height={20}  />
                   Enviar Respuestas
                 </>
               )}
@@ -302,7 +305,8 @@ export const GoldenQuestionsForm = ({ onSuccess }: GoldenQuestionsFormProps = {}
                   onSuccess()
                 }
               }}
-              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow'
+              className='w-full  from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow' 
+              style={{ backgroundColor: '#2937b0' }}
             >
               Entendido
             </button>

@@ -272,8 +272,8 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
             <button
               type='submit'
               disabled={loading}
-              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-4 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
-            >
+              className='w-full from-primary to-teal-500 text-white font-semibold py-4 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
+             style={{ backgroundColor: '#2937b0' }}>
               {loading ? (
                 <>
                   <Icon icon='mdi:loading' width={20} height={20} className='animate-spin' />
@@ -319,7 +319,8 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
                   onSuccess()
                 }
               }}
-              className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow'
+              className='w-full from-primary to-teal-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow'
+              style={{ backgroundColor: '#2937b0' }}
             >
               Entendido
             </button>

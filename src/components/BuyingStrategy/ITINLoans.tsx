@@ -43,7 +43,7 @@ export default function ITINLoans() {
   ]
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50 dark:bg-dark/50">
+    <section id="ITIN"  className="py-16 md:py-24 bg-gray-50 dark:bg-dark/50">
       <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
         {/* Header */}
         <div className="text-center mb-16">
@@ -53,20 +53,21 @@ export default function ITINLoans() {
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
             Préstamos con ITIN
           </p>
-          <p className="text-xl font-semibold text-primary mb-6">
-            Dignity & Homeownership (Dignidad y Patrimonio)
-          </p>
+  
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            &quot;Su trabajo duro merece un hogar propio.&quot; 15% to 20% of our business is dedicated to helping families who file taxes with an ITIN. We believe that everyone who contributes to the growth of Utah deserves a clear, legal path to homeownership.
+            <span className="font-bold">&quot;Su trabajo duro merece un hogar propio.&quot;</span> 15% to 20% of our business is dedicated to helping families who file taxes with an ITIN. We believe that everyone who contributes to the growth of Utah deserves a clear, legal path to homeownership.
           </p>
         </div>
 
         {/* Why ITIN Loans */}
         <div className="mb-16">
           <h3 className="text-2xl font-bold text-dark dark:text-white mb-8 text-center">
-            Why an ITIN Loan? (Las Ventajas del Programa)
+            Why an ITIN Loan? 
           </h3>
-          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <h2 className="text-2xl font-bold text-dark dark:text-white mb-8 text-center" style={{ color: '#FF9500' }}>
+            (Las Ventajas del Programa)
+          </h2>
+          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed text-center">
             &quot;ITIN loans are a game-changer for non-traditional borrowers.&quot; We maintain direct relationships with local credit unions and specialized lenders who understand the unique needs of our community.
           </p>
 
@@ -97,9 +98,11 @@ export default function ITINLoans() {
         {/* Blueprint to Qualify */}
         <div className="mb-16">
           <h3 className="text-2xl font-bold text-dark dark:text-white mb-8 text-center">
-            The Blueprint to Qualify (Cómo Calificar)
+            The Blueprint to Qualify
           </h3>
-
+          <h2 className="text-2xl font-bold text-dark dark:text-white mb-8 text-center" style={{ color: '#FF9500' }}>
+            (Cómo Calificar)
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {qualificationSteps.map((step, index) => (
               <div
@@ -131,10 +134,10 @@ export default function ITINLoans() {
             Hablamos su idioma. Conocemos el camino.
           </h3>
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-            <span className="font-semibold">English:</span> We understand the guidelines and have the lender relationships needed to get you to the closing table.
+            <span className="font-semibold"></span> We understand the guidelines and have the lender relationships needed to get you to the closing table.
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300">
-            <span className="font-semibold">Spanish:</span> Entendemos las reglas, conocemos a los prestamistas y estamos con usted en cada paso del proceso.
+            <span className="font-semibold"></span> Entendemos las reglas, conocemos a los prestamistas y estamos con usted en cada paso del proceso.
           </p>
         </div>
 

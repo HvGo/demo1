@@ -2,6 +2,7 @@
 
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function BuyingRoadmap() {
   const steps = [
@@ -66,9 +67,11 @@ export default function BuyingRoadmap() {
           </p>
         </div>
 
-        {/* Steps */}
-        <div className="space-y-6 mb-16">
-          {steps.map((step, index) => (
+        {/* Steps with Image */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+          {/* Steps Column */}
+          <div className="lg:col-span-2 space-y-6">
+            {steps.map((step, index) => (
             <div
               key={index}
               className="rounded-lg p-8 border"
@@ -83,7 +86,7 @@ export default function BuyingRoadmap() {
                 </div>
 
                 {/* Content */}
-                <div className="flex-1">
+                <div className="flex-1 ">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="text-2xl font-bold text-dark dark:text-white mb-1">
@@ -98,16 +101,8 @@ export default function BuyingRoadmap() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                        En español:
-                      </p>
-                      <p className="text-gray-700 dark:text-gray-300">
+                      <p className="text-gray-700 dark:text-gray-300 mb-4" >
                         {step.spanish}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                        English:
                       </p>
                       <p className="text-gray-700 dark:text-gray-300">
                         {step.english}
@@ -122,7 +117,21 @@ export default function BuyingRoadmap() {
                 <div className="ml-8 mt-6 h-8 border-l-2" style={{ borderColor: 'rgba(0, 168, 107, 0.3)' }}></div>
               )}
             </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Image Column */}
+          <div className="lg:col-span-1 flex items-start justify-center">
+            <div className="sticky top-8 w-full">
+              <Image
+                src="/images/Gallery/PROCESS.png"
+                alt="Buying Process"
+                width={400}
+                height={1200}
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
         </div>
 
         {/* CTA Button */}

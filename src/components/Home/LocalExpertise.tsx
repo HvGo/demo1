@@ -10,32 +10,32 @@ const LocalExpertise = async () => {
   const areas: Area[] = [
     {
       name: 'West Valley City',
-      description: 'Tu base principal de clientes latinos.',
+      description: '',
       icon: 'mdi:home-group'
     },
     {
       name: 'Kearns / Magna',
-      description: 'Áreas clave de asequibilidad.',
+      description: '',
       icon: 'mdi:home-heart'
     },
     {
       name: 'South Jordan / Herriman',
-      description: 'Crecimiento y familias jóvenes.',
+      description: '',
       icon: 'mdi:home-city-outline'
     },
     {
       name: 'Lehi / Saratoga Springs',
-      description: 'Tu entrada a Utah County.',
+      description: '',
       icon: 'mdi:map-marker-radius'
     },
     {
       name: 'Tooele / Stansbury Park',
-      description: 'La mejor opción de precio en el oeste.',
+      description: '',
       icon: 'mdi:treasure-chest'
     },
     {
       name: 'Ogden / Layton',
-      description: 'Tu cobertura en Davis y Weber County.',
+      description: '',
       icon: 'mdi:map'
     }
   ]

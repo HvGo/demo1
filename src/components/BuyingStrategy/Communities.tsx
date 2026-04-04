@@ -57,7 +57,7 @@ export default function Communities() {
   ]
 
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-dark">
+    <section id="Comunity" className="py-16 md:py-24 bg-white dark:bg-dark">
       <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
         {/* Header */}
         <div className="text-center mb-16">
@@ -68,7 +68,7 @@ export default function Communities() {
             Áreas de Servicio Estratégicas
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            &quot;Dondequiera que esté su sueño, nosotros conocemos el camino.&quot; Success in the Utah market requires more than just a license; it requires Local Market Intelligence. From the booming tech corridors of the Silicon Slopes to the historic streets of Ogden, I provide the data-driven strategy you need to win in every zip code across the Wasatch Front.
+            &quot;Donde quiera que esté su sueño, nosotros conocemos el camino.&quot; Success in the Utah market requires more than just a license; it requires Local Market Intelligence. From the booming tech corridors of the Silicon Slopes to the historic streets of Ogden, I provide the data-driven strategy you need to win in every zip code across the Wasatch Front.
           </p>
         </div>
 
@@ -154,8 +154,9 @@ export default function Communities() {
             Find Your Zip Code
           </h3>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            &quot;No importa el área, nosotros tenemos la estrategia.&quot; From Salt Lake City to Park City, from Provo to Ogden, we know every market, every lender, and every opportunity.
+            &quot;No importa el área, nosotros tenemos la estrategia.&quot; 
           </p>
+          <p> From Salt Lake City to Park City, from Provo to Ogden, we know every market, every lender, and every opportunity.</p>
           <Link
             href="/properties"
             className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg transition-colors"

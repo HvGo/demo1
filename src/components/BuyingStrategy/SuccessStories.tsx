@@ -102,7 +102,10 @@ export default function SuccessStories() {
             Ready to write your own Success Story?
           </h3>
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-            &quot;Hablamos tu idioma. Brindamos resultados.&quot; Whether you are buying your first home in West Valley or selling a horse property in South Jordan, your goals are our priority.
+            &quot;Hablamos tu idioma. Brindamos resultados.&quot; 
+          </p>
+          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
+            Whether you are buying your first home in West Valley or selling a horse property in South Jordan, your goals are our priority.
           </p>
           <Link
             href="/contactus"
