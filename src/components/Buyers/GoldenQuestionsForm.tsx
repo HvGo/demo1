@@ -96,7 +96,7 @@ export const GoldenQuestionsForm = ({ onSuccess }: GoldenQuestionsFormProps = {}
         <div className='text-center mb-12 md:mb-16'>
           <h2 className='text-3xl md:text-4xl font-bold mb-4'>No dejes que el pago inicial detenga tus sueños!</h2>
           <p className='text-lg text-gray-600 dark:text-gray-400'>
-            In Utah, you don't need 20% down to own a home. We specialize in leveraging state and city programs to keep your savings in your pocket.
+            In Utah, you don&apos;t need 20% down to own a home. We specialize in leveraging state and city programs to keep your savings in your pocket.
           </p>
           <hr className='my-4 border-gray-300 dark:border-gray-600'/>
           <p className='text-lg text-gray-600 dark:text-gray-400'>Reponde estás preguntas para conocer la mejor ruta de financiamiento.</p>
