@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Bricolage_Grotesque } from 'next/font/google'
 import './globals.css'
-import 'aos/dist/aos.css'
 import Header from '@/components/Layout/Header'
 import Footer from '@/components/Layout/Footer'
 import { ThemeProvider } from 'next-themes'
@@ -9,7 +8,6 @@ import NextTopLoader from 'nextjs-toploader';
 import SessionProviderComp from '@/components/nextauth/SessionProvider'
 import EngagementTracker from '@/components/EngagementTracker'
 import UTMTracker from '@/components/UTMTracker'
-import { AOSInit } from '@/components/AOSInit'
 import { getSiteSectionByKey } from '@/lib/queries/content'
 import { Suspense } from 'react'
 
@@ -37,7 +35,6 @@ export default async function RootLayout({
     <html lang='en'>
       <body className={`${font.className} bg-white dark:bg-black antialiased`}>
         <NextTopLoader color="#07be8a" />
-        <AOSInit />
         <SessionProviderComp>
           <ThemeProvider
             attribute='class'
