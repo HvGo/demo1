@@ -76,12 +76,29 @@ export default function DownPaymentAssistance() {
               </p>
 
               <ul className="space-y-3 mb-4">
-                {program.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <Icon icon="mdi:bullet" width={20} height={20} className="flex-shrink-0 mt-0.5" style={{ color: '#00A86B' }} />
-                    <span className="text-gray-700 dark:text-gray-300">{feature}</span>
-                  </li>
-                ))}
+                {program.features.map((feature, idx) => {
+                  const boldPatterns = ['Low Cash Entry:', 'Competitive Rates:', 'Repeat Buyers Welcome:', 'Price Cap:', 'Usage:', 'Availability:', 'FHA Loans:', 'Conventional Loans:', 'Seller Credits:']
+                  let boldText = ''
+                  let restText = feature
+                  
+                  for (const pattern of boldPatterns) {
+                    if (feature.startsWith(pattern)) {
+                      boldText = pattern
+                      restText = feature.substring(pattern.length)
+                      break
+                    }
+                  }
+                  
+                  return (
+                    <li key={idx} className="flex items-start gap-3">
+                      <Icon icon="mdi:bullet" width={20} height={20} className="flex-shrink-0 mt-0.5" style={{ color: '#00A86B' }} />
+                      <span className="text-gray-700 dark:text-gray-300">
+                        {boldText && <span className="font-bold">{boldText}</span>}
+                        {restText}
+                      </span>
+                    </li>
+                  )
+                })}
               </ul>
 
               {program.spanishNote && (

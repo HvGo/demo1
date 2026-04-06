@@ -73,12 +73,12 @@ const HeroSectionClient = ({ whatsappHref }: HeroSectionClientProps) => {
         <div className='container max-w-8xl mx-auto px-4 flex flex-col min-h-screen md:min-h-[90vh] pt-20 md:pt-32 pb-0 md:pb-[200px]'>
           <div className='relative text-white text-center z-10 mt-auto w-full'>
             <h1 className='text-inherit text-4xl sm:text-5xl font-semibold -tracking-wider mx-auto mt-2 md:mt-4 mb-4 md:mb-6'>
-              Maximum Equity. Expert Strategy.
+              Maximum Equity through Market Intelligence
             </h1>
             
             <div className='mb-4 md:mb-6 max-w-4xl mx-auto'>
               <p className='text-base sm:text-lg md:text-xl font-normal leading-relaxed text-white/90'>
-                Venda su casa con un plan diseñado para ganar en el mercado de Utah.
+                Inteligencia de Mercado para su Plusvalía
               </p>
             </div>
 

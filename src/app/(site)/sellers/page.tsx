@@ -1,6 +1,9 @@
 import { HeroSection } from '@/components/Sellers/HeroSection'
 import { MarketingPower } from '@/components/Sellers/MarketingPower'
 import { SellingProcess } from '@/components/Sellers/SellingProcess'
+import ThreeTierMarketAnalysis from '@/components/Sellers/ThreeTierMarketAnalysis'
+import SellingRealities from '@/components/Sellers/SellingRealities'
+import ListingRoadmap from '@/components/Sellers/ListingRoadmap'
 import { FloatingBubbles } from '@/components/Home/FloatingBubbles'
 
 export const metadata = {
@@ -12,8 +15,9 @@ export default function SellersPage() {
   return (
     <>
       <HeroSection />
-      <MarketingPower />
-      <SellingProcess />
+      <ThreeTierMarketAnalysis />
+      <SellingRealities />
+      <ListingRoadmap />
       <FloatingBubbles />
     </>
   )

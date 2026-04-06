@@ -21,11 +21,18 @@ const marketingServices = [
 export const MarketingPower = () => {
   return (
     <section className='py-16 md:py-24 bg-gray-50 dark:bg-dark/50'>
+
+      <div className="text-center mb-16">
+          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            "Selling your home isn't about luck; it's about a data-driven strategy designed to protect your equity." "Vender su casa no es cuestión de suerte; es una estrategia basada en datos diseñada para proteger su patrimonio."
+          </p>
+      </div>
+
       <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
         <div className='text-center mb-12 md:mb-16'>
-          <h2 className='text-3xl md:text-4xl font-bold mb-4'>El Poder del Marketing</h2>
+          <h2 className='text-3xl md:text-4xl font-bold mb-4'>The Three-Tier Market Analysis</h2>
           <p className='text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto'>
-            Blue Key Powerhouse: Estrategia integral de marketing para máxima exposición
+            We determine your home's winning price by looking at the market from three critical angles to understand exactly what buyers are doing right now:
           </p>
         </div>
 
