@@ -2,6 +2,7 @@
 
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function ListingRoadmap() {
   const steps = [
@@ -142,6 +143,17 @@ export default function ListingRoadmap() {
               )}
             </div>
           ))}
+        </div>
+
+        {/* Image Section */}
+        <div className="flex justify-center mb-16">
+          <Image
+            src="/images/Gallery/roadmap_selling.png"
+            alt="Selling Roadmap"
+            width={800}
+            height={400}
+            className="w-full max-w-4xl h-auto rounded-lg shadow-lg"
+          />
         </div>
 
         {/* CTA Section */}
