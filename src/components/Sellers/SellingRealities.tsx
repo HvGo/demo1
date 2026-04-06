@@ -1,8 +1,10 @@
 'use client'
 
 import { Icon } from '@iconify/react'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 export default function SellingRealities() {
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 })
   const factors = [
     {
       title: 'Market Factors',
@@ -43,7 +45,15 @@ export default function SellingRealities() {
   ]
 
   return (
-    <section id="SellingRealities" className="py-16 md:py-24 bg-gray-50 dark:bg-dark/50">
+    <div
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
+        transition: 'all 0.8s ease-out',
+      }}
+    >
+      <section id="SellingRealities" className="py-16 md:py-24 bg-gray-50 dark:bg-dark/50">
       <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
         {/* Header */}
         <div className="text-center mb-16">
@@ -134,6 +144,7 @@ export default function SellingRealities() {
           </p>
         </div>
       </div>
-    </section>
+      </section>
+    </div>
   )
 }

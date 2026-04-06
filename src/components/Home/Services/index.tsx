@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { getSiteSectionByKey } from "@/lib/queries/content";
+import ServicesClient from "./ServicesClient";
 
 interface Service {
   icon: string;
@@ -56,28 +57,11 @@ const Services = async () => {
           </p>
         </div>
 
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-          {services.map((service: any, index: number) => (
-            <div key={index} className='bg-white dark:bg-dark rounded-lg shadow-lg hover:shadow-xl transition-shadow overflow-hidden'>
-              <div className='p-6 text-white' style={{ backgroundImage: 'linear-gradient(to right, #febc59, #273ba8)' }}>
-                <Icon icon={service.icon || 'mdi:home-outline'} width={40} height={40} className='mb-4' />
-                <h3 className='text-2xl font-bold mb-2'>{service.title}</h3>
-                <p className='text-sm font-semibold opacity-90'>{service.subtitle || ''}</p>
-              </div>
-              <div className='p-6'>
-                <p className='text-gray-600 dark:text-gray-400 mb-6'>{service.description}</p>
-                <ul className='space-y-3'>
-                  {(Array.isArray(service.features) ? service.features : []).map((feature: string, idx: number) => (
-                    <li key={idx} className='flex items-start gap-3'>
-                      <Icon icon='mdi:check-circle' width={20} height={20} className='text-teal-500 flex-shrink-0 mt-0.5' />
-                      <span className='text-sm'>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
-        </div>
+        <ServicesClient 
+          title={title}
+          description={description}
+          services={services}
+        />
       </div>
     </section>
   );

@@ -1,10 +1,12 @@
 'use client'
 
-import { Icon } from '@iconify/react'
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+import { Icon } from '@iconify/react'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 export default function ListingRoadmap() {
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 })
   const steps = [
     {
       number: 1,
@@ -64,7 +66,15 @@ export default function ListingRoadmap() {
   ]
 
   return (
-    <section id="ListingRoadmap" className="py-16 md:py-24 bg-white dark:bg-dark">
+    <div
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
+        transition: 'all 0.8s ease-out',
+      }}
+    >
+      <section id="ListingRoadmap" className="py-16 md:py-24 bg-white dark:bg-dark">
       <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
         {/* Header */}
         <div className="text-center mb-16">
@@ -182,6 +192,7 @@ export default function ListingRoadmap() {
           </div>
         </div>
       </div>
-    </section>
+      </section>
+    </div>
   )
 }

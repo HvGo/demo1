@@ -2,6 +2,7 @@
 
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
+import ITINLoansClient from './ITINLoansClient'
 
 export default function ITINLoans() {
   const advantages = [
@@ -43,7 +44,8 @@ export default function ITINLoans() {
   ]
 
   return (
-    <section id="ITIN"  className="py-16 md:py-24 bg-gray-50 dark:bg-dark/50">
+    <ITINLoansClient>
+      <section id="ITINLoans" className="py-16 md:py-24 bg-white dark:bg-dark/50">
       <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
         {/* Header */}
         <div className="text-center mb-16">
@@ -155,6 +157,7 @@ export default function ITINLoans() {
           </Link>
         </div>
       </div>
-    </section>
+      </section>
+    </ITINLoansClient>
   )
 }

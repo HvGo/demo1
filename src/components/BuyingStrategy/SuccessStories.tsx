@@ -2,6 +2,7 @@
 
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
+import SuccessStoriesClient from './SuccessStoriesClient'
 
 export default function SuccessStories() {
   const stories = [

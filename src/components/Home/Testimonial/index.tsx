@@ -8,6 +8,7 @@ import {
     CarouselItem,
     type CarouselApi,
 } from "@/components/ui/carousel";
+import TestimonialClient from "./TestimonialClient";
 import type { DbTestimonial } from "@/lib/queries/content";
 
 type Props = {
@@ -37,8 +38,9 @@ const Testimonial = ({ testimonials }: Props) => {
     };
 
     return (
-        <section className="relative overflow-hidden" id="testimonial" style={{ background: 'linear-gradient(90deg, rgba(39, 59, 168, 1) 0%, rgba(254, 188, 89, 1) 100%)' }}>
-            <div className="absolute right-0">
+        <TestimonialClient>
+            <section className="relative overflow-hidden" id="testimonial" style={{ background: 'linear-gradient(90deg, rgba(39, 59, 168, 1) 0%, rgba(254, 188, 89, 1) 100%)' }}>
+                <div className="absolute right-0">
                 <Image
                     src="/images/testimonial/Vector.png"
                     alt="victor"
@@ -114,7 +116,8 @@ const Testimonial = ({ testimonials }: Props) => {
                     ))}
                 </div>
             </div>
-        </section>
+            </section>
+        </TestimonialClient>
     );
 };
 

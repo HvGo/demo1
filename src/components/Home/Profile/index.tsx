@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { Icon } from '@iconify/react/dist/iconify.js'
+import ProfileClient from './ProfileClient'
 
 import { getSiteSectionByKey } from '@/lib/queries/content'
 
@@ -22,8 +23,9 @@ const Profile = async () => {
   const ctaHref = section?.primaryCtaHref || ''
 
   return (
-    <section id="profile">
-      <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
+    <ProfileClient>
+      <section id="profile">
+        <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
         <div className='grid lg:grid-cols-2 gap-10 items-center'>
           <div className='relative'>
             <Image
@@ -65,8 +67,9 @@ const Profile = async () => {
             ) : null}
           </div>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </ProfileClient>
   )
 }
 

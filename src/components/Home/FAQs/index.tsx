@@ -6,6 +6,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import FAQsClient from './FAQsClient';
 
 import { getFaqs, getSiteSectionByKey } from '@/lib/queries/content';
 
@@ -21,8 +22,9 @@ const FAQ = async () => {
     const imageUrl = section?.imageUrl || '/images/faqs/faq-image.png';
     
     return (
-        <section id='faqs'>
-            <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
+        <FAQsClient>
+            <section id='faqs'>
+                <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
                 <div className="grid lg:grid-cols-2 gap-10 ">
                     <div className='lg:mx-0 mx-auto'>
                         <Image
@@ -63,8 +65,9 @@ const FAQ = async () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+                </div>
+            </section>
+        </FAQsClient>
     );
 };
 

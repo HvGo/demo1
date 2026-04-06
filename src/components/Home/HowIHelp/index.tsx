@@ -1,5 +1,5 @@
 import { getSiteSectionByKey } from "@/lib/queries/content";
-import { Icon } from "@iconify/react";
+import HowIHelpClient from "./HowIHelpClient";
 
 interface Service {
   icon: string;
@@ -93,46 +93,7 @@ const HowIHelp = async () => {
           </p>
         </div>
 
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-          {services.map((service, index) => (
-            <div key={index} className='bg-white dark:bg-dark rounded-lg shadow-lg hover:shadow-xl transition-shadow overflow-hidden'>
-              <div className='p-6 text-white' style={{ backgroundImage: 'linear-gradient(to right, #273ba8, #febc59 )' }}>
-                <h3 className='text-2xl font-bold mb-2'>{service.title}</h3>
-                <p className='text-sm font-semibold opacity-90'>{service.subtitle || ''}</p>
-              </div>
-              <div className='p-6'>
-                <p className='text-gray-600 dark:text-gray-400 mb-6'>{service.description}</p>
-                {service.features && Array.isArray(service.features) && (
-                  <ul className='space-y-3'>
-                    {service.features.map((feature: string, idx: number) => {
-                      const colonIndex = feature.indexOf(':');
-                      const boldPart = colonIndex !== -1 ? feature.substring(0, colonIndex + 1) : '';
-                      const restPart = colonIndex !== -1 ? feature.substring(colonIndex + 1) : feature;
-                      
-                      return (
-                        <li key={idx} className='flex items-start gap-3'>
-                          <Icon icon='mdi:check-circle' width={20} height={20} className='text-teal-500 flex-shrink-0 mt-0.5' />
-                          <span className='text-sm'>
-                            {boldPart && <strong>{boldPart}</strong>}
-                            {restPart}
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-                {service.showButton && (
-                  <div className='mt-12 text-center'>
-                    <a href={service.buttonHref || '#golden-questions'} className='inline-flex items-center gap-2 px-8 py-3  from-primary to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow' style={{ backgroundColor: '#00A86B' }}>
-                      {service.buttonIcon && <Icon icon={service.buttonIcon} width={20} height={20} />}
-                      {service.buttonLabel || 'Schedule Your Session'}
-                    </a>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+        <HowIHelpClient services={services} />
       </div>
     </section>
   );

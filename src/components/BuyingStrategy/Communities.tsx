@@ -2,6 +2,7 @@
 
 import { Icon } from '@iconify/react'
 import Link from 'next/link'
+import CommunitiesClient from './CommunitiesClient'
 
 export default function Communities() {
   const counties = [
@@ -57,23 +58,24 @@ export default function Communities() {
   ]
 
   return (
-    <section id="Comunity" className="py-16 md:py-24 bg-white dark:bg-dark">
-      <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-dark dark:text-white mb-4">
-            Our Strategic Service Areas
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
-            Áreas de Servicio Estratégicas
-          </p>
-          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            &quot;Donde quiera que esté su sueño, nosotros conocemos el camino.&quot; Success in the Utah market requires more than just a license; it requires Local Market Intelligence. From the booming tech corridors of the Silicon Slopes to the historic streets of Ogden, I provide the data-driven strategy you need to win in every zip code across the Wasatch Front.
-          </p>
-        </div>
+    <CommunitiesClient>
+      <section className="py-16 md:py-24 bg-white dark:bg-dark">
+        <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-dark dark:text-white mb-4">
+              Our Strategic Service Areas
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
+              Áreas de Servicio Estratégicas
+            </p>
+            <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              &quot;Donde quiera que esté su sueño, nosotros conocemos el camino.&quot; Success in the Utah market requires more than just a license; it requires Local Market Intelligence. From the booming tech corridors of the Silicon Slopes to the historic streets of Ogden, I provide the data-driven strategy you need to win in every zip code across the Wasatch Front.
+            </p>
+          </div>
 
-        {/* Counties Grid */}
-        <div className="space-y-8 mb-16">
+          {/* Counties Grid */}
+          <div className="space-y-8 mb-16">
           {counties.map((county, index) => (
             <div
               key={index}
@@ -146,29 +148,30 @@ export default function Communities() {
               </div>
             </div>
           ))}
-        </div>
+          </div>
 
-        {/* Search Section */}
-        <div className="rounded-lg p-8 text-center" style={{ backgroundColor: 'rgba(0, 168, 107, 0.1)', borderColor: 'rgba(0, 168, 107, 0.2)', border: '1px solid rgba(0, 168, 107, 0.2)' }}>
-          <h3 className="text-2xl font-bold text-dark dark:text-white mb-4">
-            Find Your Zip Code
-          </h3>
-          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            &quot;No importa el área, nosotros tenemos la estrategia.&quot; 
-          </p>
-          <p> From Salt Lake City to Park City, from Provo to Ogden, we know every market, every lender, and every opportunity.</p>
-          <Link
-            href="/properties"
-            className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg transition-colors"
-            style={{ backgroundColor: '#00A86B' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#008C5A'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00A86B'}
-          >
-            <Icon icon="mdi:home-search" width={20} height={20} className="text-white" />
-            Search Homes by City
-          </Link>
+          {/* Search Section */}
+          <div className="rounded-lg p-8 text-center" style={{ backgroundColor: 'rgba(0, 168, 107, 0.1)', borderColor: 'rgba(0, 168, 107, 0.2)', border: '1px solid rgba(0, 168, 107, 0.2)' }}>
+            <h3 className="text-2xl font-bold text-dark dark:text-white mb-4">
+              Find Your Zip Code
+            </h3>
+            <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              &quot;No importa el área, nosotros tenemos la estrategia.&quot; 
+            </p>
+            <p className="text-gray-700 dark:text-gray-300 mb-6"> From Salt Lake City to Park City, from Provo to Ogden, we know every market, every lender, and every opportunity.</p>
+            <Link
+              href="/properties"
+              className="inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-lg transition-colors"
+              style={{ backgroundColor: '#00A86B' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#008C5A'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00A86B'}
+            >
+              <Icon icon="mdi:home-search" width={20} height={20} className="text-white" />
+              Search Homes by City
+            </Link>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </CommunitiesClient>
   )
 }
