@@ -48,8 +48,8 @@ const Footer = async () => {
               </h2>
               <div className="mt-6">
                 <Image
-                  src="/images/testimonial/Vector3.png"
-                  alt="Logo"
+                  src="/images/Gallery/logo-final.png"
+                  alt="Logo Final"
                   width={300}
                   height={300}
                   className="object-contain"

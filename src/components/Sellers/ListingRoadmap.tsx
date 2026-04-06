@@ -31,7 +31,7 @@ export default function ListingRoadmap() {
     {
       number: 3,
       title: 'High-Impact Digital Launch',
-      subtitle: 'The Marketing: Maximum Exposure | Exposición Total',
+      subtitle: 'The Marketing: Maximum Exposure | Marketing Total',
       items: [
         'Visual Suite: Your home is captured with Premium Photography, Cinematic Video, 3D Matterport, and Drone footage.',
         'Omni-Channel Ads: We launch aggressive campaigns across YouTube, Facebook, Instagram, and TikTok.',
