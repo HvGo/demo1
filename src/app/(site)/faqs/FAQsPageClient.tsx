@@ -10,7 +10,6 @@ import {
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface FAQ {
-    id: string;
     question: string;
     answer: string;
 }

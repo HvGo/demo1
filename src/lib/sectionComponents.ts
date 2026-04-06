@@ -7,13 +7,12 @@ import FAQ from '@/components/Home/FAQs'
 import FeaturedProperty from '@/components/Home/FeaturedProperty'
 import Properties from '@/components/Home/Properties'
 import Services from '@/components/Home/Services'
-import GetInTouch from '@/components/Home/GetInTouch'
 import Stats from '@/components/Home/Stats'
 import HowIHelp from '@/components/Home/HowIHelp'
 import VideoSection from '@/components/Home/VideoSection'
 import LocalExpertise from '@/components/Home/LocalExpertise'
 
-export const SECTION_COMPONENTS: Record<string, React.ComponentType<any>> = {
+export const SECTION_COMPONENTS: Record<string, React.ComponentType<unknown>> = {
   'home_hero': Hero,
   'home_hero_description': HeroDescription,
   'home_stats': Stats,
