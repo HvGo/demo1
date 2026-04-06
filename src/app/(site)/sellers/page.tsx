@@ -1,6 +1,4 @@
 import { HeroSection } from '@/components/Sellers/HeroSection'
-import { MarketingPower } from '@/components/Sellers/MarketingPower'
-import { SellingProcess } from '@/components/Sellers/SellingProcess'
 import ThreeTierMarketAnalysis from '@/components/Sellers/ThreeTierMarketAnalysis'
 import SellingRealities from '@/components/Sellers/SellingRealities'
 import ListingRoadmap from '@/components/Sellers/ListingRoadmap'

@@ -24,7 +24,7 @@ export const MarketingPower = () => {
 
       <div className="text-center mb-16">
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            "Selling your home isn't about luck; it's about a data-driven strategy designed to protect your equity." "Vender su casa no es cuestión de suerte; es una estrategia basada en datos diseñada para proteger su patrimonio."
+            &quot;Selling your home isn&apos;t about luck; it&apos;s about a data-driven strategy designed to protect your equity.&quot; &quot;Vender su casa no es cuestión de suerte; es una estrategia basada en datos diseñada para proteger su patrimonio.&quot;
           </p>
       </div>
 
