@@ -32,7 +32,7 @@ export const MarketingPower = () => {
         <div className='text-center mb-12 md:mb-16'>
           <h2 className='text-3xl md:text-4xl font-bold mb-4'>The Three-Tier Market Analysis</h2>
           <p className='text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto'>
-            We determine your home's winning price by looking at the market from three critical angles to understand exactly what buyers are doing right now:
+            We determine your home&apos;s winning price by looking at the market from three critical angles to understand exactly what buyers are doing right now:
           </p>
         </div>
 
