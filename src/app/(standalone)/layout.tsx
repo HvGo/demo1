@@ -4,6 +4,7 @@ import '../globals.css'
 import { ThemeProvider } from 'next-themes'
 import NextTopLoader from 'nextjs-toploader'
 import SessionProviderComp from '@/components/nextauth/SessionProvider'
+import { LinkinbioHeader } from '@/components/Layout/LinkinbioHeader'
 
 const font = Bricolage_Grotesque({ subsets: ['latin'] })
 
@@ -26,6 +27,7 @@ export default function StandaloneLayout({
             attribute='class'
             enableSystem={true}
             defaultTheme='light'>
+            <LinkinbioHeader />
             {children}
           </ThemeProvider>
         </SessionProviderComp>
