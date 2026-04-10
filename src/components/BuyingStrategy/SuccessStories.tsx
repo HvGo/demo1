@@ -7,32 +7,32 @@ import SuccessStoriesClient from './SuccessStoriesClient'
 export default function SuccessStories() {
   const stories = [
     {
-      title: 'The "Hand-Holding" Experience',
-      subtitle: 'First-Time Buyers',
+      title: 'First-Time Buyers',
+      subtitle: '',
       quote: '"Ivan and his team were incredibly patient and took the time to answer every question, providing clear, thoughtful guidance every step of the way. He made what could have been a stressful experience feel simple and easy to understand for a first-time buyer like me."',
       author: 'Carlos Gonzalez',
       strategy: 'We use informational videos and step-by-step guides to ensure you are never in the dark.',
       spanishTip: 'Guía paso a paso para que su primera compra sea sin estrés y con total claridad.'
     },
     {
-      title: 'The Negotiation Winners',
-      subtitle: 'Grants & Credits',
+      title: 'Grants & Credits',
+      subtitle: '',
       quote: '"Ivan junto con Lissy nos llevaron prácticamente de la mano. En la negociación me consiguió mucho más de lo que esperaba para los gastos de cierre y para comprar interés. Son muy profesionales, 100% recomendados."',
       author: 'Juan Roman',
       strategy: 'We don\'t just find the house; we negotiate the Seller Credits and Interest Rate Buy-downs that make the payment affordable.',
       spanishTip: 'Maximizamos sus beneficios negociando créditos del vendedor y bajando su tasa de interés.'
     },
     {
-      title: 'The ITIN Milestone',
-      subtitle: 'Dignity & Legacy',
+      title: 'Dignity & Legacy',
+      subtitle: '',
       quote: '"Iván me ayudó muy bien con la compra de mi casa, estoy muy agradecido y muy contento. Ivan is the best realtor in Utah, he makes the process so easy and is so professional."',
       author: 'Jose Tapia',
       strategy: 'We specialize in ITIN lending, connecting families with local credit unions that offer competitive terms and no monthly mortgage insurance (PMI).',
       spanishTip: 'Especialistas en préstamos con ITIN. Su estatus no es un obstáculo para construir su patrimonio.'
     },
     {
-      title: 'The Maximum Equity Sellers',
-      subtitle: 'Listing Strategy',
+      title: 'Listing Strategy',
+      subtitle: '',
       quote: '"Ivan helped us develop the right pricing strategy, advised us on improving the condition of the house, and created a strong marketing campaign. Thanks to his strategy, we sold for $15,000 more than expected."',
       author: 'Hugo Hartley',
       strategy: 'As a Broker-Owner, I use advanced marketing—including 3D tours and targeted video—to ensure your home stands out and sells for top dollar.',

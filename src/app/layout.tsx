@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { Bricolage_Grotesque } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Layout/Header'
-import Footer from '@/components/Layout/Footer'
+import FooterContent from '@/components/Layout/Footer'
+import { FooterWrapper } from '@/components/Layout/Footer/FooterWrapper'
 import { ThemeProvider } from 'next-themes'
 import NextTopLoader from 'nextjs-toploader';
 import SessionProviderComp from '@/components/nextauth/SessionProvider'
@@ -49,8 +50,12 @@ export default async function RootLayout({
             <Header config={headerSection?.contentData}
               isVisible={headerSection?.isVisible ?? true}
             />
-            {children}
-            <Footer />
+            <div className="min-h-screen">
+              {children}
+            </div>
+            <FooterWrapper>
+              <FooterContent />
+            </FooterWrapper>
           </ThemeProvider>
         </SessionProviderComp>
       </body>

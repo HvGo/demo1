@@ -50,6 +50,8 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
   const { theme, setTheme } = useTheme()
   const pathname = usePathname()
 
+  if (pathname === '/linkinbio') return null
+
   const sideMenuRef = useRef<HTMLDivElement>(null)
 
   const handleClickOutside = (event: MouseEvent) => {

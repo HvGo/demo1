@@ -5,7 +5,7 @@ import { FooterLinks } from "@/app/api/footerlinks";
 import { getSiteSectionByKey, getContactInfo } from "@/lib/queries/content";
 import Map from "@/components/Map";
 
-const Footer = async () => {
+const FooterContent = async () => {
   const section = await getSiteSectionByKey('home_footer');
   const contactInfo = await getContactInfo();
   
@@ -145,4 +145,4 @@ Ayudamos a comprar, vender e invertir en propiedades en las principales áreas d
   );
 };
 
-export default Footer;
+export default FooterContent;
