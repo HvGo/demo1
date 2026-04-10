@@ -22,7 +22,7 @@ const FAQsPage = async () => {
     const title = section?.title || 'FAQs';
     const subtitle = section?.subtitle || 'Everything about Real Estate';
     const description = section?.description || 'We know that buying, selling, or investing in real estate can be overwhelming. Here are some frequently asked questions to help guide you through the process';
-    const imageUrl = section?.imageUrl || '/images/faqs/faq-image.png';
+    const imageUrl = '/images/faqs/imgfaqs2.png?v=' + Date.now();
     
     return (
         <>

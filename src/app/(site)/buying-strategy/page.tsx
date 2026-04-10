@@ -5,7 +5,6 @@ import ITINLoans from '@/components/BuyingStrategy/ITINLoans'
 import Communities from '@/components/BuyingStrategy/Communities'
 import SuccessStories from '@/components/BuyingStrategy/SuccessStories'
 import BuyingRoadmap from '@/components/BuyingStrategy/BuyingRoadmap'
-import PaymentCalculator from '@/components/BuyingStrategy/PaymentCalculator'
 
 export const metadata = {
   title: 'Buying Strategy | Blue Key Realty',
@@ -32,9 +31,6 @@ export default function BuyingStrategy() {
 
         {/* Section 5: Buying Roadmap */}
         <BuyingRoadmap />
-
-        {/* Section 6: Payment Calculator */}
-        <PaymentCalculator />
       </main>
 
       <FloatingBubbles />
