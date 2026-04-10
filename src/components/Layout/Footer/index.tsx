@@ -41,11 +41,13 @@ const Footer = async () => {
         <div className="py-16 border-b border-white/10">
           <div className="grid grid-cols-12 sm:gap-10 gap-y-6">
             <div className="md:col-span-5 col-span-12">
-              <h2 className="text-white leading-[1.2] text-40 font-medium mb-6 lg:max-w-3/4">
-                {title}
-                <br />
-                {subtitle}
-              </h2>
+              <h3 className="text-white mb-3">
+                Ivan Navincopa – Blue Key Realty se esfuerza por mantener la información precisa y actualizada; sin embargo, no garantiza la exactitud o integridad total de los datos. Cualquier uso de esta información es bajo su propia responsabilidad. Estamos comprometidos a brindar una experiencia accesible para todos. Si tiene algún problema de accesibilidad, por favor contáctenos y con gusto le asistiremos.  
+              </h3>
+              <h3 className="text-white mb-3">  
+              Especialistas en bienes raíces en Utah
+Ayudamos a comprar, vender e invertir en propiedades en las principales áreas del estado, incluyendo Salt Lake City, West Jordan, South Jordan, West Valley City, Herriman, Draper, Sandy, Midvale, Magna, Kearns, Murray, Riverton, Bluffdale, Utah County, Davis County y Tooele County, entre otras zonas en crecimiento.
+              </h3>
               <div className="mt-6">
                 <Image
                   src="/images/Gallery/logo-final.png"

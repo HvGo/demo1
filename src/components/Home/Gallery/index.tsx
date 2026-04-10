@@ -46,9 +46,7 @@ const Gallery: React.FC<GalleryProps> = ({ title = 'Gallery', subtitle, items })
       <div className='container max-w-8xl mx-auto px-5 2xl:px-0'>
         {/* Header */}
         <div className='text-center mb-12 md:mb-16'>
-          <h2 className='text-4xl md:text-5xl font-bold text-dark dark:text-white mb-4'>
-            {title}
-          </h2>
+
           {subtitle && (
             <p className='text-lg text-dark/60 dark:text-white/60 max-w-2xl mx-auto'>
               {subtitle}
@@ -57,7 +55,7 @@ const Gallery: React.FC<GalleryProps> = ({ title = 'Gallery', subtitle, items })
         </div>
 
         {/* Gallery Grid */}
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
+        <div className={`grid gap-6 md:gap-8 ${items.length === 1 ? 'grid-cols-1 max-w-md mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
           {items.map((item, index) => (
             <div
               key={item.id}
