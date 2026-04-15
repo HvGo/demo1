@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-primary-navy: #001F3F;
+  --color-accent-gold: #CAA037;
+  --color-surface-light: #f8f9fa;
+}
+
+* {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Outfit", sans-serif;
+}
+
+body {
+  color: #191c1d;
+  background-color: white;
+}
+
+/* Color utilities */
+.text-primary-navy {
+  color: var(--color-primary-navy);
+}
+
+.bg-primary-navy {
+  background-color: var(--color-primary-navy);
+}
+
+.text-accent-gold {
+  color: var(--color-accent-gold);
+}
+
+.bg-accent-gold {
+  background-color: var(--color-accent-gold);
+}
+
+.shadow-accent-gold\/20 {
+  box-shadow: 0 10px 15px -3px rgba(202, 160, 55, 0.2);
+}
+
+.border-accent-gold {
+  border-color: var(--color-accent-gold);
+}
+
+.border-accent-gold\/30 {
+  border-color: rgba(202, 160, 55, 0.3);
+}
+
+/* Responsive utilities */
+@media (max-width: 1024px) {
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:w-1\/3 {
+    width: 33.333333%;
+  }
+
+  .lg\:w-2\/3 {
+    width: 66.666667%;
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:p-8 {
+    padding: 2rem;
+  }
+
+  .lg\:gap-10 {
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hidden {
+    display: none;
+  }
+
+  .lg\:flex {
+    display: none;
+  }
+
+  .lg\:w-1\/3 {
+    width: 100%;
+  }
+
+  .lg\:w-2\/3 {
+    width: 100%;
+  }
+
+  .lg\:flex-row {
+    flex-direction: column;
+  }
+
+  .lg\:p-8 {
+    padding: 1.5rem;
+  }
+}

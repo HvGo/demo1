@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
   const { theme, setTheme } = useTheme()
   const pathname = usePathname()
 
-  if (pathname === '/linkinbio') return null
+  if (pathname === '/linkinbio' || pathname === '/ivan-utah') return null
 
   const sideMenuRef = useRef<HTMLDivElement>(null)
 
