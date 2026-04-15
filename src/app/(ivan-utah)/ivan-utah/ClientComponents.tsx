@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronRight } from 'lucide-react'
 
 interface Testimonial {
   name: string
@@ -11,14 +10,10 @@ interface Testimonial {
 }
 
 interface ClientComponentsProps {
-  whatsappHref: string
   whatsAppNumber: string
 }
 
-export function IvanUtahClient({ whatsappHref, whatsAppNumber }: ClientComponentsProps) {
-  const [housePrice, setHousePrice] = useState(450000)
-  const [downPaymentPercent, setDownPaymentPercent] = useState(3.5)
-  const [interestRate, setInterestRate] = useState(6.5)
+export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
   const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null)
   const [formData, setFormData] = useState({
     name: '',
@@ -26,18 +21,6 @@ export function IvanUtahClient({ whatsappHref, whatsAppNumber }: ClientComponent
     email: '',
     address: ''
   })
-
-  const calculateMonthlyPayment = () => {
-    const principal = housePrice * (1 - downPaymentPercent / 100)
-    const monthlyRate = interestRate / 100 / 12
-    const numberOfPayments = 30 * 12
-
-    if (monthlyRate === 0) return (principal / numberOfPayments).toFixed(2)
-
-    const payment = (principal * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / 
-                    (Math.pow(1 + monthlyRate, numberOfPayments) - 1)
-    return payment.toFixed(2)
-  }
 
   const handleConsultationClick = () => {
     window.location.href = '/contactus'
