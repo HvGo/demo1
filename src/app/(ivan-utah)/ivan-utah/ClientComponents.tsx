@@ -49,32 +49,8 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
 
   return (
     <>
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold tracking-tighter text-primary-navy">IVAN UTAH REALTOR</span>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <div className="hidden lg:flex flex-col items-end mr-4">
-                <span className="text-xs text-gray-500 uppercase tracking-widest">Call us</span>
-                <span className="text-sm font-bold text-primary-navy">{whatsAppNumber}</span>
-              </div>
-              <button 
-                onClick={handleConsultationClick}
-                className="bg-accent-gold text-white px-6 py-2.5 rounded-sm font-bold text-sm hover:bg-opacity-90 transition-all shadow-lg shadow-accent-gold/20"
-              >
-                CONSULTATION
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
-      <section className="relative w-full h-screen overflow-hidden">
+      <section className="relative w-full min-h-screen overflow-hidden">
         <picture>
           <source media="(max-width: 768px)" srcSet="/images/ivan-utah/portada_movil.jpg" />
           <img 
@@ -85,168 +61,191 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
         </picture>
         <div className="absolute inset-0 bg-black/40"></div>
         
-        <div className="relative z-10 h-full flex flex-col justify-center">
-          <div className="max-w-7xl mx-auto px-1 sm:px-3 lg:px-5 w-full">
+        <div className="relative z-10 h-full flex flex-col justify-center py-4 sm:py-0">
+          <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-5 w-full">
             {/* Main Headline - Top */}
             <div 
               style={{
                 animation: `fadeInDown 0.6s ease-out`,
               }}
-              className="text-center mb-12"
+              className="text-center mb-6 sm:mb-12"
             >
-              <h2 className="text-4xl lg:text-5xl font-bold leading-tight max-w-4xl mx-auto" style={{ fontFamily: 'Impact, sans-serif' }}>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight max-w-4xl mx-auto" style={{ fontFamily: 'Impact, sans-serif' }}>
                 <div style={{
-                  color: '#ffffff',
                   textShadow: '3px 3px 0 rgba(0, 0, 0, 1), 6px 6px 12px rgba(0, 0, 0, 0.9), -2px -2px 0 rgba(0, 0, 0, 0.8)',
                   WebkitTextStroke: '0.2px rgba(0, 0, 0, 0.8)',
                   fontFamily: 'Impact, sans-serif'
                 }}>
-                  ¡NO PIERDAS MILES DE DOLARES POR UN MAL CONSEJO!.
+                  <span style={{ color: '#CAA037' }}>Un mal consejo</span> <span style={{ color: '#ffffff' }}>puede costarte</span>
+                </div>
+                <div style={{
+                  color: '#ffffff',
+                  textShadow: '3px 3px 0 rgba(0, 0, 0, 1), 6px 6px 12px rgba(0, 0, 0, 0.9), -2px -2px 0 rgba(0, 0, 0, 0.8)',
+                  WebkitTextStroke: '0.2px rgba(0, 0, 0, 0.8)',
+                  fontFamily: 'Impact, sans-serif',
+                  position: 'relative',
+                  display: 'inline-block'
+                }}>
+                  miles de dólares.
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '-8px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '80%',
+                    height: '3px',
+                    backgroundColor: '#CAA037',
+                    borderRadius: '2px'
+                  }}></div>
                 </div>
               </h2>
             </div>
 
-            {/* Content Grid - Testimonials + Image on Left, Form on Right */}
-            <div className="grid lg:grid-cols-2 gap-8 items-start">
-              {/* Left Side - Testimonials (Vertical) + Image */}
-              <div
-                style={{
-                  animation: `slideInLeft 0.6s ease-out 0.2s both`,
-                }}
-                className="flex flex-col lg:flex-row gap-6 items-start"
-              >
-                {/* Testimonials Section - Vertical on Left */}
-                <div className="w-full lg:w-1/3 space-y-4">
-                  <h3 className="text-white font-bold text-lg">TESTIMONIOS DE CLIENTES SATISFECHOS</h3>
-                  {testimonials.map((testimonial, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => setSelectedTestimonial(testimonial)}
-                      style={{
-                        animation: `fadeInUp 0.6s ease-out ${0.1 + idx * 0.1}s both`,
-                      }}
-                      className="bg-white/10 backdrop-blur-md p-4 rounded-lg border border-white/20 cursor-pointer hover:bg-white/20 transition-all"
-                    >
-                      <div className="flex gap-3 mb-3">
-                        <img
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          className="w-10 h-10 rounded-full object-cover border border-accent-gold"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://via.placeholder.com/40'
-                          }}
-                        />
-                        <div>
-                          <p className="text-accent-gold font-bold text-sm">{testimonial.name}</p>
-                          <div className="flex gap-0.5">
-                            {[...Array(5)].map((_, i) => (
-                              <span key={i} className="text-accent-gold text-[10px]">★</span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-white text-xs leading-tight line-clamp-4">&ldquo;{testimonial.shortText}&rdquo;</p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Ivan Image with Stat Badges - Right of Testimonials */}
-                <div className="relative w-full lg:w-2/3">
+            {/* Main Content Grid - Image + Badges on Left, Form on Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-8 items-end">
+              {/* Left Side - Ivan Image + Badges */}
+              <div className="w-full">
+                <div className="relative w-full">
                   <img 
-                    src="/images/ivan-utah/ivan.png" 
+                    src="/images/ivan-utah/ivan2.png" 
                     alt="Ivan Utah Realtor" 
                     className="w-full h-auto object-cover rounded-lg shadow-xl"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none'
                     }}
                   />
-                  
-                  {/* Stat Badges */}
-                  <div className="absolute top-4 left-4 bg-white/95 rounded-lg p-3 shadow-lg">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary-navy">23</div>
-                      <div className="text-xs font-bold text-gray-600 uppercase">Años de<br/>Experiencia</div>
-                    </div>
+                </div>
+                
+                {/* Stat Badges - Below Image in Row */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-0">
+                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-3 sm:p-4 text-center">
+                    <div className="text-xl sm:text-2xl font-bold text-accent-gold">22+</div>
+                    <div className="text-xs sm:text-sm font-bold text-white uppercase">Years<br/>Experience</div>
                   </div>
 
-                  <div className="absolute top-4 right-4 bg-white/95 rounded-lg p-3 shadow-lg">
-                    <div className="text-center">
-                      <div className="text-sm font-bold text-primary-navy">TOP</div>
-                      <div className="text-xs font-bold text-gray-600 uppercase">Experiencia</div>
-                      <div className="text-lg font-bold text-accent-gold mt-1">500</div>
-                      <div className="text-xs font-bold text-gray-600">SL Realtor</div>
-                    </div>
+                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-3 sm:p-4 text-center">
+                    <div className="text-xl sm:text-2xl font-bold text-accent-gold">1,100+</div>
+                    <div className="text-xs sm:text-sm font-bold text-white uppercase">Families<br/>Served</div>
                   </div>
 
-                  <div className="absolute bottom-4 right-4 bg-white/95 rounded-lg p-3 shadow-lg">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary-navy">+1,200</div>
-                      <div className="text-xs font-bold text-gray-600 uppercase">Familias<br/>Ayudadas</div>
-                    </div>
+                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-3 sm:p-4 text-center">
+                    <div className="text-xl sm:text-2xl font-bold text-accent-gold">Top 500</div>
+                    <div className="text-xs sm:text-sm font-bold text-white uppercase">Salt Lake<br/>City Realtor</div>
                   </div>
 
-                  <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded-full font-bold shadow-lg">
-                    VENDIDO / SOLD
+                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-3 sm:p-4 text-center">
+                    <div className="text-xl sm:text-2xl font-bold text-accent-gold">Bilingual</div>
+                    <div className="text-xs sm:text-sm font-bold text-white uppercase">Spanish &<br/>English</div>
                   </div>
                 </div>
               </div>
 
-              {/* Right Side - Evaluation Form */}
-              <div
-                style={{
-                  animation: `slideInRight 0.6s ease-out 0.3s both`,
-                }}
-                className="bg-black/40 backdrop-blur-md p-6 lg:p-8 rounded-sm shadow-xl border-t-8 border-accent-gold"
-              >
-                <h3 className="text-2xl font-bold text-white mb-2">OBTENER MI ANÁLISIS DE MERCADO GRATUITO</h3>
-                <p className="text-xs text-gray-300 mb-6">Dirección de la propiedad (requerido)</p>
-                
-                <form onSubmit={handleFormSubmit} className="space-y-4">
-                  <div>
-                    <input 
-                      type="text" 
-                      placeholder="Tu Nombre Completo"
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full bg-white/20 border border-white/30 p-3 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <input 
-                      type="tel" 
-                      placeholder="Tu Teléfono / WhatsApp (muy importante)"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      className="w-full bg-white/20 border border-white/30 p-3 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <input 
-                      type="email" 
-                      placeholder="Tu Correo Electrónico"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full bg-white/20 border border-white/30 p-3 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <input 
-                      type="text" 
-                      placeholder="Dirección de la propiedad (requerido)"
-                      value={formData.address}
-                      onChange={(e) => setFormData({...formData, address: e.target.value})}
-                      className="w-full bg-white/20 border border-white/30 p-3 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-sm"
-                    />
+              {/* Right Side - Client Reviews + Form */}
+              <div className="w-full space-y-6">
+                {/* Client Reviews Section */}
+                <div className="w-full">
+                  <div className="text-center mb-4">
+                    <h3 className="text-white font-bold text-lg sm:text-xl mb-2">Client Reviews</h3>
+                    <div className="w-20 h-1 bg-accent-gold mx-auto rounded-full"></div>
                   </div>
 
-                  <button type="submit" className="w-full bg-accent-gold text-white py-3 rounded-sm font-bold hover:bg-opacity-90 transition-all text-sm">
-                    OBTENER MI ANÁLISIS DE MERCADO GRATUITO
-                  </button>
+                  {/* Testimonials Grid - Smaller boxes */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {testimonials.map((testimonial, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => setSelectedTestimonial(testimonial)}
+                        style={{
+                          animation: `fadeInUp 0.6s ease-out ${0.1 + idx * 0.1}s both`,
+                        }}
+                        className="bg-white/95 p-3 rounded-lg cursor-pointer hover:shadow-lg transition-all"
+                      >
+                        {/* Stars */}
+                        <div className="flex gap-0.5 mb-2">
+                          {[...Array(5)].map((_, i) => (
+                            <span key={i} className="text-accent-gold text-sm">★</span>
+                          ))}
+                        </div>
+
+                        {/* Review Text */}
+                        <p className="text-gray-700 text-xs leading-tight mb-2 line-clamp-2">&ldquo;{testimonial.shortText}&rdquo;</p>
+
+                        {/* Author with Photo */}
+                        <div className="flex items-center gap-2">
+                          <img
+                            src={testimonial.image}
+                            alt={testimonial.name}
+                            className="w-8 h-8 rounded-full object-cover border-2 border-accent-gold"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://via.placeholder.com/32'
+                            }}
+                          />
+                          <div>
+                            <p className="text-primary-navy font-bold text-xs">{testimonial.name}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Evaluation Form */}
+                <div
+                  style={{
+                    animation: `slideInRight 0.6s ease-out 0.3s both`,
+                  }}
+                  className="bg-black/40 backdrop-blur-md p-4 sm:p-6 rounded-sm shadow-xl border-t-8 border-accent-gold"
+                >
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2">OBTENER MI ANÁLISIS DE MERCADO GRATUITO</h3>
+                  <p className="text-xs text-gray-300 mb-4">Dirección de la propiedad (requerido)</p>
                   
-                  <p className="text-[9px] text-gray-300 text-center">
-                    Recibe el valor de tu casa en 5 minutos.
-                  </p>
-                </form>
+                  <form onSubmit={handleFormSubmit} className="space-y-3">
+                    <div>
+                      <input 
+                        type="text" 
+                        placeholder="Tu Nombre Completo"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        className="w-full bg-white/20 border border-white/30 p-2 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-xs"
+                      />
+                    </div>
+                    <div>
+                      <input 
+                        type="tel" 
+                        placeholder="Tu Teléfono / WhatsApp (muy importante)"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        className="w-full bg-white/20 border border-white/30 p-2 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-xs"
+                      />
+                    </div>
+                    <div>
+                      <input 
+                        type="email" 
+                        placeholder="Tu Correo Electrónico"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        className="w-full bg-white/20 border border-white/30 p-2 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-xs"
+                      />
+                    </div>
+                    <div>
+                      <input 
+                        type="text" 
+                        placeholder="Dirección de la propiedad (requerido)"
+                        value={formData.address}
+                        onChange={(e) => setFormData({...formData, address: e.target.value})}
+                        className="w-full bg-white/20 border border-white/30 p-2 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-xs"
+                      />
+                    </div>
+
+                    <button type="submit" className="w-full bg-accent-gold text-white py-2 rounded-sm font-bold hover:bg-opacity-90 transition-all text-xs">
+                      OBTENER MI ANÁLISIS DE MERCADO GRATUITO
+                    </button>
+                    
+                    <p className="text-[9px] text-gray-300 text-center">
+                      Recibe el valor de tu casa en 5 minutos.
+                    </p>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
@@ -259,7 +258,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
       {/* Testimonial Modal */}
       {selectedTestimonial && (
         <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4"
           onClick={() => setSelectedTestimonial(null)}
         >
           <div
@@ -267,34 +266,34 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
               animation: `scaleIn 0.3s ease-out`,
             }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-primary-navy rounded-lg shadow-2xl max-w-2xl w-full p-8 border border-accent-gold/30"
+            className="bg-primary-navy rounded-lg shadow-2xl max-w-2xl w-full p-4 sm:p-6 lg:p-8 border border-accent-gold/30 max-h-[85vh] overflow-y-auto"
           >
-            <div className="flex items-start gap-4 mb-6">
+            <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
               <img
                 src={selectedTestimonial.image}
                 alt={selectedTestimonial.name}
-                className="w-16 h-16 rounded-full object-cover border-2 border-accent-gold flex-shrink-0"
+                className="w-12 sm:w-14 lg:w-16 h-12 sm:h-14 lg:h-16 rounded-full object-cover border-2 border-accent-gold flex-shrink-0"
                 onError={(e) => {
                   e.currentTarget.src = 'https://via.placeholder.com/64'
                 }}
               />
               <div>
-                <h3 className="text-2xl font-bold text-white">{selectedTestimonial.name}</h3>
+                <h3 className="text-base sm:text-lg lg:text-2xl font-bold text-white">{selectedTestimonial.name}</h3>
                 <div className="flex gap-1 mt-2">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-accent-gold">★</span>
+                    <span key={i} className="text-accent-gold text-xs sm:text-sm">★</span>
                   ))}
                 </div>
               </div>
             </div>
             
-            <p className="text-gray-200 leading-relaxed whitespace-pre-line mb-6">
+            <p className="text-xs sm:text-sm lg:text-base text-gray-200 leading-relaxed whitespace-pre-line mb-4 sm:mb-6">
               {selectedTestimonial.fullText}
             </p>
             
             <button
               onClick={() => setSelectedTestimonial(null)}
-              className="w-full bg-accent-gold text-primary-navy py-3 rounded-sm font-bold hover:bg-opacity-90 transition-all"
+              className="w-full bg-accent-gold text-primary-navy py-2 sm:py-3 rounded-sm font-bold hover:bg-opacity-90 transition-all text-xs sm:text-sm lg:text-base"
             >
               Cerrar
             </button>
