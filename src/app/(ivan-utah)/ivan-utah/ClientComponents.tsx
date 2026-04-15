@@ -145,7 +145,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                           </div>
                         </div>
                       </div>
-                      <p className="text-white text-xs leading-tight line-clamp-4">"{testimonial.shortText}"</p>
+                      <p className="text-white text-xs leading-tight line-clamp-4">&ldquo;{testimonial.shortText}&rdquo;</p>
                     </div>
                   ))}
                 </div>
