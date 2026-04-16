@@ -59,7 +59,7 @@ export default function Communities() {
 
   return (
     <CommunitiesClient>
-      <section className="py-16 md:py-24 bg-white dark:bg-dark">
+      <section id="Communities" className="py-16 md:py-24 bg-white dark:bg-dark">
         <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
           {/* Header */}
           <div className="text-center mb-16">

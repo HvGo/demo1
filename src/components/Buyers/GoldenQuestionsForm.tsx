@@ -133,7 +133,7 @@ export const GoldenQuestionsForm = ({ onSuccess }: GoldenQuestionsFormProps = {}
             {/* Question 2 */}
             <div>
               <label className='block text-sm font-semibold mb-3'>
-                <span className='text-primary'>2.</span> ¿Cuál es tu rango de crédito estimado?
+                <span className='text-primary'>2.</span> ¿Cuál es tu puntaje de crédito aproximado?
               </label>
               <select
                 name='creditScore'
@@ -146,6 +146,7 @@ export const GoldenQuestionsForm = ({ onSuccess }: GoldenQuestionsFormProps = {}
                 <option value='660+'>660+</option>
                 <option value='700+'>700+</option>
                 <option value='750+'>750+</option>
+                <option value='0'>No sé mi credito</option>
               </select>
               {getFieldError('creditScore') && (
                 <p className='text-red-500 text-sm mt-2'>{getFieldError('creditScore')}</p>

@@ -28,7 +28,7 @@ export default function ThreeTierMarketAnalysis() {
           description: 'We evaluate your direct competition to ensure your home hits the market as the most attractive option available.'
         }
       ],
-      bilingual: 'No adivinamos el precio; usamos datos reales de casas vendidas y activas para asegurar que usted reciba el valor máximo.'
+      bilingual: 'No adivinamos el precio; usamos datos reales de casas vendidas y analizamos tu competencia para que recibas tu valor máximo.'
     },
     {
       title: 'Elite Preparation & Premium Media',
@@ -57,7 +57,7 @@ export default function ThreeTierMarketAnalysis() {
     {
       title: 'Negotiation & The "Broker-Owner" Advantage',
       subtitle: 'Negociación',
-      intro: 'With 20+ years of experience and the trust of 1,000+ families, I manage the most critical phase: the negotiation.',
+      intro: 'With 22+ years of experience and the trust of 1,100+ families, I manage the most critical phase: the negotiation.',
       features: [
         'Strategic Terms: We negotiate stronger terms, interest rate buy-downs, and concessions to maximize your net profit.',
         'Buyer Vetting: We ensure a buyer\'s financing is secure before you ever sign a contract.',

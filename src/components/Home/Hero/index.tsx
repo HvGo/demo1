@@ -76,7 +76,7 @@ const Hero = async () => {
   
   <div className='relative text-white text-center z-10 mt-auto w-full'> {/* Solo mt-auto aquí */}
     <p className="text-xl sm:text-2xl font-bold mx-auto pb-0 md:pb-0 uppercase text-center" style={{ fontFamily: "'Oswald', system-ui, sans-serif", color: '#FFFFFF', textShadow: '-2px -2px 0 #1a1a1a, 2px -2px 0 #1a1a1a, -2px 2px 0 #1a1a1a, 2px 2px 0 #1a1a1a, -2px 0 0 #1a1a1a, 2px 0 0 #1a1a1a, 0 -2px 0 #1a1a1a, 0 2px 0 #1a1a1a, 0 4px 8px rgba(0,0,0,0.9)' } as React.CSSProperties}>{subtitle}</p>
-    <h1 className='text-4xl sm:text-5xl font-black mx-auto mt-2 md:mt-4 mb-4 md:mb-6 pb-0 md:pb-0 capitalize' style={{ fontFamily: '"Noto Color Emoji"', color: '#fad057', letterSpacing: '0.02em', textShadow: '-2px -2px 0 #1a1a1a, 2px -2px 0 #1a1a1a, -2px 2px 0 #1a1a1a, 2px 2px 0 #1a1a1a, -3px 0 0 #1a1a1a, 3px 0 0 #1a1a1a, 0 -3px 0 #1a1a1a, 0 3px 0 #1a1a1a, 0 4px 8px rgba(0,0,0,0.8)' } as React.CSSProperties}>
+    <h1 className='text-4xl sm:text-5xl font-black mx-auto mt-2 md:mt-4 mb-4 md:mb-6 pb-0 md:pb-0 capitalize max-w-4xl' style={{ fontFamily: '"Noto Color Emoji"', color: '#fad057', letterSpacing: '0.02em', textShadow: '-2px -2px 0 #1a1a1a, 2px -2px 0 #1a1a1a, -2px 2px 0 #1a1a1a, 2px 2px 0 #1a1a1a, -3px 0 0 #1a1a1a, 3px 0 0 #1a1a1a, 0 -3px 0 #1a1a1a, 0 3px 0 #1a1a1a, 0 4px 8px rgba(0,0,0,0.8)', wordWrap: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal', fontStretch: 'normal' } as React.CSSProperties}>
       {title}
     </h1>
     

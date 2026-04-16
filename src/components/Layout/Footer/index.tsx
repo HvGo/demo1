@@ -84,9 +84,9 @@ Ayudamos a comprar, vender e invertir en propiedades en las principales áreas d
                     )}
                     {contactInfo.address && (
                       <div className="flex items-start gap-2">
-                        <Icon icon="ph:map-pin" width={18} height={18} className="text-primary mt-0.5" />
-                        <p className="text-white/40 text-sm">Office:</p>
-                        <p className="text-white/40 text-sm">
+                        <Icon icon="ph:map-pin" width={18} height={18} className="text-primary mt-0.5 hover:text-white" />
+                        <p className="text-white/40 text-sm hover:text-white">Office:</p>
+                        <p className="text-white/40 text-sm hover:text-white">
                           {contactInfo.address}
                         </p>
                       </div>
@@ -95,7 +95,7 @@ Ayudamos a comprar, vender e invertir en propiedades en las principales áreas d
                 </div>
                 <div>
                   <h3 className="text-white font-semibold mb-3">Hours</h3>
-                  <div className="flex flex-col gap-2 text-white/40 text-sm">
+                  <div className="flex flex-col gap-2 text-white/40 text-sm hover:text-white">
                     <p>Monday – Friday: 9:00 a.m. – 6:00 p.m.</p>
                     <p>Saturday: 9:00 a.m. – 12:00 p.m.</p>
                     <p>Sunday – Closed</p>
