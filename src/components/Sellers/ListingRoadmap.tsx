@@ -69,9 +69,10 @@ export default function ListingRoadmap() {
     <div
       ref={ref}
       style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
-        transition: 'all 0.8s ease-out',
+        opacity: isVisible ? 1 : 1,
+        transform: isVisible ? 'translateY(0)' : 'translateY(0)',
+        transition: 'all 0.3s ease-out',
+        willChange: 'opacity, transform'
       }}
     >
       <section id="ListingRoadmap" className="py-16 md:py-24 bg-white dark:bg-dark">

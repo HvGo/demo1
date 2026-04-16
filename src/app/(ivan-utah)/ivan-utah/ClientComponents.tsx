@@ -142,7 +142,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                     <svg className="w-12 h-12 sm:w-14 sm:h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M32 12L42 28H52L44 36L48 52L32 44L16 52L20 36L12 28H22L32 12Z" fill="#CAA037" stroke="#CAA037" strokeWidth="1.5"/>
                     </svg>
-                    <div className="text-xl sm:text-2xl font-bold text-accent-gold">1,100+</div>
+                    <div className="text-xl sm:text-2xl font-bold text-accent-gold">1,200+</div>
                     <div className="text-xs sm:text-sm font-bold text-white uppercase">Families<br/>Served</div>
                   </div>
 

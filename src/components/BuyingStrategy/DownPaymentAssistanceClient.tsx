@@ -22,9 +22,10 @@ function ProgramCard({ program, index }: { program: Program; index: number }) {
     <div
       ref={ref}
       style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
-        transition: `all 0.8s ease-out ${index * 0.1}s`,
+        opacity: isVisible ? 1 : 1,
+        transform: isVisible ? 'translateY(0)' : 'translateY(0)',
+        transition: `all 0.3s ease-out`,
+        willChange: 'opacity, transform'
       }}
       className="bg-gradient-to-br from-primary/5 to-teal-500/5 dark:from-primary/10 dark:to-teal-500/10 rounded-lg p-8 border border-primary/20 dark:border-primary/30"
     >
