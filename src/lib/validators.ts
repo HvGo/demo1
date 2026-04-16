@@ -244,3 +244,42 @@ export function validateCMAForm(data: {
     errors
   }
 }
+
+// Validador para Realtor Latino Utah Form
+export function validateRealtorLatinoUtahForm(data: {
+  name: string
+  email: string
+  phone: string
+  address: string
+}): ValidationResult {
+  const errors: ValidationError[] = []
+
+  if (!validators.required(data.name)) {
+    errors.push({ field: 'name', message: 'El nombre es requerido' })
+  } else if (!validators.name(data.name)) {
+    errors.push({ field: 'name', message: 'El nombre debe tener entre 2 y 100 caracteres' })
+  }
+
+  if (!validators.required(data.email)) {
+    errors.push({ field: 'email', message: 'El email es requerido' })
+  } else if (!validators.email(data.email)) {
+    errors.push({ field: 'email', message: 'Por favor ingresa un email válido' })
+  }
+
+  if (!validators.required(data.phone)) {
+    errors.push({ field: 'phone', message: 'El teléfono es requerido' })
+  } else if (!validators.phone(data.phone)) {
+    errors.push({ field: 'phone', message: 'Por favor ingresa un teléfono válido' })
+  }
+
+  if (!validators.required(data.address)) {
+    errors.push({ field: 'address', message: 'La dirección es requerida' })
+  } else if (!validators.minLength(data.address, 5)) {
+    errors.push({ field: 'address', message: 'La dirección debe tener al menos 5 caracteres' })
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors
+  }
+}
