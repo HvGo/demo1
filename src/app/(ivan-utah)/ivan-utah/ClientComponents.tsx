@@ -234,8 +234,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                   className="bg-black/40 backdrop-blur-md p-4 sm:p-6 rounded-sm shadow-xl border-t-8 border-accent-gold"
                 >
                   <h3 className="text-lg sm:text-xl font-bold text-white mb-2">OBTENER MI ANÁLISIS DE MERCADO GRATUITO</h3>
-                  <p className="text-xs text-gray-300 mb-4">Dirección de la propiedad (requerido)</p>
-                  
+                                   
                   <form onSubmit={handleFormSubmit} className="space-y-3">
                     <div>
                       <input 

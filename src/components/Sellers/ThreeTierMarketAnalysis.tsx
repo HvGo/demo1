@@ -63,7 +63,7 @@ export default function ThreeTierMarketAnalysis() {
         'Buyer Vetting: We ensure a buyer\'s financing is secure before you ever sign a contract.',
         'Full Cycle Guidance: From the first inspection to the final signature at closing, we protect your interests.'
       ],
-      bilingual: '20 años de experiencia negociando los mejores términos para proteger su dinero y cerrar con éxito.'
+      bilingual: '22+ años de experiencia negociando los mejores términos para proteger su dinero y cerrar con éxito.'
     }
   ]
 
