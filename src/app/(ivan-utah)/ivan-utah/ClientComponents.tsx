@@ -50,7 +50,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative w-full min-h-screen overflow-hidden">
+      <section className="relative w-full min-h-screen lg:min-h-screen sm:min-h-auto overflow-visible">
         <picture>
           <source media="(max-width: 768px)" srcSet="/images/ivan-utah/casa3_mobile.png" />
           <img 
@@ -106,7 +106,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
             </div>
 
             {/* Main Content Grid - Image + Badges + QR on Left, Form on Right */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-8 items-end">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 lg:gap-8 mb-8 lg:items-end items-start">
               {/* Left Side - Ivan Image + Badges + QR */}
               <div className="w-full flex flex-col gap-0">
                 {/* Ivan Image */}
@@ -122,7 +122,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                 </div>
                 
                 {/* Stat Badges - Below Image in Row */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-0">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 mt-0">
                   <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-3 sm:p-4 text-center flex flex-col items-center justify-center gap-2">
                     <svg className="w-12 h-12 sm:w-14 sm:h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                       {/* Ribbon */}
@@ -230,12 +230,13 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                 <div
                   style={{
                     animation: `slideInRight 0.6s ease-out 0.3s both`,
+                    willChange: 'transform'
                   }}
-                  className="bg-black/40 backdrop-blur-md p-4 sm:p-6 rounded-sm shadow-xl border-t-8 border-accent-gold"
+                  className="bg-black/40 backdrop-blur-md p-3 sm:p-4 lg:p-6 rounded-sm shadow-xl border-t-8 border-accent-gold h-fit"
                 >
-                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2">OBTENER MI ANÁLISIS DE MERCADO GRATUITO</h3>
+                  <h3 className="text-base sm:text-lg lg:text-xl font-bold text-white mb-3">OBTENER MI ANÁLISIS DE MERCADO GRATUITO</h3>
                                    
-                  <form onSubmit={handleFormSubmit} className="space-y-3">
+                  <form onSubmit={handleFormSubmit} className="space-y-2 sm:space-y-3">
                     <div>
                       <input 
                         type="text" 
