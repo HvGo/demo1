@@ -121,10 +121,10 @@ export default function BuyingRoadmap() {
         {/* Image Section */}
         <div className="flex justify-center mb-16">
           <Image
-            src="/images/Gallery/s.jpg"
+            src="/images/Gallery/roadmap_buying.jpg"
             alt="Buying Roadmap"
-            width={200}
-            height={100}
+            width={800}
+            height={400}
             className="w-full max-w-4xl h-auto rounded-lg shadow-lg"
           />
         </div>
