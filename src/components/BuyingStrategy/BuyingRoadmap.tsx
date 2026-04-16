@@ -49,7 +49,7 @@ export default function BuyingRoadmap() {
   ]
 
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-dark">
+    <section id="buying-roadmap" className="py-16 md:py-24 bg-white dark:bg-dark">
       <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
         {/* Header */}
         <div className="text-center mb-16">
