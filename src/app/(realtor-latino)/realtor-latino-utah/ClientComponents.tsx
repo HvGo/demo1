@@ -182,7 +182,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
               {/* Left Side - Ivan Image + Badges */}
               <div className="w-full flex flex-col gap-1">
                 {/* Ivan Image - Smaller on Mobile */}
-                <div className="relative w-full max-w-xs mx-auto sm:max-w-none">
+                <div className="relative w-full max-w-[240px] sm:max-w-none mx-auto">
                   <img 
                     src="/images/ivan-utah/ivan2.png" 
                     alt="Ivan Utah Realtor" 
@@ -191,7 +191,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                       e.currentTarget.style.display = 'none'
                     }}
                   />
-                  <p className="text-white text-[10px] sm:text-xs leading-tight mb-1 line-clamp-2 text-center w-full">Tu realtor latino de confianza en utah</p>
+                  <p className="text-white text-[9px] sm:text-xs leading-tight mb-1 line-clamp-2 text-center w-full">Tu realtor latino de confianza en utah</p>
                 </div>
                 
                 {/* Stat Badges - Single Row on Mobile */}
