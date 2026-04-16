@@ -16,8 +16,8 @@ export const validators = {
   },
 
   phone: (value: string): boolean => {
-    const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/
-    return phoneRegex.test(value.replace(/\s/g, ''))
+    const cleaned = value.replace(/\D/g, '')
+    return cleaned.length >= 10
   },
 
   name: (value: string): boolean => {

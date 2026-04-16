@@ -42,9 +42,22 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
     window.location.href = '/contactus'
   }
 
+  const formatPhoneNumber = (value: string): string => {
+    const cleaned = value.replace(/\D/g, '')
+    if (cleaned.length <= 3) return cleaned
+    if (cleaned.length <= 6) return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3)}`
+    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6, 10)}`
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    let finalValue = value
+    
+    if (name === 'phone') {
+      finalValue = formatPhoneNumber(value)
+    }
+    
+    setFormData(prev => ({ ...prev, [name]: finalValue }))
     setErrors(errors.filter(err => err.field !== name))
   }
 
@@ -374,7 +387,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                       <input 
                         type="tel" 
                         name="phone"
-                        placeholder="Teléfono"
+                        placeholder="Teléfono (XXX) XXX-XXXX "
                         value={formData.phone}
                         onChange={handleChange}
                         className={`w-full bg-white/20 border p-1 sm:p-2 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-[10px] sm:text-xs ${getFieldError('phone') ? 'border-red-400' : 'border-white/30'}`}
