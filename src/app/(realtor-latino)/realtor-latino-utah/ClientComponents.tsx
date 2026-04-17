@@ -225,7 +225,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                     <svg className="w-8 h-8 sm:w-14 sm:h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M32 12L42 28H52L44 36L48 52L32 44L16 52L20 36L12 28H22L32 12Z" fill="#CAA037" stroke="#CAA037" strokeWidth="1.5"/>
                     </svg>
-                    <div className="text-sm sm:text-2xl font-bold text-accent-gold">1.200</div>
+                    <div className="text-sm sm:text-2xl font-bold text-accent-gold">+1.200</div>
                     <div className="text-[7px] sm:text-sm font-bold text-white uppercase">Families Served</div>
                   </div>
 
@@ -262,7 +262,16 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                 {/* Testimonials Section */}
                 <div className="w-full">
                   <div className="text-center mb-2">
-                    <h3 className="text-white font-bold text-sm sm:text-xl mb-1">Google Reviews</h3>
+                    <div className="flex items-center justify-center gap-2 mb-1">
+                      <span className="text-accent-gold font-bold text-sm sm:text-lg">5.0</span>
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <span key={i} className="text-accent-gold text-xs sm:text-sm">★</span>
+                        ))}
+                      </div>
+                      <span className="text-white font-bold text-sm sm:text-lg">241</span>
+                      <h3 className="text-white font-bold text-sm sm:text-xl">Google Reviews</h3>
+                    </div>
                     <div className="w-16 h-1 bg-accent-gold mx-auto rounded-full"></div>
                   </div>
 
