@@ -68,7 +68,7 @@ export default async function BlueKeyRealtyTeam() {
             <div className="order-2 lg:order-1">
               <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
                 <p>
-                  With over 22 years of experience and $150 million in closed sales, we&apos;ve helped more than 1,100 Utah families achieve their real estate goals. As a Utah Top 500 Realtor and proud member of NAHREP, our success comes from combining market expertise, strong negotiation skills, and a genuine care for people.
+                  With over 22 years of experience and $150 million in closed sales, we&apos;ve helped more than 1,200+ Utah families achieve their real estate goals. As a Utah Top 500 Realtor and proud member of NAHREP, our success comes from combining market expertise, strong negotiation skills, and a genuine care for people.
                 </p>
 
                 <p>
@@ -152,7 +152,7 @@ export default async function BlueKeyRealtyTeam() {
           {/* About Text Section */}
           <div className="max-w-3xl mx-auto text-center mb-16">
             <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-              A 22-year legacy is built on a strong foundation. Our team ensures that every transaction 
+              A 22+ year legacy is built on a strong foundation. Our team ensures that every transaction 
               is handled with executive-level precision.
             </p>
             <div className="flex items-center justify-center gap-2 text-primary font-semibold">
