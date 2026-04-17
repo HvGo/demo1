@@ -33,7 +33,7 @@ export default function SellingRealities() {
     {
       title: 'Realtor Factors',
       subtitle: 'My Commitment',
-      intro: 'Where my 22 years of expertise and Top 500 status work for you:',
+      intro: 'Where my 22+ years of expertise and Top 500 status work for you:',
       items: [
         'Marketing: Our Premium Visual Suite ensures your home is famous on every platform.',
         'Negotiation: We fight for your equity, managing terms and credits to maximize your net profit.',

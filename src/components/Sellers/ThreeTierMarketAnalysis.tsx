@@ -57,7 +57,7 @@ export default function ThreeTierMarketAnalysis() {
     {
       title: 'Negotiation & The "Broker-Owner" Advantage',
       subtitle: 'Negociación',
-      intro: 'With 22+ years of experience and the trust of 1,100+ families, I manage the most critical phase: the negotiation.',
+      intro: 'With 22+ years of experience and the trust of 1,200+ families, I manage the most critical phase: the negotiation.',
       features: [
         'Strategic Terms: We negotiate stronger terms, interest rate buy-downs, and concessions to maximize your net profit.',
         'Buyer Vetting: We ensure a buyer\'s financing is secure before you ever sign a contract.',
