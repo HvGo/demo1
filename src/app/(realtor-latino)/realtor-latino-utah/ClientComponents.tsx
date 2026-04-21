@@ -113,7 +113,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
 
   const allTestimonials: Testimonial[] = [
     {
-      name: "Fiorella Harley",
+      name: "Fiorella",
       image: "/images/ivan-utah/hugoh.jpg",
       shortText: "Vendimos nuestra casa con Blue Key Realty. Iván fue excelente; siempre estuvo dispuesto a responder nuestras preguntas y nos brindó el mejor asesoramiento durante todo el proceso. Recomiendo ampliamente sus servicios...",
       fullText: "Vendimos nuestra casa con Blue Key Realty. Iván fue excelente; siempre estuvo dispuesto a responder nuestras preguntas y nos brindó el mejor asesoramiento durante todo el proceso. Recomiendo ampliamente sus servicios."
@@ -154,9 +154,9 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
               style={{
                 animation: `fadeInDown 0.6s ease-out`,
               }}
-              className="text-center mb-2 sm:mb-8"
+              className="text-center mb-1 sm:mb-4"
             >
-              <h2 className="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight max-w-4xl mx-auto" style={{ fontFamily: 'Impact, sans-serif' }}>
+              <h2 className="text-base sm:text-2xl md:text-3xl lg:text-5xl font-bold leading-tight max-w-4xl mx-auto" style={{ fontFamily: 'Impact, sans-serif' }}>
                 <div style={{
                   textShadow: '2px 2px 0 rgba(0, 0, 0, 1), 4px 4px 8px rgba(0, 0, 0, 0.9)',
                   WebkitTextStroke: '0.2px rgba(0, 0, 0, 0.8)',
@@ -191,11 +191,11 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
             </div>
 
             {/* Main Content Grid - Optimized for Mobile */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-6 lg:gap-8 items-start lg:items-end">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 sm:gap-3 lg:gap-4 items-start lg:items-end">
               {/* Left Side - Ivan Image + Badges */}
-              <div className="w-full flex flex-col gap-1">
+              <div className="w-full flex flex-col gap-0.5">
                 {/* Ivan Image - Smaller on Mobile */}
-                <div className="relative w-full max-w-[240px] sm:max-w-none mx-auto">
+                <div className="relative w-full max-w-[250px] sm:max-w-[280px] md:max-w-[260px] lg:max-w-[360px] mx-auto">
                   <img 
                     src="/images/ivan-utah/ivan2.png" 
                     alt="Ivan Utah Realtor" 
@@ -204,12 +204,14 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                       e.currentTarget.style.display = 'none'
                     }}
                   />
-                  <p className="text-white text-[9px] sm:text-xs leading-tight mb-1 line-clamp-2 text-center w-full">Tu realtor latino de confianza en utah</p>
+                  <p className="text-white text-xs sm:text-sm leading-tight mb-1 text-center w-full">
+                    <span className="underline">Tu Realtor</span> Latino
+                  </p>
                 </div>
                 
                 {/* Stat Badges - Single Row on Mobile */}
-                <div className="grid grid-cols-4 gap-1 sm:gap-3 lg:gap-4 mt-1">
-                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-2 sm:p-4 text-center flex flex-col items-center justify-center gap-1">
+                <div className="grid grid-cols-4 gap-1 sm:gap-2 lg:gap-3 mt-1">
+                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-1 sm:p-2 lg:p-4 text-center flex flex-col items-center justify-center gap-1">
                     <svg className="w-8 h-8 sm:w-14 sm:h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M24 8L20 20L24 28" stroke="#CAA037" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
                       <path d="M40 8L44 20L40 28" stroke="#CAA037" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
@@ -217,19 +219,19 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                       <circle cx="32" cy="38" r="13" fill="none" stroke="#001F3F" strokeWidth="1.5"/>
                       <path d="M32 28L36 36H44L38 40L40 48L32 44L24 48L26 40L20 36H28L32 28Z" fill="#001F3F"/>
                     </svg>
-                    <div className="text-sm sm:text-2xl font-bold text-accent-gold">22+</div>
-                    <div className="text-[7px] sm:text-sm font-bold text-white uppercase">Years Experience</div>
+                    <div className="text-xs sm:text-xl lg:text-2xl font-bold text-accent-gold">22+</div>
+                    <div className="text-[6px] sm:text-xs lg:text-sm font-bold text-white uppercase">Years Experience</div>
                   </div>
 
-                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-2 sm:p-4 text-center flex flex-col items-center justify-center gap-1">
+                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-1 sm:p-2 lg:p-4 text-center flex flex-col items-center justify-center gap-1">
                     <svg className="w-8 h-8 sm:w-14 sm:h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M32 12L42 28H52L44 36L48 52L32 44L16 52L20 36L12 28H22L32 12Z" fill="#CAA037" stroke="#CAA037" strokeWidth="1.5"/>
                     </svg>
-                    <div className="text-sm sm:text-2xl font-bold text-accent-gold">+1.200</div>
-                    <div className="text-[7px] sm:text-sm font-bold text-white uppercase">Families Served</div>
+                    <div className="text-xs sm:text-xl lg:text-2xl font-bold text-accent-gold">+1.200</div>
+                    <div className="text-[6px] sm:text-xs lg:text-sm font-bold text-white uppercase">Families Served</div>
                   </div>
 
-                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-2 sm:p-4 text-center flex flex-col items-center justify-center gap-1">
+                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-1 sm:p-2 lg:p-4 text-center flex flex-col items-center justify-center gap-1">
                     <img 
                       src="/images/ivan-utah/QR - copia.png" 
                       alt="QR Badge" 
@@ -238,11 +240,11 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                         e.currentTarget.style.display = 'none'
                       }}
                     />
-                    <div className="text-sm sm:text-2xl font-bold text-accent-gold">Top 500</div>
-                    <div className="text-[6px] sm:text-sm font-bold text-white uppercase">Salt Lake County</div>
+                    <div className="text-xs sm:text-xl lg:text-2xl font-bold text-accent-gold">Top 500</div>
+                    <div className="text-[6px] sm:text-xs lg:text-sm font-bold text-white uppercase">Salt Lake County</div>
                   </div>
 
-                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-2 sm:p-4 text-center flex flex-col items-center justify-center gap-1">
+                  <div className="bg-primary-navy border-2 border-accent-gold rounded-lg p-1 sm:p-2 lg:p-4 text-center flex flex-col items-center justify-center gap-1">
                     <svg className="w-8 h-8 sm:w-14 sm:h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="18" cy="32" r="12" stroke="#CAA037" strokeWidth="2.5"/>
                       <path d="M10 44L6 52" stroke="#CAA037" strokeWidth="2.5" strokeLinecap="round"/>
@@ -251,14 +253,14 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                       <path d="M54 36L58 44" stroke="#CAA037" strokeWidth="2.5" strokeLinecap="round"/>
                       <text x="46" y="29" textAnchor="middle" fill="#CAA037" fontSize="10" fontWeight="bold" fontFamily="Arial">ES</text>
                     </svg>
-                    <div className="text-sm sm:text-2xl font-bold text-accent-gold">Bilingual</div>
-                    <div className="text-[7px] sm:text-sm font-bold text-white uppercase">Español and Ingles</div>
+                    <div className="text-xs sm:text-xl lg:text-2xl font-bold text-accent-gold">Bilingual</div>
+                    <div className="text-[6px] sm:text-xs lg:text-sm font-bold text-white uppercase">Español and Ingles</div>
                   </div>
                 </div>
               </div>
 
               {/* Right Side - Testimonial + Form */}
-              <div className="w-full space-y-2 sm:space-y-4">
+              <div className="w-full space-y-1 sm:space-y-2">
                 {/* Testimonials Section */}
                 <div className="w-full">
                   <div className="text-center mb-2">
@@ -284,10 +286,11 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                           onClick={() => setSelectedTestimonial(testimonial)}
                           className="bg-primary-navy border-2 border-accent-gold p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-all"
                         >
-                          <div className="flex gap-0.5 mb-1">
-                            {[...Array(5)].map((_, i) => (
-                              <span key={i} className="text-accent-gold text-xs">★</span>
-                            ))}
+                          <div className="flex items-center gap-1 mb-1">
+                            <span className="text-accent-gold font-bold text-xs">5</span>
+                            <span className="text-accent-gold text-xs">★</span>
+                            <span className="text-white text-[7px] sm:text-xs">Google Review</span>
+                            <span className="text-accent-gold font-bold text-xs">240+</span>
                           </div>
 
                           <p className="text-white text-[7px] sm:text-xs leading-tight mb-1 line-clamp-2">&ldquo;{testimonial.shortText}&rdquo;</p>
@@ -311,10 +314,11 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                       onClick={() => setSelectedTestimonial(testimonials[0])}
                       className="bg-primary-navy border-2 border-accent-gold p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-all"
                     >
-                      <div className="flex gap-0.5 mb-1">
-                        {[...Array(5)].map((_, i) => (
-                          <span key={i} className="text-accent-gold text-xs">★</span>
-                        ))}
+                      <div className="flex items-center gap-1 mb-1">
+                        <span className="text-accent-gold font-bold text-xs">5</span>
+                        <span className="text-accent-gold text-xs">★</span>
+                        <span className="text-white text-[7px] sm:text-xs">Google Review</span>
+                        <span className="text-accent-gold font-bold text-xs">240+</span>
                       </div>
 
                       <p className="text-white text-[7px] sm:text-xs leading-tight mb-1 line-clamp-2">&ldquo;{testimonials[0].shortText}&rdquo;</p>
@@ -340,9 +344,9 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                     animation: `slideInRight 0.6s ease-out 0.3s both`,
                     willChange: 'transform'
                   }}
-                  className="bg-black/40 backdrop-blur-md p-2 sm:p-4 lg:p-6 rounded-sm shadow-xl border-t-4 sm:border-t-8 border-accent-gold h-fit"
+                  className="bg-black/40 backdrop-blur-md p-2 sm:p-3 lg:p-5 rounded-sm shadow-xl border-t-4 sm:border-t-6 lg:border-t-8 border-accent-gold h-fit"
                 >
-                  <h3 className="text-xs sm:text-lg lg:text-xl font-bold text-white mb-2 text-center">OBTENER MI ANÁLISIS DE MERCADO GRATUITO</h3>
+                  <h3 className="text-[10px] sm:text-sm lg:text-lg font-bold text-white mb-1 text-center">OBTENER MI ANÁLISIS DE MERCADO GRATUITO</h3>
                                    
                   <form onSubmit={handleFormSubmit} className="space-y-1 sm:space-y-3">
                     {/* Error Messages */}
