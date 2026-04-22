@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
         sanitizedEmail,
         sanitizedPhone,
         sanitizedAddress,
-        `Solicitud de análisis de propiedad desde realtor-latino-utah`,
+        `Solicitud de análisis de propiedad desde realtor-latino-utah-seller`,
         ipAddress,
         userAgent,
         isBot,

@@ -6,7 +6,7 @@ import { ReactNode } from 'react'
 export function FooterWrapper({ children }: { children: ReactNode }) {
   const pathname = usePathname()
 
-  if (pathname === '/linkinbio' || pathname === '/ivan-utah' || pathname === '/realtor-latino-utah') return null
+  if (pathname === '/linkinbio' || pathname === '/ivan-utah' || pathname === '/realtor-latino-utah-seller' || pathname === '/realtor-latino-utah-buyer') return null
 
   return <>{children}</>
 }

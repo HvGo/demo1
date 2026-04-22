@@ -160,29 +160,10 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                 <div style={{
                   textShadow: '2px 2px 0 rgba(0, 0, 0, 1), 4px 4px 8px rgba(0, 0, 0, 0.9)',
                   WebkitTextStroke: '0.2px rgba(0, 0, 0, 0.8)',
-                  fontFamily: 'Impact, sans-serif'
-                }}>
-                  <span style={{ color: '#CAA037' }}>Un mal consejo</span> <span style={{ color: '#ffffff' }}>puede costarte</span>
-                </div>
-                <div style={{
-                  color: '#ffffff',
-                  textShadow: '2px 2px 0 rgba(0, 0, 0, 1), 4px 4px 8px rgba(0, 0, 0, 0.9)',
-                  WebkitTextStroke: '0.2px rgba(0, 0, 0, 0.8)',
                   fontFamily: 'Impact, sans-serif',
-                  position: 'relative',
-                  display: 'inline-block'
+                  color: '#ffffff'
                 }}>
-                  miles de dólares.
-                  <div style={{
-                    position: 'absolute',
-                    bottom: '-4px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '80%',
-                    height: '2px',
-                    backgroundColor: '#CAA037',
-                    borderRadius: '2px'
-                  }}></div>
+                  ¡Con $40+/hora entre usted y su co-signer, ya califican para comprar casa en Utah!
                 </div>
               </h2>
               
@@ -197,7 +178,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                 {/* Ivan Image - Smaller on Mobile */}
                 <div className="relative w-full max-w-[250px] sm:max-w-[280px] md:max-w-[260px] lg:max-w-[360px] mx-auto">
                   <img 
-                    src="/images/ivan-utah/ivan2.png" 
+                    src="/images/ivan-utah/ivan3.png" 
                     alt="Ivan Utah Realtor" 
                     className="w-full h-auto object-cover rounded-lg shadow-lg"
                     onError={(e) => {
@@ -205,7 +186,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                     }}
                   />
                   <p className="text-white text-xs sm:text-sm leading-tight mb-1 text-center w-full">
-                    <span className="underline">Tu Realtor</span> Latino
+                    <span className="underline">Tu Realtor</span> Latino de confianza en Utah
                   </p>
                 </div>
                 
@@ -265,77 +246,40 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                 <div className="w-full">
                   <div className="text-center mb-2">
                     <div className="flex items-center justify-center gap-2 mb-1">
-                      <span className="text-accent-gold font-bold text-sm sm:text-lg">5.0</span>
-                      <div className="flex gap-0.5">
-                        {[...Array(5)].map((_, i) => (
-                          <span key={i} className="text-accent-gold text-xs sm:text-sm">★</span>
-                        ))}
-                      </div>
-                      <span className="text-white font-bold text-sm sm:text-lg">241</span>
-                      <h3 className="text-white font-bold text-sm sm:text-xl">Google Reviews</h3>
+                      <span className="text-accent-gold font-bold text-sm sm:text-lg">5</span>
+                      <span className="text-accent-gold text-sm sm:text-lg">★</span>
+                      <span className="text-white text-sm sm:text-lg">Google Review</span>
+                      <span className="text-accent-gold font-bold text-sm sm:text-lg">240+</span>
                     </div>
                     <div className="w-16 h-1 bg-accent-gold mx-auto rounded-full"></div>
                   </div>
 
-                  {/* Desktop: Grid of testimonials, Mobile: Single testimonial */}
-                  {isDesktop ? (
-                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                      {testimonials.map((testimonial, index) => (
-                        <div
-                          key={index}
-                          onClick={() => setSelectedTestimonial(testimonial)}
-                          className="bg-primary-navy border-2 border-accent-gold p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-all"
-                        >
-                          <div className="flex items-center gap-1 mb-1">
-                            <span className="text-accent-gold font-bold text-xs">5</span>
-                            <span className="text-accent-gold text-xs">★</span>
-                            <span className="text-white text-[7px] sm:text-xs">Google Review</span>
-                            <span className="text-accent-gold font-bold text-xs">240+</span>
-                          </div>
-
-                          <p className="text-white text-[7px] sm:text-xs leading-tight mb-1 line-clamp-2">&ldquo;{testimonial.shortText}&rdquo;</p>
-
-                          <div className="flex items-center gap-1">
-                            <img
-                              src={testimonial.image}
-                              alt={testimonial.name}
-                              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover border-2 border-accent-gold"
-                              onError={(e) => {
-                                e.currentTarget.src = 'https://via.placeholder.com/32'
-                              }}
-                            />
-                            <p className="text-accent-gold font-bold text-[10px] sm:text-xs">{testimonial.name}</p>
-                          </div>
-                        </div>
-                      ))}
+                  {/* Single testimonial - Full width */}
+                  <div
+                    onClick={() => setSelectedTestimonial(testimonials[0])}
+                    className="bg-primary-navy border-2 border-accent-gold p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-all w-full"
+                  >
+                    <div className="flex items-center gap-1 mb-1">
+                      <span className="text-accent-gold font-bold text-xs">5</span>
+                      <span className="text-accent-gold text-xs">★</span>
+                      <span className="text-white text-[7px] sm:text-xs">Google Review</span>
+                      <span className="text-accent-gold font-bold text-xs">240+</span>
                     </div>
-                  ) : (
-                    <div
-                      onClick={() => setSelectedTestimonial(testimonials[0])}
-                      className="bg-primary-navy border-2 border-accent-gold p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-all"
-                    >
-                      <div className="flex items-center gap-1 mb-1">
-                        <span className="text-accent-gold font-bold text-xs">5</span>
-                        <span className="text-accent-gold text-xs">★</span>
-                        <span className="text-white text-[7px] sm:text-xs">Google Review</span>
-                        <span className="text-accent-gold font-bold text-xs">240+</span>
-                      </div>
 
-                      <p className="text-white text-[7px] sm:text-xs leading-tight mb-1 line-clamp-2">&ldquo;{testimonials[0].shortText}&rdquo;</p>
+                    <p className="text-white text-[7px] sm:text-xs leading-tight mb-1 line-clamp-2">&ldquo;{testimonials[0].shortText}&rdquo;</p>
 
-                      <div className="flex items-center gap-1">
-                        <img
-                          src={testimonials[0].image}
-                          alt={testimonials[0].name}
-                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover border-2 border-accent-gold"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://via.placeholder.com/32'
-                          }}
-                        />
-                        <p className="text-accent-gold font-bold text-[10px] sm:text-xs">{testimonials[0].name}</p>
-                      </div>
+                    <div className="flex items-center gap-1">
+                      <img
+                        src={testimonials[0].image}
+                        alt={testimonials[0].name}
+                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover border-2 border-accent-gold"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://via.placeholder.com/32'
+                        }}
+                      />
+                      <p className="text-accent-gold font-bold text-[10px] sm:text-xs">{testimonials[0].name}</p>
                     </div>
-                  )}
+                  </div>
                 </div>
 
                 {/* Evaluation Form - Compact */}
@@ -368,19 +312,6 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                       />
                       {getFieldError('name') && (
                         <p className='text-red-300 text-[7px] sm:text-[8px] mt-0.5'>{getFieldError('name')}</p>
-                      )}
-                    </div>
-                    <div>
-                      <input 
-                        type="text" 
-                        name="address"
-                        placeholder="Dirección de tu casa"
-                        value={formData.address}
-                        onChange={handleChange}
-                        className={`w-full bg-white/20 border p-1 sm:p-2 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-[10px] sm:text-xs ${getFieldError('address') ? 'border-red-400' : 'border-white/30'}`}
-                      />
-                      {getFieldError('address') && (
-                        <p className='text-red-300 text-[7px] sm:text-[8px] mt-0.5'>{getFieldError('address')}</p>
                       )}
                     </div>
                     <div>
@@ -422,7 +353,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                     </button>
                     
                     <p className="text-[8px] sm:text-[9px] text-gray-300 text-center">
-                      Recibe el valor de tu casa en 5 minutos.
+                      Le confirmaré si califica, junto con los programas de ayuda disponibles en Utah.
                     </p>
                   </form>
                 </div>
