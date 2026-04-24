@@ -21,8 +21,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    email: '',
-    address: ''
+    email: ''
   })
   const [errors, setErrors] = useState<ValidationError[]>([])
   const [loading, setLoading] = useState(false)
@@ -99,8 +98,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
       setFormData({
         name: '',
         phone: '',
-        email: '',
-        address: ''
+        email: ''
       })
       setShowSuccessModal(true)
     } catch (error) {

@@ -250,7 +250,7 @@ export function validateRealtorLatinoUtahForm(data: {
   name: string
   email: string
   phone: string
-  address: string
+  address?: string
 }): ValidationResult {
   const errors: ValidationError[] = []
 
@@ -272,9 +272,7 @@ export function validateRealtorLatinoUtahForm(data: {
     errors.push({ field: 'phone', message: 'Por favor ingresa un teléfono válido' })
   }
 
-  if (!validators.required(data.address)) {
-    errors.push({ field: 'address', message: 'La dirección es requerida' })
-  } else if (!validators.minLength(data.address, 5)) {
+  if (data.address && !validators.minLength(data.address, 5)) {
     errors.push({ field: 'address', message: 'La dirección debe tener al menos 5 caracteres' })
   }
 
