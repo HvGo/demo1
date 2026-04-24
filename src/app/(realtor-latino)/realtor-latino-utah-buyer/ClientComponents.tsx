@@ -163,7 +163,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                   fontFamily: 'Impact, sans-serif',
                   color: '#ffffff'
                 }}>
-                  ¡Con $40+/hora entre usted y su co-signer, ya califican para comprar casa en Utah!
+                  ¡Si tu y tu co-signer ganan $40+ la hora? ¡Ya calificas!
                 </div>
               </h2>
               
@@ -290,7 +290,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                   }}
                   className="bg-black/40 backdrop-blur-md p-2 sm:p-3 lg:p-5 rounded-sm shadow-xl border-t-4 sm:border-t-6 lg:border-t-8 border-accent-gold h-fit"
                 >
-                  <h3 className="text-[10px] sm:text-sm lg:text-lg font-bold text-white mb-1 text-center">OBTENER MI ANÁLISIS DE MERCADO GRATUITO</h3>
+                  <h3 className="text-[10px] sm:text-sm lg:text-lg font-bold text-white mb-1 text-center">TE DIGO SI CALIFICAS Y TE DOY EL RESULTADO EN 5 MINUTOS</h3>
                                    
                   <form onSubmit={handleFormSubmit} className="space-y-1 sm:space-y-3">
                     {/* Error Messages */}
