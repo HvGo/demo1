@@ -163,7 +163,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                   fontFamily: 'Impact, sans-serif',
                   color: '#ffffff'
                 }}>
-                  ¡Si tu y tu co-signer ganan <span className="text-accent-gold">$40+ la hora</span>? ¡Ya calificas!
+                  ¡Si tu y tu co-signer ganan <span className="text-accent-gold">$40+ la hora</span>?<br />¡Ya calificas!
                 </div>
               </h2>
               
