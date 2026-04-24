@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 import { validateGoldenQuestionsForm } from '@/lib/validators'
+import { sendGoldenQuestionsConfirmation, sendGoldenQuestionsAdminNotification } from '@/lib/email/resend'
 
 function parseUserAgent(ua: string) {
   const lower = ua.toLowerCase()
@@ -83,6 +84,16 @@ export async function POST(req: NextRequest) {
         browser
       ]
     )
+
+    // Enviar emails (no bloquear si fallan)
+    try {
+      await Promise.all([
+        sendGoldenQuestionsConfirmation(formData.name, formData.email),
+        sendGoldenQuestionsAdminNotification(formData.name, formData.email, formData.phone)
+      ])
+    } catch (emailError) {
+      console.error('[GOLDEN_QUESTIONS_EMAIL_ERROR]', emailError)
+    }
 
     return NextResponse.json({ success: true, message: 'Formulario guardado exitosamente' })
   } catch (error) {

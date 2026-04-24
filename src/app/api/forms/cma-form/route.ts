@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 import { validateCMAForm } from '@/lib/validators'
+import { sendCMAFormConfirmation, sendCMAFormAdminNotification } from '@/lib/email/resend'
 
 function parseUserAgent(ua: string) {
   const lower = ua.toLowerCase()
@@ -83,6 +84,16 @@ export async function POST(req: NextRequest) {
         browser
       ]
     )
+
+    // Enviar emails (no bloquear si fallan)
+    try {
+      await Promise.all([
+        sendCMAFormConfirmation(formData.name, formData.email, formData.address),
+        sendCMAFormAdminNotification(formData.name, formData.email, formData.phone, formData.address)
+      ])
+    } catch (emailError) {
+      console.error('[CMA_FORM_EMAIL_ERROR]', emailError)
+    }
 
     return NextResponse.json({ success: true, message: 'Formulario guardado exitosamente' })
   } catch (error) {

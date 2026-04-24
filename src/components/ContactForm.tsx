@@ -71,6 +71,7 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<Partial<FormState>>({})
   const [sessionId, setSessionId] = useState('')
   const [utmData, setUtmData] = useState<UTMData>({})
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   // Capturar sessionId y UTM/referrer al cargar
   useEffect(() => {
@@ -196,6 +197,7 @@ export default function ContactForm() {
           message: ''
         })
         setErrors({})
+        setShowSuccessModal(true)
       } else {
         setStatus({
           type: 'error',
@@ -354,6 +356,40 @@ export default function ContactForm() {
           {status.type === 'loading' ? 'Sending...' : 'Send message'}
         </button>
       </div>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
+          <div className='bg-white dark:bg-dark rounded-lg shadow-2xl max-w-md w-full p-8 text-center animate-in fade-in zoom-in duration-300'>
+            <div className='mb-6 flex justify-center'>
+              <div className='bg-green-100 dark:bg-green-900/30 rounded-full p-4'>
+                <Icon icon='ph:check-circle-fill' width={48} height={48} className='text-green-600 dark:text-green-400' />
+              </div>
+            </div>
+            
+            <h3 className='text-2xl font-bold text-black dark:text-white mb-4'>
+              ¡Mensaje Enviado!
+            </h3>
+            
+            <p className='text-gray-700 dark:text-gray-300 mb-8 leading-relaxed'>
+              Muchas gracias por tu mensaje.
+              <br />
+              <br />
+              Nos pondremos en contacto contigo pronto para ayudarte.
+            </p>
+            
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className='w-full text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-shadow'
+              style={{ backgroundColor: '#00A86B' }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#16a34a')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#00A86B')}
+            >
+              Entendido
+            </button>
+          </div>
+        </div>
+      )}
     </form>
   )
 }

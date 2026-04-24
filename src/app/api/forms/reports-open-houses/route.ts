@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 import { validateReportsOpenHousesForm } from '@/lib/validators'
+import { sendReportsOpenHousesConfirmation, sendReportsOpenHousesAdminNotification } from '@/lib/email/resend'
 
 function parseUserAgent(ua: string) {
   const lower = ua.toLowerCase()
@@ -81,6 +82,16 @@ export async function POST(req: NextRequest) {
         browser
       ]
     )
+
+    // Enviar emails (no bloquear si fallan)
+    try {
+      await Promise.all([
+        sendReportsOpenHousesConfirmation(formData.name, formData.email),
+        sendReportsOpenHousesAdminNotification(formData.name, formData.email, formData.whatsapp)
+      ])
+    } catch (emailError) {
+      console.error('[REPORTS_OPEN_HOUSES_EMAIL_ERROR]', emailError)
+    }
 
     return NextResponse.json({ success: true, message: 'Formulario guardado exitosamente' })
   } catch (error) {

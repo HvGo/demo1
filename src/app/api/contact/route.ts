@@ -1,5 +1,6 @@
 import { sql } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
+import { sendContactConfirmation, sendContactAdminNotification } from '@/lib/email/resend'
 
 // Validación de email
 function isValidEmail(email: string): boolean {
@@ -50,6 +51,7 @@ function sanitizeInput(input: string): string {
 
 type ContactPayload = {
   name?: string
+  phone?: string
   email?: string
   message?: string
   sessionId?: string
@@ -94,7 +96,7 @@ function detectBot(userAgent: string): boolean {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as ContactPayload
-    const { name, email, message, sessionId, utmSource, utmMedium, utmCampaign, referrer } = body
+    const { name, phone, email, message, sessionId, utmSource, utmMedium, utmCampaign, referrer } = body
 
     // Validación de campos requeridos
     if (!name || !email || !message) {
@@ -122,6 +124,7 @@ export async function POST(request: NextRequest) {
 
     // Sanitizar inputs
     const sanitizedName = sanitizeInput(name)
+    const sanitizedPhone = phone ? sanitizeInput(phone).slice(0, 20) : null
     const sanitizedEmail = sanitizeInput(email)
     const sanitizedMessage = sanitizeInput(message)
     const sanitizedSessionId = sessionId ? sanitizeInput(sessionId).slice(0, 100) : null
@@ -152,18 +155,19 @@ export async function POST(request: NextRequest) {
     const { rows } = await sql<{ id: number }>(
       `
       INSERT INTO contacts (
-        name, email, message,
+        name, phone, email, message,
         ip_address, user_agent, is_bot,
         session_id, utm_source, utm_medium, utm_campaign, referrer,
         geo_country, geo_region, geo_city,
         device_type, os, browser,
         created_at
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, NOW())
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, NOW())
       RETURNING id
       `,
       [
         sanitizedName,
+        sanitizedPhone,
         sanitizedEmail,
         sanitizedMessage,
         ipAddress,
@@ -194,6 +198,19 @@ export async function POST(request: NextRequest) {
 
     // Log para monitoreo
     console.log(`[CONTACT] New contact submitted: ${contactId} from ${sanitizedEmail}`)
+
+    // Enviar emails (no bloquear si fallan)
+    // - Confirmación al usuario (siempre)
+    // - Notificación a emails dinámicos desde BD
+    try {
+      await Promise.all([
+        sendContactConfirmation(sanitizedName, sanitizedEmail),
+        sendContactAdminNotification(sanitizedName, sanitizedEmail, sanitizedPhone, sanitizedMessage)
+      ])
+    } catch (emailError) {
+      console.error('[CONTACT EMAIL ERROR]', emailError)
+      // No fallar la respuesta si los emails no se envían
+    }
 
     // Respuesta exitosa
     return NextResponse.json(

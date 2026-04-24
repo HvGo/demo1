@@ -1,5 +1,11 @@
 import { sql } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
+import { 
+  sendRealtorLatinoSellerConfirmation, 
+  sendRealtorLatinoBuyerConfirmation,
+  sendRealtorLatinoSellerAdminNotification,
+  sendRealtorLatinoBuyerAdminNotification
+} from '@/lib/email/resend'
 
 // Validación de email
 function isValidEmail(email: string): boolean {
@@ -20,6 +26,7 @@ type RealtorAnalysisPayload = {
   email?: string
   phone?: string
   address?: string
+  type?: 'seller' | 'buyer'
 }
 
 function parseUserAgent(ua: string) {
@@ -57,12 +64,29 @@ function detectBot(userAgent: string): boolean {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as RealtorAnalysisPayload
-    const { name, email, phone, address } = body
+    const { name, email, phone, address, type } = body
+
+    // Detectar si es seller o buyer basándose en el referrer o parámetro type
+    let analysisType = type || 'seller'
+    if (!type) {
+      const referrer = request.headers.get('referer') || ''
+      if (referrer.includes('buyer')) {
+        analysisType = 'buyer'
+      }
+    }
 
     // Validación de campos requeridos
-    if (!name || !email || !phone || !address) {
+    if (!name || !email || !phone) {
       return NextResponse.json(
-        { error: 'Name, email, phone, and address are required' },
+        { error: 'Name, email, and phone are required' },
+        { status: 400 }
+      )
+    }
+
+    // Para seller, address es requerido
+    if (analysisType === 'seller' && !address) {
+      return NextResponse.json(
+        { error: 'Address is required for seller analysis' },
         { status: 400 }
       )
     }
@@ -79,7 +103,7 @@ export async function POST(request: NextRequest) {
     const sanitizedName = sanitizeInput(name)
     const sanitizedEmail = sanitizeInput(email)
     const sanitizedPhone = sanitizeInput(phone)
-    const sanitizedAddress = sanitizeInput(address)
+    const sanitizedAddress = address ? sanitizeInput(address) : null
 
     // Obtener IP del cliente
     const ipAddress = request.headers.get('x-forwarded-for') || 
@@ -130,7 +154,26 @@ export async function POST(request: NextRequest) {
     }
 
     // Log para monitoreo
-    console.log(`[REALTOR_ANALYSIS] New analysis request: ${contactId} from ${sanitizedEmail}`)
+    console.log(`[REALTOR_ANALYSIS] New ${analysisType} analysis request: ${contactId} from ${sanitizedEmail}`)
+
+    // Enviar emails (no bloquear si fallan)
+    // - Confirmación al usuario (siempre)
+    // - Notificación a emails dinámicos desde BD
+    try {
+      if (analysisType === 'seller' && sanitizedAddress) {
+        await Promise.all([
+          sendRealtorLatinoSellerConfirmation(sanitizedName, sanitizedEmail, sanitizedAddress),
+          sendRealtorLatinoSellerAdminNotification(sanitizedName, sanitizedEmail, sanitizedPhone, sanitizedAddress)
+        ])
+      } else if (analysisType === 'buyer') {
+        await Promise.all([
+          sendRealtorLatinoBuyerConfirmation(sanitizedName, sanitizedEmail),
+          sendRealtorLatinoBuyerAdminNotification(sanitizedName, sanitizedEmail, sanitizedPhone)
+        ])
+      }
+    } catch (emailError) {
+      console.error('[REALTOR_ANALYSIS_EMAIL_ERROR]', emailError)
+    }
 
     // Respuesta exitosa
     return NextResponse.json(
