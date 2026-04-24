@@ -117,16 +117,10 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
       image: "/images/ivan-utah/hugoh.jpg",
       shortText: "Vendimos nuestra casa con Blue Key Realty. Iván fue excelente; siempre estuvo dispuesto a responder nuestras preguntas y nos brindó el mejor asesoramiento durante todo el proceso. Recomiendo ampliamente sus servicios...",
       fullText: "Vendimos nuestra casa con Blue Key Realty. Iván fue excelente; siempre estuvo dispuesto a responder nuestras preguntas y nos brindó el mejor asesoramiento durante todo el proceso. Recomiendo ampliamente sus servicios."
-    },
-    {
-      name: "Alex R",
-      image: "/images/ivan-utah/Alex R.jpg",
-      shortText: "Iván nos ayudó a vender nuestra propiedad ecuestre en South Jordan con un profesionalismo y cuidado excepcionales...",
-      fullText: "Iván nos ayudó a vender nuestra propiedad ecuestre en South Jordan con un profesionalismo y cuidado excepcionales. Nos mantuvo informados en todo momento, manejó cada detalle y trabajó arduamente para quitarnos el estrés de encima. Su conocimiento, disponibilidad y su equipo de apoyo hicieron que todo el proceso de venta fuera fluido y exitoso. Nos sentimos seguros sabiendo que nuestra propiedad estaba en excelentes manos durante toda la transacción."
     }
   ]
 
-  const testimonials = isDesktop ? allTestimonials : [allTestimonials[0]]
+  const testimonials = allTestimonials
 
   return (
     <>
@@ -205,7 +199,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                     }}
                   />
                   <p className="text-white text-xs sm:text-sm leading-tight mb-1 text-center w-full">
-                    <span className="underline">Tu Realtor</span> Latino de confianza en Utah
+                    Tu Realtor Latino de confianza en Utah
                   </p>
                 </div>
                 
@@ -265,77 +259,40 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                 <div className="w-full">
                   <div className="text-center mb-2">
                     <div className="flex items-center justify-center gap-2 mb-1">
-                      <span className="text-accent-gold font-bold text-sm sm:text-lg">5.0</span>
-                      <div className="flex gap-0.5">
-                        {[...Array(5)].map((_, i) => (
-                          <span key={i} className="text-accent-gold text-xs sm:text-sm">★</span>
-                        ))}
-                      </div>
-                      <span className="text-white font-bold text-sm sm:text-lg">241</span>
-                      <h3 className="text-white font-bold text-sm sm:text-xl">Google Reviews</h3>
+                      <span className="text-accent-gold font-bold text-sm sm:text-lg">5</span>
+                      <span className="text-accent-gold text-sm sm:text-lg">★</span>
+                      <span className="text-white text-sm sm:text-lg">Google Review</span>
+                      <span className="text-accent-gold font-bold text-sm sm:text-lg">240+</span>
                     </div>
                     <div className="w-16 h-1 bg-accent-gold mx-auto rounded-full"></div>
                   </div>
 
-                  {/* Desktop: Grid of testimonials, Mobile: Single testimonial */}
-                  {isDesktop ? (
-                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                      {testimonials.map((testimonial, index) => (
-                        <div
-                          key={index}
-                          onClick={() => setSelectedTestimonial(testimonial)}
-                          className="bg-primary-navy border-2 border-accent-gold p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-all"
-                        >
-                          <div className="flex items-center gap-1 mb-1">
-                            <span className="text-accent-gold font-bold text-xs">5</span>
-                            <span className="text-accent-gold text-xs">★</span>
-                            <span className="text-white text-[7px] sm:text-xs">Google Review</span>
-                            <span className="text-accent-gold font-bold text-xs">240+</span>
-                          </div>
-
-                          <p className="text-white text-[7px] sm:text-xs leading-tight mb-1 line-clamp-2">&ldquo;{testimonial.shortText}&rdquo;</p>
-
-                          <div className="flex items-center gap-1">
-                            <img
-                              src={testimonial.image}
-                              alt={testimonial.name}
-                              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover border-2 border-accent-gold"
-                              onError={(e) => {
-                                e.currentTarget.src = 'https://via.placeholder.com/32'
-                              }}
-                            />
-                            <p className="text-accent-gold font-bold text-[10px] sm:text-xs">{testimonial.name}</p>
-                          </div>
-                        </div>
-                      ))}
+                  {/* Single Testimonial - Fiorella */}
+                  <div
+                    onClick={() => setSelectedTestimonial(testimonials[0])}
+                    className="bg-primary-navy border-2 border-accent-gold p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-all"
+                  >
+                    <div className="flex items-center gap-1 mb-1">
+                      <span className="text-accent-gold font-bold text-xs">5</span>
+                      <span className="text-accent-gold text-xs">★</span>
+                      <span className="text-white text-[7px] sm:text-xs">Google Review</span>
+                      <span className="text-accent-gold font-bold text-xs">240+</span>
                     </div>
-                  ) : (
-                    <div
-                      onClick={() => setSelectedTestimonial(testimonials[0])}
-                      className="bg-primary-navy border-2 border-accent-gold p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-all"
-                    >
-                      <div className="flex items-center gap-1 mb-1">
-                        <span className="text-accent-gold font-bold text-xs">5</span>
-                        <span className="text-accent-gold text-xs">★</span>
-                        <span className="text-white text-[7px] sm:text-xs">Google Review</span>
-                        <span className="text-accent-gold font-bold text-xs">240+</span>
-                      </div>
 
-                      <p className="text-white text-[7px] sm:text-xs leading-tight mb-1 line-clamp-2">&ldquo;{testimonials[0].shortText}&rdquo;</p>
+                    <p className="text-white text-[7px] sm:text-xs leading-tight mb-1 line-clamp-2">&ldquo;{testimonials[0].shortText}&rdquo;</p>
 
-                      <div className="flex items-center gap-1">
-                        <img
-                          src={testimonials[0].image}
-                          alt={testimonials[0].name}
-                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover border-2 border-accent-gold"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://via.placeholder.com/32'
-                          }}
-                        />
-                        <p className="text-accent-gold font-bold text-[10px] sm:text-xs">{testimonials[0].name}</p>
-                      </div>
+                    <div className="flex items-center gap-1">
+                      <img
+                        src={testimonials[0].image}
+                        alt={testimonials[0].name}
+                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover border-2 border-accent-gold"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://via.placeholder.com/32'
+                        }}
+                      />
+                      <p className="text-accent-gold font-bold text-[10px] sm:text-xs">{testimonials[0].name}</p>
                     </div>
-                  )}
+                  </div>
                 </div>
 
                 {/* Evaluation Form - Compact */}

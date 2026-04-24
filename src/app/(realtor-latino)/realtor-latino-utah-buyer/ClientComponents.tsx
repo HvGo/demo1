@@ -113,10 +113,10 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
 
   const allTestimonials: Testimonial[] = [
     {
-      name: "Fiorella",
-      image: "/images/ivan-utah/hugoh.jpg",
-      shortText: "Vendimos nuestra casa con Blue Key Realty. Iván fue excelente; siempre estuvo dispuesto a responder nuestras preguntas y nos brindó el mejor asesoramiento durante todo el proceso. Recomiendo ampliamente sus servicios...",
-      fullText: "Vendimos nuestra casa con Blue Key Realty. Iván fue excelente; siempre estuvo dispuesto a responder nuestras preguntas y nos brindó el mejor asesoramiento durante todo el proceso. Recomiendo ampliamente sus servicios."
+      name: "Carlos Gonzalez",
+      image: "/images/ivan-utah/Carlos Gonzalez.jpg",
+      shortText: "Ivan fue excepcional durante todo el proceso de compra de mi casa. Como comprador primerizo, tenía muchas preguntas e incertidumbre sobre mi presupuesto. Ivan y su equipo fueron increíblemente pacientes y se tomaron el tiempo para responder a todas mis preguntas, brindándome una guía clara y atenta en cada paso del proceso....",
+      fullText: "Ivan fue excepcional durante todo el proceso de compra de mi casa. Como comprador primerizo, tenía muchas preguntas e incertidumbre sobre mi presupuesto. Ivan y su equipo fueron increíblemente pacientes y se tomaron el tiempo para responder a todas mis preguntas, brindándome una guía clara y atenta en cada paso del proceso."
     },
     {
       name: "Alex R",
@@ -163,7 +163,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                   fontFamily: 'Impact, sans-serif',
                   color: '#ffffff'
                 }}>
-                  ¡Si tu y tu co-signer ganan $40+ la hora? ¡Ya calificas!
+                  ¡Si tu y tu co-signer ganan <span className="text-accent-gold">$40+ la hora</span>? ¡Ya calificas!
                 </div>
               </h2>
               
@@ -186,7 +186,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                     }}
                   />
                   <p className="text-white text-xs sm:text-sm leading-tight mb-1 text-center w-full">
-                    <span className="underline">Tu Realtor</span> Latino de confianza en Utah
+                    Tu Realtor Latino de confianza en Utah
                   </p>
                 </div>
                 
