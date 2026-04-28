@@ -159,7 +159,7 @@ export default function ListingRoadmap() {
         {/* Image Section */}
         <div className="flex justify-center mb-16">
           <Image
-            src="/images/Gallery/roadmap_seller.jpg"
+            src="/images/Gallery/IMG_2193.png"
             alt="Selling Roadmap"
             width={800}
             height={400}
