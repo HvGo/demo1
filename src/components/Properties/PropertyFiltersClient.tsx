@@ -100,7 +100,7 @@ export default function PropertyFiltersClient({ properties: initialProperties = 
               {/* Property Image */}
               {property.images && property.images.length > 0 ? (
                 <img
-                  src={typeof property.images[0] === 'string' ? property.images[0] : property.images[0].src}
+                  src={property.images[0]}
                   alt={property.address}
                   className="w-full h-48 object-cover"
                   onError={(e) => {
@@ -125,26 +125,26 @@ export default function PropertyFiltersClient({ properties: initialProperties = 
 
                 {/* Price */}
                 <p className="text-2xl font-bold text-primary-navy mb-3">
-                  ${property.price.toLocaleString()}
+                  ${(property.price || 0).toLocaleString()}
                 </p>
 
                 {/* Property Features */}
                 <div className="flex gap-4 text-sm text-gray-600 mb-3 border-t pt-3">
-                  {property.beds > 0 && (
+                  {(property.beds || 0) > 0 && (
                     <div className="flex items-center gap-1">
                       <span className="font-semibold">{property.beds}</span>
                       <span>Beds</span>
                     </div>
                   )}
-                  {property.baths > 0 && (
+                  {(property.baths || 0) > 0 && (
                     <div className="flex items-center gap-1">
                       <span className="font-semibold">{property.baths}</span>
                       <span>Baths</span>
                     </div>
                   )}
-                  {property.sqft > 0 && (
+                  {(property.sqft || 0) > 0 && (
                     <div className="flex items-center gap-1">
-                      <span className="font-semibold">{property.sqft.toLocaleString()}</span>
+                      <span className="font-semibold">{(property.sqft || 0).toLocaleString()}</span>
                       <span>Sqft</span>
                     </div>
                   )}
