@@ -17,7 +17,7 @@ export const metadata = {
 
 const FAQsPage = async () => {
     const section = await getSiteSectionByKey('home_faqs');
-    const faqs = await getFaqs('home');
+    const faqs = await getFaqs('faqs');
     
     const title = section?.title || 'FAQs';
     const subtitle = section?.subtitle || 'Everything about Real Estate';

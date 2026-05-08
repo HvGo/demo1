@@ -120,10 +120,10 @@ export async function getFaqs(sectionKey: string = "home"): Promise<DbFaq[]> {
     select question, answer
     from faqs
     where is_visible = true
-      and section_key = $1
+      and section_keys @> $1::text[]
     order by sort_order asc, created_at asc
     `,
-    [sectionKey]
+    [[sectionKey]]
   );
 
   return rows.map((r) => ({
