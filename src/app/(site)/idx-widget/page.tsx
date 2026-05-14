@@ -1,5 +1,4 @@
 import HeroSub from "@/components/shared/HeroSub";
-import IDXBrokerWidgetEmbed from "@/components/Properties/IDXBrokerWidgetEmbed";
 import React from "react";
 import { Metadata } from "next";
 import { FloatingBubbles } from "@/components/Home/FloatingBubbles";
@@ -21,7 +20,7 @@ const page = () => {
             />
             <section className="py-8 bg-white dark:bg-dark">
                 <div className="container max-w-8xl mx-auto px-5 2xl:px-0">
-                    <IDXBrokerWidgetEmbed widgetId="153868" />
+                    {/* IDX Broker Widget - Archived */}
                 </div>
             </section>
             <FloatingBubbles />

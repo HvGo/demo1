@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { scrapePropertyDetails } from '@/lib/property-scraper'
+// import { scrapePropertyDetails } from '@/lib/property-scraper' // Archived in X/idx-broker-api
 
 /**
  * Endpoint to capture property data from IDX Broker
  * Extracts property information and stores it for contact form
+ * NOTE: This endpoint is archived - property scraper moved to X/idx-broker-api
  */
 export async function POST(request: NextRequest) {
   try {
@@ -20,9 +21,9 @@ export async function POST(request: NextRequest) {
     console.log('[CAPTURE_PROPERTY] URL:', propertyUrl)
 
     // Scrape property details from IDX Broker
-    const propertyData = await scrapePropertyDetails(propertyId, propertyUrl)
+    // const propertyData = await scrapePropertyDetails(propertyId, propertyUrl) // Archived
 
-    console.log('[CAPTURE_PROPERTY] Scraped data:', JSON.stringify(propertyData, null, 2))
+    // console.log('[CAPTURE_PROPERTY] Scraped data:', JSON.stringify(propertyData, null, 2))
 
     // TODO: Save to database
     // await db.propertyCaptures.create({
@@ -32,30 +33,21 @@ export async function POST(request: NextRequest) {
     //   capturedAt: new Date(),
     // })
 
-    console.log('[CAPTURE_PROPERTY] Success - Returning data:', {
-      address: propertyData.address,
-      price: propertyData.price,
-      beds: propertyData.beds,
-      baths: propertyData.baths,
-      sqft: propertyData.sqft,
-      yearBuilt: propertyData.yearBuilt,
-      lotSize: propertyData.lotSize,
-      type: propertyData.type,
-      status: propertyData.status,
-    })
+    // console.log('[CAPTURE_PROPERTY] Success - Returning data:', {
+    //   address: propertyData.address,
+    //   price: propertyData.price,
+    //   beds: propertyData.beds,
+    //   baths: propertyData.baths,
+    //   sqft: propertyData.sqft,
+    //   yearBuilt: propertyData.yearBuilt,
+    //   lotSize: propertyData.lotSize,
+    //   type: propertyData.type,
+    //   status: propertyData.status,
+    // })
 
     return NextResponse.json({
-      success: true,
-      address: propertyData.address,
-      price: propertyData.price,
-      beds: propertyData.beds,
-      baths: propertyData.baths,
-      sqft: propertyData.sqft,
-      yearBuilt: propertyData.yearBuilt,
-      lotSize: propertyData.lotSize,
-      type: propertyData.type,
-      status: propertyData.status,
-      message: 'Property captured successfully',
+      success: false,
+      message: 'Property capture endpoint archived - functionality moved to X/idx-broker-api',
     })
   } catch (error) {
     console.error('[CAPTURE_PROPERTY_ERROR]', error)
