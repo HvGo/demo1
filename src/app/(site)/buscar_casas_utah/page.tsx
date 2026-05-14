@@ -19,7 +19,7 @@ const page = () => {
                 description="Explora nuestro catálogo completo de propiedades con búsqueda avanzada y filtros."
                 badge="Todas las Propiedades"
             />
-            <section className="py-8 bg-white dark:bg-dark min-h-screen">
+            <section className="py-8 bg-white dark:bg-dark min-h-screen" style={{ paddingTop: "0px", paddingBottom: "0px" }}>
                 <div className="w-full">
                     <IDXPropertiesEmbed />
                 </div>
