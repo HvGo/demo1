@@ -37,8 +37,8 @@ export default function IDXBrokerWidgetEmbed({ widgetId = '153868' }: IDXBrokerW
   return (
     <div 
       id={`idx-widget-container-${widgetId}`}
-      className="w-full min-h-screen"
-      style={{ minHeight: '600px' }}
+      className="w-full"
+      style={{ minHeight: '400px' }}
     >
       {/* El widget de IDX Broker se renderizará aquí */}
     </div>

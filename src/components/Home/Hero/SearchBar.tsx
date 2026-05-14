@@ -30,7 +30,7 @@ const SearchBar = ({
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    router.push('/properties')
+    router.push('/buscar_casas_utah')
   }
 
   return (
