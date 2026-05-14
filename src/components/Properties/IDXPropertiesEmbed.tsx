@@ -132,7 +132,7 @@ export default function IDXPropertiesEmbed() {
 
           {/* Sugerencias */}
           <div className="mt-6 text-center text-xs text-gray-500">
-            <p>Ej: "123 Main Street" o "Salt Lake City" o "84101"</p>
+            <p>Ej: &quot;123 Main Street&quot; o &quot;Salt Lake City&quot; o &quot;84101&quot;</p>
           </div>
         </div>
       </div>
