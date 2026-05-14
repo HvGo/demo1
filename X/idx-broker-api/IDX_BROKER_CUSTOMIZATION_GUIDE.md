@@ -317,6 +317,39 @@ En el área de texto derecha, agrega tu CSS personalizado:
 ```css
 /* ========== OCULTAR ELEMENTOS ========== */
 
+/* Ocultar header móvil */
+#IDX-mobile-listings-header {
+  display: none !important;
+}
+
+/* Ocultar contador de resultados "500 results returned" */
+#IDX-resultsCountWrap {
+  display: none !important;
+}
+
+/* Ocultar mensaje "Your search returned more than the maximum number of listings..." */
+#IDX-resultsCountMessage {
+  display: none !important;
+}
+
+/* Ocultar enlaces superiores (Save Search, New Search, Modify Search) */
+#IDX-resultsTopLinks {
+  display: none !important;
+}
+
+/* Alternativa: Ocultar elementos individuales si el contenedor no funciona */
+#IDX-saveSearch {
+  display: none !important;
+}
+
+#IDX-resultsLinkNew {
+  display: none !important;
+}
+
+#IDX-resultsLinkModify {
+  display: none !important;
+}
+
 /* Ocultar mensaje "SHOWING 500 LISTINGS, TRY NARROWING YOUR SEARCH" */
 .IDX-alert.IDX-results__alert {
   display: none !important;
@@ -324,6 +357,11 @@ En el área de texto derecha, agrega tu CSS personalizado:
 
 /* Ocultar contador "500 LISTINGS" */
 .idx-results-total__heading {
+  display: none !important;
+}
+
+/* Ocultar disclaimer/información de copyright y MLS */
+div[style*="text-align:left"][style*="padding:10px 0"] {
   display: none !important;
 }
 
@@ -409,12 +447,30 @@ body,
 /* Expandir el grid de propiedades para ocupar más espacio */
 .idx-results__category {
   display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
-  gap: 20px !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+  gap: 15px !important;
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;
-  padding: 20px !important;
+  padding: 15px !important;
+}
+
+/* Mobile: Una columna en pantallas pequeñas */
+@media (max-width: 640px) {
+  .idx-results__category {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 10px !important;
+  }
+}
+
+/* Tablet: Dos columnas en pantallas medianas */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .idx-results__category {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15px !important;
+    padding: 15px !important;
+  }
 }
 
 /* Hacer que cada tarjeta de propiedad sea más grande */
@@ -499,4 +555,53 @@ Si necesitas ayuda:
 
 ---
 
-**Última actualización:** Mayo 13, 2026
+## 📱 CSS MOBILE RESPONSIVE (Sección Separada)
+
+Copia este CSS si necesitas aplicar cambios específicos para móviles y tablets:
+
+```css
+/* ========== RESPONSIVE GRID PARA MÓVILES Y TABLETS ========== */
+
+/* Mobile: Una columna en pantallas pequeñas (≤640px) */
+@media (max-width: 640px) {
+  .idx-results__category {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 10px !important;
+  }
+  
+  #idx-results-category-active {
+    padding: 0 10px !important;
+  }
+  
+  div#IDX-main {
+    padding: 0 !important;
+  }
+}
+
+/* Tablet: Dos columnas en pantallas medianas (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .idx-results__category {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15px !important;
+    padding: 15px !important;
+  }
+  
+  #idx-results-category-active {
+    padding: 0 15px !important;
+  }
+}
+
+/* Desktop: Múltiples columnas (≥1025px) */
+@media (min-width: 1025px) {
+  .idx-results__category {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    gap: 15px !important;
+    padding: 15px !important;
+  }
+}
+```
+
+---
+
+**Última actualización:** Mayo 14, 2026
