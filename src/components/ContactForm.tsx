@@ -215,6 +215,16 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit}>
+      {/* Honeypot field - invisible to humans, catches bots */}
+      <input
+        type="text"
+        name="website"
+        style={{ display: 'none' }}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
+      
       <div className='flex flex-col gap-8'>
         {/* Status Messages */}
         {status.type !== 'idle' && (

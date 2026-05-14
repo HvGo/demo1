@@ -54,6 +54,7 @@ type ContactPayload = {
   phone?: string
   email?: string
   message?: string
+  website?: string // Honeypot field
   sessionId?: string
   utmSource?: string
   utmMedium?: string
@@ -93,10 +94,66 @@ function detectBot(userAgent: string): boolean {
   )
 }
 
+// Validar que el nombre sea real (no caracteres aleatorios)
+function isValidName(name: string): boolean {
+  // Rechazar si contiene números consecutivos (ej: "qcWUFucCyqgdyW")
+  if (/\d{3,}/.test(name)) return false
+  
+  // Rechazar si tiene más de 3 caracteres especiales
+  const specialChars = (name.match(/[^a-zA-Z0-9\s\-']/g) || []).length
+  if (specialChars > 3) return false
+  
+  // Rechazar si tiene menos de 2 palabras
+  const words = name.trim().split(/\s+/).length
+  if (words < 2) return false
+  
+  // Rechazar si contiene patrones de spam comunes
+  const spamPatterns = ['viagra', 'casino', 'poker', 'lottery', 'click', 'buy', 'cheap']
+  if (spamPatterns.some(pattern => name.toLowerCase().includes(pattern))) return false
+  
+  // Validar que sea principalmente letras + espacios
+  const letterRatio = (name.match(/[a-zA-Z]/g) || []).length / name.length
+  if (letterRatio < 0.7) return false
+  
+  return true
+}
+
+// Validar que el mensaje contenga palabras reales (no texto aleatorio)
+function isValidMessage(message: string): boolean {
+  // Rechazar si contiene URLs
+  if (/https?:\/\/|www\.|\.com|\.net|\.org/.test(message)) return false
+  
+  // Rechazar si tiene demasiados números consecutivos
+  if (/\d{5,}/.test(message)) return false
+  
+  // Rechazar si contiene patrones de spam comunes
+  const spamPatterns = ['viagra', 'casino', 'poker', 'lottery', 'click here', 'buy now', 'cheap']
+  if (spamPatterns.some(pattern => message.toLowerCase().includes(pattern))) return false
+  
+  // Validar que tenga al menos 2-3 palabras reales (no solo caracteres aleatorios)
+  const words = message.trim().split(/\s+/)
+  if (words.length < 3) return false
+  
+  // Validar que la mayoría de caracteres sean letras (no aleatorios)
+  const letterRatio = (message.match(/[a-zA-Z]/g) || []).length / message.length
+  if (letterRatio < 0.6) return false
+  
+  return true
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as ContactPayload
-    const { name, phone, email, message, sessionId, utmSource, utmMedium, utmCampaign, referrer } = body
+    const { name, phone, email, message, website, sessionId, utmSource, utmMedium, utmCampaign, referrer } = body
+
+    // HONEYPOT: Si el campo "website" está lleno, es un bot
+    if (website && website.trim().length > 0) {
+      console.log('[CONTACT SPAM] Honeypot field filled - rejecting bot submission')
+      return NextResponse.json(
+        { error: 'An error occurred while processing your request' },
+        { status: 400 }
+      )
+    }
 
     // Validación de campos requeridos
     if (!name || !email || !message) {
@@ -118,6 +175,24 @@ export async function POST(request: NextRequest) {
     if (message.length < 10 || message.length > 5000) {
       return NextResponse.json(
         { error: 'Message must be between 10 and 5000 characters' },
+        { status: 400 }
+      )
+    }
+
+    // Validación de nombre (detectar caracteres aleatorios)
+    if (!isValidName(name)) {
+      console.log('[CONTACT SPAM] Invalid name format - rejecting submission:', name)
+      return NextResponse.json(
+        { error: 'An error occurred while processing your request' },
+        { status: 400 }
+      )
+    }
+
+    // Validación de mensaje (detectar texto aleatorio)
+    if (!isValidMessage(message)) {
+      console.log('[CONTACT SPAM] Invalid message format - rejecting submission')
+      return NextResponse.json(
+        { error: 'An error occurred while processing your request' },
         { status: 400 }
       )
     }
@@ -199,17 +274,21 @@ export async function POST(request: NextRequest) {
     // Log para monitoreo
     console.log(`[CONTACT] New contact submitted: ${contactId} from ${sanitizedEmail}`)
 
-    // Enviar emails (no bloquear si fallan)
-    // - Confirmación al usuario (siempre)
-    // - Notificación a emails dinámicos desde BD
-    try {
-      await Promise.all([
-        sendContactConfirmation(sanitizedName, sanitizedEmail),
-        sendContactAdminNotification(sanitizedName, sanitizedEmail, sanitizedPhone, sanitizedMessage)
-      ])
-    } catch (emailError) {
-      console.error('[CONTACT EMAIL ERROR]', emailError)
-      // No fallar la respuesta si los emails no se envían
+    // Enviar emails SOLO si NO es bot
+    // - Confirmación al usuario (siempre que no sea bot)
+    // - Notificación a emails dinámicos desde BD (siempre que no sea bot)
+    if (!isBot) {
+      try {
+        await Promise.all([
+          sendContactConfirmation(sanitizedName, sanitizedEmail),
+          sendContactAdminNotification(sanitizedName, sanitizedEmail, sanitizedPhone, sanitizedMessage)
+        ])
+      } catch (emailError) {
+        console.error('[CONTACT EMAIL ERROR]', emailError)
+        // No fallar la respuesta si los emails no se envían
+      }
+    } else {
+      console.log(`[CONTACT SPAM] Bot submission saved to DB but emails not sent: ${contactId}`)
     }
 
     // Respuesta exitosa
