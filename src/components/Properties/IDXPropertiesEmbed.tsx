@@ -22,8 +22,14 @@ export default function IDXPropertiesEmbed() {
       return
     }
 
-    if (address.trim()) {
-      // Actualizar el src del iframe con los parámetros de búsqueda
+    // Si el campo está vacío, mostrar todos los resultados sin aw_address
+    if (!address.trim()) {
+      const searchUrl = `https://ivanutahrealtor.idxbroker.com/i/proper?idxID=c072&ccz=city&pt=1`
+      setIframeSrc(searchUrl)
+      setIframeKey(prev => prev + 1)
+      setSearchCount(prev => prev + 1)
+    } else {
+      // Si hay dirección, filtrar por aw_address
       const encodedAddress = address.trim().replace(/\s+/g, '+')
       const searchUrl = `https://ivanutahrealtor.idxbroker.com/i/proper?idxID=c072&aw_address=${encodedAddress}&ccz=city&pt=1`
       setIframeSrc(searchUrl)
