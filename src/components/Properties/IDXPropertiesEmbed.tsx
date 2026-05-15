@@ -6,7 +6,7 @@ import { Search } from 'lucide-react'
 export default function IDXPropertiesEmbed() {
   const [iframeHeight, setIframeHeight] = useState('800px')
   const [address, setAddress] = useState('')
-  const [iframeSrc, setIframeSrc] = useState('https://ivanutahrealtor.idxbroker.com/i/proper')
+  const [iframeSrc, setIframeSrc] = useState('https://ivanutahrealtor.idxbroker.com/i/proper1')
   const [iframeKey, setIframeKey] = useState(0)
 
   const handleSearch = (e: React.FormEvent) => {
@@ -14,13 +14,13 @@ export default function IDXPropertiesEmbed() {
 
     // Si el campo está vacío, mostrar todos los resultados sin aw_address
     if (!address.trim()) {
-      const searchUrl = `https://ivanutahrealtor.idxbroker.com/i/proper?idxID=c072&ccz=city&pt=1`
+      const searchUrl = `https://ivanutahrealtor.idxbroker.com/i/proper1?idxID=c072&ccz=city&pt=1`
       setIframeSrc(searchUrl)
       setIframeKey(prev => prev + 1)
     } else {
       // Si hay dirección, filtrar por aw_address
       const encodedAddress = address.trim().replace(/\s+/g, '+')
-      const searchUrl = `https://ivanutahrealtor.idxbroker.com/i/proper?idxID=c072&aw_address=${encodedAddress}&ccz=city&pt=1`
+      const searchUrl = `https://ivanutahrealtor.idxbroker.com/i/proper1?idxID=c072&aw_address=${encodedAddress}&ccz=city&pt=1`
       setIframeSrc(searchUrl)
       setIframeKey(prev => prev + 1)
     }
