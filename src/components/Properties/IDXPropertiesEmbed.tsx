@@ -68,7 +68,7 @@ export default function IDXPropertiesEmbed() {
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                placeholder="Ingresa una dirección, ciudad o código postal"
+                placeholder="Ingresa una dirección"
                 className="w-full px-5 py-3 border-2 rounded-lg focus:outline-none transition-all text-base"
                 style={{
                   borderColor: '#067ff9',
@@ -91,7 +91,7 @@ export default function IDXPropertiesEmbed() {
 
           {/* Sugerencias */}
           <div className="mt-6 text-center text-xs text-gray-500">
-            <p>Ej: &quot;123 Main Street&quot; o &quot;Salt Lake City&quot; o &quot;84101&quot;</p>
+            <p>Ej: &quot;123 Main Street</p>
           </div>
         </div>
       </div>
