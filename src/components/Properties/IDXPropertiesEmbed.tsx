@@ -1,40 +1,28 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Search, X } from 'lucide-react'
-import Link from 'next/link'
+import { Search } from 'lucide-react'
 
 export default function IDXPropertiesEmbed() {
   const [iframeHeight, setIframeHeight] = useState('800px')
   const [address, setAddress] = useState('')
   const [iframeSrc, setIframeSrc] = useState('https://ivanutahrealtor.idxbroker.com/i/proper')
   const [iframeKey, setIframeKey] = useState(0)
-  const [searchCount, setSearchCount] = useState(0)
-  const [showLimitModal, setShowLimitModal] = useState(false)
-  const MAX_SEARCHES = 4
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    
-    // Verificar si se alcanzó el límite
-    if (searchCount >= MAX_SEARCHES) {
-      setShowLimitModal(true)
-      return
-    }
 
     // Si el campo está vacío, mostrar todos los resultados sin aw_address
     if (!address.trim()) {
       const searchUrl = `https://ivanutahrealtor.idxbroker.com/i/proper?idxID=c072&ccz=city&pt=1`
       setIframeSrc(searchUrl)
       setIframeKey(prev => prev + 1)
-      setSearchCount(prev => prev + 1)
     } else {
       // Si hay dirección, filtrar por aw_address
       const encodedAddress = address.trim().replace(/\s+/g, '+')
       const searchUrl = `https://ivanutahrealtor.idxbroker.com/i/proper?idxID=c072&aw_address=${encodedAddress}&ccz=city&pt=1`
       setIframeSrc(searchUrl)
       setIframeKey(prev => prev + 1)
-      setSearchCount(prev => prev + 1)
     }
   }
 
@@ -68,44 +56,9 @@ export default function IDXPropertiesEmbed() {
 
   return (
     <div className="w-full">
-      {/* Modal de límite de búsquedas */}
-      {showLimitModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Límite de Búsquedas Alcanzado
-              </h2>
-              <button
-                onClick={() => setShowLimitModal(false)}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              >
-                <X size={24} />
-              </button>
-            </div>
-            
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
-              Has alcanzado el límite de {MAX_SEARCHES} búsquedas por sesión. Para continuar buscando más propiedades, por favor completa nuestro formulario de contacto.
-            </p>
-
-            <Link
-              href="/contactus"
-              className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-center block"
-              style={{ backgroundColor: '#067ff9' }}
-            >
-              Ir a Contacto
-            </Link>
-          </div>
-        </div>
-      )}
-
-      {/* Control de búsqueda por dirección - Mejorado */}
+      {/* Control de búsqueda por dirección */}
       <div className="flex justify-center px-4" style={{ padding: '0 !important', paddingBottom: '0 !important' }}>
         <div className="w-full max-w-2xl" style={{ padding: '0 !important', paddingBottom: '0 !important' }}>
-          {/* Contador de búsquedas */}
-          <div className="text-right text-sm text-gray-500 dark:text-gray-400 mb-2">
-            Búsquedas: {searchCount}/{MAX_SEARCHES}
-          </div>
 
           {/* Formulario de búsqueda */}
           <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3" style={{ padding: '0 !important', paddingBottom: '0 !important', margin: '0 !important' }}>
