@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     body = await request.text()
 
     // Validar firma del webhook
-    const signature = request.headers.get('x-hub-signature-256')
+    const signature = request.headers.get('x-hub-signature-256') || undefined
     if (!validateMetaSignature(body, signature)) {
       console.error('❌ Invalid webhook signature')
       await logWebhookEvent('webhook_received', {}, 'error', 'Invalid signature')
