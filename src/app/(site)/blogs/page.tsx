@@ -1,5 +1,5 @@
 import BlogList from "@/components/Blog";
-import HeroSub from "@/components/shared/HeroSub";
+import BlogHeroSection from "@/components/Blog/HeroSection";
 import { Metadata } from "next";
 import { FloatingBubbles } from "@/components/Home/FloatingBubbles";
 
@@ -13,10 +13,9 @@ export const metadata: Metadata = {
 const Blog = () => {
     return (
         <>
-            <HeroSub
+            <BlogHeroSection
                 title="Real estate insights."
                 description="Stay ahead in the property market with expert advice and updates."
-                badge="Blog"
             />
             <BlogList />
             <FloatingBubbles />

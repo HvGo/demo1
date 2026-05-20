@@ -1,0 +1,227 @@
+/**
+ * Queries para tabla meta_messages
+ */
+
+import { sql } from '@/lib/db'
+
+export interface SaveMetaMessageParams {
+  contactId: number | null
+  platform: string
+  metaSenderId: string
+  metaMessageId: string
+  messageText: string
+  messageType: string
+  intent: string
+  metadata: Record<string, any>
+}
+
+export interface MetaMessage {
+  id: number
+  contact_id: number | null
+  platform: string
+  meta_sender_id: string
+  meta_message_id: string
+  message_text: string
+  message_type: string
+  intent: string
+  metadata: Record<string, any>
+  processed: boolean
+  response_sent: boolean
+  created_at: Date
+  updated_at: Date
+}
+
+/**
+ * Guardar un nuevo mensaje de Meta
+ */
+export async function saveMetaMessage(
+  params: SaveMetaMessageParams
+): Promise<MetaMessage> {
+  const query = `
+    INSERT INTO meta_messages (
+      contact_id,
+      platform,
+      meta_sender_id,
+      meta_message_id,
+      message_text,
+      message_type,
+      intent,
+      metadata,
+      processed
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true)
+    RETURNING *
+  `
+
+  const result = await sql<MetaMessage>(query, [
+    params.contactId,
+    params.platform,
+    params.metaSenderId,
+    params.metaMessageId,
+    params.messageText,
+    params.messageType,
+    params.intent,
+    JSON.stringify(params.metadata),
+  ])
+
+  return result.rows[0]
+}
+
+/**
+ * Obtener mensajes de un contacto
+ */
+export async function getMetaMessagesByContactId(
+  contactId: number,
+  limit: number = 50
+): Promise<MetaMessage[]> {
+  const query = `
+    SELECT * FROM meta_messages
+    WHERE contact_id = $1
+    ORDER BY created_at DESC
+    LIMIT $2
+  `
+
+  const result = await sql<MetaMessage>(query, [contactId, limit])
+  return result.rows
+}
+
+/**
+ * Obtener mensajes por meta_sender_id
+ */
+export async function getMetaMessagesBySenderId(
+  metaSenderId: string,
+  limit: number = 50
+): Promise<MetaMessage[]> {
+  const query = `
+    SELECT * FROM meta_messages
+    WHERE meta_sender_id = $1
+    ORDER BY created_at DESC
+    LIMIT $2
+  `
+
+  const result = await sql<MetaMessage>(query, [metaSenderId, limit])
+  return result.rows
+}
+
+/**
+ * Obtener un mensaje específico por meta_message_id
+ */
+export async function getMetaMessageById(
+  metaMessageId: string
+): Promise<MetaMessage | null> {
+  const query = `
+    SELECT * FROM meta_messages
+    WHERE meta_message_id = $1
+  `
+
+  const result = await sql<MetaMessage>(query, [metaMessageId])
+  return result.rows[0] || null
+}
+
+/**
+ * Actualizar estado de respuesta enviada
+ */
+export async function markMessageResponseSent(
+  metaMessageId: string
+): Promise<boolean> {
+  const query = `
+    UPDATE meta_messages
+    SET response_sent = true, updated_at = CURRENT_TIMESTAMP
+    WHERE meta_message_id = $1
+    RETURNING id
+  `
+
+  const result = await sql<MetaMessage>(query, [metaMessageId])
+  return result.rows.length > 0
+}
+
+/**
+ * Obtener mensajes no procesados
+ */
+export async function getUnprocessedMessages(
+  limit: number = 100
+): Promise<MetaMessage[]> {
+  const query = `
+    SELECT * FROM meta_messages
+    WHERE processed = false
+    ORDER BY created_at ASC
+    LIMIT $1
+  `
+
+  const result = await sql<MetaMessage>(query, [limit])
+  return result.rows
+}
+
+/**
+ * Obtener estadísticas de mensajes
+ */
+export async function getMetaMessagesStats(
+  days: number = 7
+): Promise<{
+  total: number
+  byPlatform: Record<string, number>
+  byIntent: Record<string, number>
+  processed: number
+  unprocessed: number
+}> {
+  const query = `
+    SELECT
+      COUNT(*) as total,
+      COUNT(*) FILTER (WHERE processed = true) as processed,
+      COUNT(*) FILTER (WHERE processed = false) as unprocessed
+    FROM meta_messages
+    WHERE created_at >= NOW() - INTERVAL '${days} days'
+  `
+
+  const result = await sql<any>(query)
+  const stats = result.rows[0]
+
+  // Obtener desglose por plataforma
+  const platformQuery = `
+    SELECT platform, COUNT(*) as count
+    FROM meta_messages
+    WHERE created_at >= NOW() - INTERVAL '${days} days'
+    GROUP BY platform
+  `
+  const platformResult = await sql<any>(platformQuery)
+  const byPlatform: Record<string, number> = {}
+  platformResult.rows.forEach((row: any) => {
+    byPlatform[row.platform] = parseInt(row.count)
+  })
+
+  // Obtener desglose por intención
+  const intentQuery = `
+    SELECT intent, COUNT(*) as count
+    FROM meta_messages
+    WHERE created_at >= NOW() - INTERVAL '${days} days'
+    AND intent IS NOT NULL
+    GROUP BY intent
+  `
+  const intentResult = await sql<any>(intentQuery)
+  const byIntent: Record<string, number> = {}
+  intentResult.rows.forEach((row: any) => {
+    byIntent[row.intent] = parseInt(row.count)
+  })
+
+  return {
+    total: parseInt(stats.total),
+    byPlatform,
+    byIntent,
+    processed: parseInt(stats.processed),
+    unprocessed: parseInt(stats.unprocessed),
+  }
+}
+
+/**
+ * Eliminar mensajes antiguos (limpieza)
+ */
+export async function deleteOldMessages(daysOld: number = 90): Promise<number> {
+  const query = `
+    DELETE FROM meta_messages
+    WHERE created_at < NOW() - INTERVAL '${daysOld} days'
+    AND processed = true
+  `
+
+  const result = await sql<any>(query)
+  return result.rows.length || 0
+}
