@@ -6,6 +6,7 @@ interface Area {
   name: string
   description: string
   icon: string
+  href: string
 }
 
 const LocalExpertise = async () => {
@@ -13,32 +14,38 @@ const LocalExpertise = async () => {
     {
       name: 'West Valley City',
       description: '',
-      icon: 'mdi:home-group'
+      icon: 'mdi:home-group',
+      href: '/west-valley-city'
     },
     {
       name: 'Kearns / Magna',
       description: '',
-      icon: 'mdi:home-heart'
+      icon: 'mdi:home-heart',
+      href: '/kearns-magna'
     },
     {
       name: 'South Jordan / Herriman',
       description: '',
-      icon: 'mdi:home-city-outline'
+      icon: 'mdi:home-city-outline',
+      href: '/south-jordan-herriman'
     },
     {
       name: 'Lehi / Saratoga Springs',
       description: '',
-      icon: 'mdi:map-marker-radius'
+      icon: 'mdi:map-marker-radius',
+      href: '/lehi-saratoga-springs'
     },
     {
       name: 'Tooele / Stansbury Park',
       description: '',
-      icon: 'mdi:treasure-chest'
+      icon: 'mdi:treasure-chest',
+      href: '/tooele-stansbury-park'
     },
     {
       name: 'Ogden / Layton',
       description: '',
-      icon: 'mdi:map'
+      icon: 'mdi:map',
+      href: '/ogden-layton'
     }
   ]
 
