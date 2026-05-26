@@ -20,8 +20,20 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
   const timestamp = message.timestamp
 
   try {
+    console.log('Processing Meta message:', { senderId, messageText, messageId })
+
+    // Validar que el mensaje es legítimo
+    if (!isLegitimateMessage(messageText)) {
+      console.warn('Message rejected: not legitimate', { messageText })
+      return
+    }
+
     // Enviar indicador de escritura
-    await sendTypingIndicator(senderId)
+    try {
+      await sendTypingIndicator(senderId)
+    } catch (error) {
+      console.error('Error sending typing indicator:', error)
+    }
 
     // Sanitizar texto
     const sanitizedText = sanitizeMessageText(messageText)
@@ -29,38 +41,43 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
     // Detectar intención
     const intent = detectIntent(sanitizedText)
 
-    // Obtener o crear contacto
-    let contactId: number | null = null
+    // Guardar mensaje en BD (sin esperar contacto)
     try {
-      contactId = await getOrCreateContact(senderId, sanitizedText)
+      await saveMetaMessage({
+        contactId: null, // No requerido para meta_messages
+        platform: PLATFORMS.FACEBOOK, // Usar Facebook por defecto (Messenger)
+        metaSenderId: senderId,
+        metaMessageId: messageId,
+        messageText: sanitizedText,
+        messageType: 'text',
+        intent,
+        metadata: {
+          timestamp,
+          originalText: messageText,
+        },
+      })
+      console.log('✅ Message saved to meta_messages')
     } catch (error) {
-      console.error('Error creating/getting contact:', error)
+      console.error('Error saving message:', error)
+      throw error
     }
 
-    // Guardar mensaje en BD
-    await saveMetaMessage({
-      contactId,
-      platform: PLATFORMS.INSTAGRAM, // Detectar dinámicamente si es posible
-      metaSenderId: senderId,
-      metaMessageId: messageId,
-      messageText: sanitizedText,
-      messageType: 'text',
-      intent,
-      metadata: {
-        timestamp,
-        originalText: messageText,
-      },
-    })
-
     // Enviar respuesta automática
-    const response = getAutoResponse(intent)
-    const sent = await sendTextMessage(senderId, response)
+    try {
+      const response = getAutoResponse(intent)
+      const sent = await sendTextMessage(senderId, response)
 
-    if (!sent.success) {
-      console.error('Failed to send response:', sent.error)
+      if (!sent.success) {
+        console.error('Failed to send response:', sent.error)
+      } else {
+        console.log('✅ Auto-response sent')
+      }
+    } catch (error) {
+      console.error('Error sending auto-response:', error)
     }
   } catch (error) {
     console.error('Error processing Meta message:', error)
+    throw error
   }
 }
 
@@ -108,55 +125,6 @@ export function getAutoResponse(intent: string): string {
   }
 }
 
-/**
- * Obtener o crear contacto
- */
-async function getOrCreateContact(
-  metaSenderId: string,
-  messageText: string
-): Promise<number> {
-  // Buscar contacto existente por meta_sender_id
-  const existingQuery = `
-    SELECT c.id FROM contacts c
-    WHERE c.session_id = $1
-    LIMIT 1
-  `
-
-  const existingResult = await sql<{ id: number }>(existingQuery, [
-    metaSenderId,
-  ])
-
-  if (existingResult.rows.length > 0) {
-    return existingResult.rows[0].id
-  }
-
-  // Crear nuevo contacto
-  const createQuery = `
-    INSERT INTO contacts (
-      name,
-      email,
-      message,
-      session_id,
-      device_type,
-      browser,
-      created_at
-    )
-    VALUES ($1, $2, $3, $4, $5, $6, NOW())
-    RETURNING id
-  `
-
-  const createResult = await sql<{ id: number }>(createQuery, [
-    'Meta Contact', // Nombre por defecto
-    `${metaSenderId}@meta.local`, // Email temporal
-    messageText, // Primer mensaje
-    metaSenderId, // Usar meta_sender_id como session_id
-    'mobile', // Asumir mobile desde Meta
-    'Meta App',
-    // created_at se genera automáticamente
-  ])
-
-  return createResult.rows[0].id
-}
 
 /**
  * Extraer información de contacto del mensaje

@@ -7,7 +7,7 @@ import { FloatingBubbles } from "@/components/Home/FloatingBubbles";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-    title: "Property List | Homely",
+    title: "Property List",
 };
 
 const page = () => {
