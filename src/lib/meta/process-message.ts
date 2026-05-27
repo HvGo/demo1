@@ -5,7 +5,13 @@
 
 import { MetaMessage, ProcessedMessage } from '@/types/meta'
 import { INTENTS, AUTO_RESPONSES, INTENT_KEYWORDS, PLATFORMS } from './constants'
-import { saveMetaMessage } from '@/lib/db/queries/meta-messages'
+import { 
+  saveMetaMessage,
+  getOrCreateConversation,
+  updateConversationAfterResponse,
+  escalateConversation,
+  getConversationHistoryBySenderId
+} from '@/lib/db/queries/meta-messages'
 import { sendTextMessage, sendTypingIndicator } from './send-message'
 import { sanitizeMessageText } from './validate-webhook'
 import { sql } from '@/lib/db'
@@ -27,6 +33,10 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
       console.warn('Message rejected: not legitimate', { messageText })
       return
     }
+
+    // Obtener o crear conversación
+    const conversation = await getOrCreateConversation(senderId)
+    console.log('📞 Conversation:', { conversationId: conversation.id, messageCount: conversation.message_count })
 
     // Enviar indicador de escritura
     try {
@@ -62,6 +72,27 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
       throw error
     }
 
+    // Verificar si debe escalar
+    const shouldEscalate = await checkIfShouldEscalate(conversation, sanitizedText)
+
+    if (shouldEscalate.escalate) {
+      await escalateConversation(conversation.id, shouldEscalate.reason)
+      console.log('⚠️ Conversation escalated:', shouldEscalate.reason)
+      
+      // Enviar mensaje de escalamiento
+      const escalationMessage = '👤 Tu consulta ha sido escalada a nuestro equipo. Un agente se pondrá en contacto pronto.'
+      await sendTextMessage(senderId, escalationMessage)
+      return
+    }
+
+    // Verificar si debe responder (evitar repetición)
+    const shouldRespond = await checkIfShouldRespond(conversation)
+
+    if (!shouldRespond) {
+      console.log('⏭️ Skipping auto-response (already responded recently)')
+      return
+    }
+
     // Enviar respuesta automática
     try {
       const response = getAutoResponse(intent)
@@ -71,6 +102,7 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
         console.error('Failed to send response:', sent.error)
       } else {
         console.log('✅ Auto-response sent')
+        await updateConversationAfterResponse(conversation.id)
       }
     } catch (error) {
       console.error('Error sending auto-response:', error)
@@ -208,6 +240,88 @@ export async function getConversationHistory(
   }>(query, [contactId, limit])
 
   return result.rows.reverse() // Retornar en orden cronológico
+}
+
+/**
+ * Verificar si la conversación debe ser escalada a humano
+ */
+async function checkIfShouldEscalate(
+  conversation: any,
+  messageText: string
+): Promise<{ escalate: boolean; reason: string }> {
+  // Palabras clave de frustración
+  const frustrationKeywords = [
+    'ayuda',
+    'urgente',
+    'alguien',
+    'hola?',
+    'hola??',
+    'hola???',
+    'no entiendo',
+    'no me sirve',
+    'no funciona',
+    'quiero hablar',
+    'agente',
+    'persona',
+    'humano',
+  ]
+
+  const lowerText = messageText.toLowerCase()
+
+  // Detectar frustración
+  if (frustrationKeywords.some((keyword) => lowerText.includes(keyword))) {
+    return {
+      escalate: true,
+      reason: 'Frustration detected - client needs human assistance',
+    }
+  }
+
+  // Si cliente envió 3+ mensajes sin respuesta humana, escalar
+  if (conversation.message_count >= 3 && !conversation.escalated_to_human) {
+    return {
+      escalate: true,
+      reason: 'Multiple messages without human response',
+    }
+  }
+
+  // Si pasaron más de 30 minutos sin respuesta humana y hay 2+ mensajes
+  if (conversation.last_auto_response_at) {
+    const lastResponseTime = new Date(conversation.last_auto_response_at)
+    const now = new Date()
+    const minutesElapsed = (now.getTime() - lastResponseTime.getTime()) / (1000 * 60)
+
+    if (minutesElapsed > 30 && conversation.message_count >= 2) {
+      return {
+        escalate: true,
+        reason: 'No human response for 30+ minutes',
+      }
+    }
+  }
+
+  return { escalate: false, reason: '' }
+}
+
+/**
+ * Verificar si debe responder (evitar repetición)
+ */
+async function checkIfShouldRespond(conversation: any): Promise<boolean> {
+  // Si ya fue escalada, no responder
+  if (conversation.escalated_to_human) {
+    return false
+  }
+
+  // Si respondimos hace menos de 2 minutos, no responder nuevamente
+  if (conversation.last_auto_response_at) {
+    const lastResponseTime = new Date(conversation.last_auto_response_at)
+    const now = new Date()
+    const secondsElapsed = (now.getTime() - lastResponseTime.getTime()) / 1000
+
+    if (secondsElapsed < 120) {
+      return false
+    }
+  }
+
+  return true
 }
 
 /**

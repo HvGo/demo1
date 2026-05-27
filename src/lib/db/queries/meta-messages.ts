@@ -225,3 +225,150 @@ export async function deleteOldMessages(daysOld: number = 90): Promise<number> {
   const result = await sql<any>(query)
   return result.rows.length || 0
 }
+
+/**
+ * Obtener o crear conversación
+ */
+export async function getOrCreateConversation(
+  metaSenderId: string
+): Promise<{
+  id: number
+  meta_sender_id: string
+  conversation_status: string
+  message_count: number
+  last_auto_response_at: Date | null
+  escalated_to_human: boolean
+}> {
+  const query = `
+    INSERT INTO meta_conversations (meta_sender_id, conversation_status, message_count)
+    VALUES ($1, 'active', 0)
+    ON CONFLICT (meta_sender_id) DO UPDATE
+    SET updated_at = NOW()
+    RETURNING id, meta_sender_id, conversation_status, message_count, last_auto_response_at, escalated_to_human
+  `
+
+  const result = await sql<{
+    id: number
+    meta_sender_id: string
+    conversation_status: string
+    message_count: number
+    last_auto_response_at: Date | null
+    escalated_to_human: boolean
+  }>(query, [metaSenderId])
+
+  return result.rows[0]
+}
+
+/**
+ * Actualizar conversación después de respuesta automática
+ */
+export async function updateConversationAfterResponse(
+  conversationId: number
+): Promise<void> {
+  const query = `
+    UPDATE meta_conversations
+    SET 
+      message_count = message_count + 1,
+      last_auto_response_at = NOW(),
+      updated_at = NOW()
+    WHERE id = $1
+  `
+
+  await sql(query, [conversationId])
+}
+
+/**
+ * Escalar conversación a humano
+ */
+export async function escalateConversation(
+  conversationId: number,
+  reason: string
+): Promise<void> {
+  const query = `
+    UPDATE meta_conversations
+    SET 
+      escalated_to_human = TRUE,
+      escalated_at = NOW(),
+      escalation_reason = $2,
+      conversation_status = 'escalated',
+      updated_at = NOW()
+    WHERE id = $1
+  `
+
+  await sql(query, [conversationId, reason])
+}
+
+/**
+ * Obtener conversaciones escaladas
+ */
+export async function getEscalatedConversations(): Promise<
+  Array<{
+    id: number
+    meta_sender_id: string
+    message_count: number
+    escalation_reason: string
+    escalated_at: Date
+    created_at: Date
+  }>
+> {
+  const query = `
+    SELECT 
+      id,
+      meta_sender_id,
+      message_count,
+      escalation_reason,
+      escalated_at,
+      created_at
+    FROM meta_conversations
+    WHERE escalated_to_human = TRUE
+    AND conversation_status = 'escalated'
+    ORDER BY escalated_at DESC
+  `
+
+  const result = await sql<{
+    id: number
+    meta_sender_id: string
+    message_count: number
+    escalation_reason: string
+    escalated_at: Date
+    created_at: Date
+  }>(query)
+
+  return result.rows
+}
+
+/**
+ * Obtener historial de conversación por sender ID
+ */
+export async function getConversationHistoryBySenderId(
+  metaSenderId: string,
+  limit: number = 10
+): Promise<
+  Array<{
+    id: number
+    message_text: string
+    intent: string
+    created_at: Date
+  }>
+> {
+  const query = `
+    SELECT 
+      id,
+      message_text,
+      intent,
+      created_at
+    FROM meta_messages
+    WHERE meta_sender_id = $1
+    ORDER BY created_at DESC
+    LIMIT $2
+  `
+
+  const result = await sql<{
+    id: number
+    message_text: string
+    intent: string
+    created_at: Date
+  }>(query, [metaSenderId, limit])
+
+  return result.rows.reverse()
+}
