@@ -26,7 +26,7 @@ export async function sendTextMessage(
     })
 
     const response = await fetch(
-      `https://graph.instagram.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
@@ -73,7 +73,7 @@ export async function sendButtonMessage(
 ): Promise<SendMessageResponse> {
   try {
     const response = await fetch(
-      `https://graph.instagram.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
@@ -133,7 +133,7 @@ export async function sendImageMessage(
 ): Promise<SendMessageResponse> {
   try {
     const response = await fetch(
-      `https://graph.instagram.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
@@ -187,7 +187,7 @@ export async function markMessageAsRead(
 ): Promise<SendMessageResponse> {
   try {
     const response = await fetch(
-      `https://graph.instagram.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
@@ -228,7 +228,7 @@ export async function sendTypingIndicator(
 ): Promise<SendMessageResponse> {
   try {
     const response = await fetch(
-      `https://graph.instagram.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
