@@ -18,6 +18,13 @@ export async function sendTextMessage(
   text: string
 ): Promise<SendMessageResponse> {
   try {
+    console.log('🔐 Sending message with token:', {
+      tokenLength: META_CONFIG.ACCESS_TOKEN?.length || 0,
+      tokenPrefix: META_CONFIG.ACCESS_TOKEN?.substring(0, 10) || 'UNDEFINED',
+      tokenSuffix: META_CONFIG.ACCESS_TOKEN?.substring(META_CONFIG.ACCESS_TOKEN.length - 10) || 'UNDEFINED',
+      fullToken: META_CONFIG.ACCESS_TOKEN,
+    })
+
     const response = await fetch(
       `https://graph.instagram.com/${META_CONFIG.API_VERSION}/me/messages`,
       {
