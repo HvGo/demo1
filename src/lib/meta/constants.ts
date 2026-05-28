@@ -47,12 +47,12 @@ export const APPOINTMENT_STATUS = {
 
 export const AUTO_RESPONSES = {
   GREETING:
-    '¡Hola! ¿En qué puedo ayudarte hoy?, ¿Tienes alguna pregunta sobre comprar una casa en Utah?',
+    '¡Hola! ¿En qué puedo ayudarte hoy?, ¿Tienes alguna pregunta sobre comprar o vender una casa en Utah?',
   SCHEDULE:
     'Me gustaría agendar una cita contigo. ¿Cuándo te vendría bien? Tengo disponibilidad en los próximos días.',
   INFO: 'Aquí están las propiedades que encontré para ti según tus criterios. ¿Te gustaría más información sobre alguna?',
   INQUIRY:
-    'Gracias por tu pregunta. Un agente se pondrá en contacto contigo pronto para ayudarte.',
+    'Gracias por tu pregunta. Un experto se pondrá en contacto contigo pronto para ayudarte.',
   ERROR: 'Disculpa, hubo un error procesando tu mensaje. Por favor intenta de nuevo.',
   CONFIRM_APPOINTMENT:
     'Perfecto, he anotado tu cita. Te enviaremos un recordatorio 24 horas antes.',

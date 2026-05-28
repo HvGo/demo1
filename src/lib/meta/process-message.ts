@@ -62,7 +62,13 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
     const sanitizedText = sanitizeMessageText(messageText)
 
     // Detectar intención
-    const intent = detectIntent(sanitizedText)
+    let intent = detectIntent(sanitizedText)
+    
+    // Si la intención es INFO, cambiar a INQUIRY (aún no hay propiedades disponibles)
+    if (intent === INTENTS.INFO) {
+      intent = INTENTS.INQUIRY
+      console.log('ℹ️ Changing intent from INFO to INQUIRY (no properties available yet)')
+    }
 
     // Guardar mensaje en BD (sin esperar contacto)
     let savedMessageId: number
@@ -364,3 +370,4 @@ export async function countRecentMessages(
   const result = await sql<{ count: string }>(query, [contactId])
   return parseInt(result.rows[0]?.count || '0')
 }
+
