@@ -260,3 +260,37 @@ export async function sendTypingIndicator(
     }
   }
 }
+
+/**
+ * Obtener perfil del usuario desde Meta API
+ */
+export async function getUserProfile(
+  metaSenderId: string
+): Promise<{ firstName: string; lastName: string } | null> {
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/${metaSenderId}?fields=first_name,last_name&access_token=${META_CONFIG.ACCESS_TOKEN}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+
+    if (!response.ok) {
+      const error = await response.json()
+      console.error('Meta API error getting user profile:', error)
+      return null
+    }
+
+    const data = await response.json()
+    return {
+      firstName: data.first_name || '',
+      lastName: data.last_name || '',
+    }
+  } catch (error) {
+    console.error('Error getting user profile:', error)
+    return null
+  }
+}

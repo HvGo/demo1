@@ -13,6 +13,7 @@ export interface SaveMetaMessageParams {
   messageType: string
   intent: string
   metadata: Record<string, any>
+  botResponse?: string
 }
 
 export interface MetaMessage {
@@ -25,6 +26,8 @@ export interface MetaMessage {
   message_type: string
   intent: string
   metadata: Record<string, any>
+  bot_response?: string
+  bot_response_sent_at?: Date
   processed: boolean
   response_sent: boolean
   created_at: Date
@@ -47,9 +50,10 @@ export async function saveMetaMessage(
       message_type,
       intent,
       metadata,
+      bot_response,
       processed
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, true)
     RETURNING *
   `
 
@@ -62,6 +66,7 @@ export async function saveMetaMessage(
     params.messageType,
     params.intent,
     JSON.stringify(params.metadata),
+    params.botResponse || null,
   ])
 
   return result.rows[0]
@@ -132,6 +137,28 @@ export async function markMessageResponseSent(
   `
 
   const result = await sql<MetaMessage>(query, [metaMessageId])
+  return result.rows.length > 0
+}
+
+/**
+ * Actualizar mensaje con respuesta del bot
+ */
+export async function updateMessageWithBotResponse(
+  metaMessageId: string,
+  botResponse: string
+): Promise<boolean> {
+  const query = `
+    UPDATE meta_messages
+    SET 
+      bot_response = $2,
+      bot_response_sent_at = NOW(),
+      response_sent = true,
+      updated_at = NOW()
+    WHERE meta_message_id = $1
+    RETURNING id
+  `
+
+  const result = await sql<MetaMessage>(query, [metaMessageId, botResponse])
   return result.rows.length > 0
 }
 
@@ -230,7 +257,9 @@ export async function deleteOldMessages(daysOld: number = 90): Promise<number> {
  * Obtener o crear conversación
  */
 export async function getOrCreateConversation(
-  metaSenderId: string
+  metaSenderId: string,
+  firstName?: string,
+  lastName?: string
 ): Promise<{
   id: number
   meta_sender_id: string
@@ -238,13 +267,15 @@ export async function getOrCreateConversation(
   message_count: number
   last_auto_response_at: Date | null
   escalated_to_human: boolean
+  user_first_name?: string
+  user_last_name?: string
 }> {
   const query = `
-    INSERT INTO meta_conversations (meta_sender_id, conversation_status, message_count)
-    VALUES ($1, 'active', 0)
+    INSERT INTO meta_conversations (meta_sender_id, conversation_status, message_count, user_first_name, user_last_name)
+    VALUES ($1, 'active', 0, $2, $3)
     ON CONFLICT (meta_sender_id) DO UPDATE
     SET updated_at = NOW()
-    RETURNING id, meta_sender_id, conversation_status, message_count, last_auto_response_at, escalated_to_human
+    RETURNING id, meta_sender_id, conversation_status, message_count, last_auto_response_at, escalated_to_human, user_first_name, user_last_name
   `
 
   const result = await sql<{
@@ -254,7 +285,9 @@ export async function getOrCreateConversation(
     message_count: number
     last_auto_response_at: Date | null
     escalated_to_human: boolean
-  }>(query, [metaSenderId])
+    user_first_name?: string
+    user_last_name?: string
+  }>(query, [metaSenderId, firstName || null, lastName || null])
 
   return result.rows[0]
 }

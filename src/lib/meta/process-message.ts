@@ -10,9 +10,10 @@ import {
   getOrCreateConversation,
   updateConversationAfterResponse,
   escalateConversation,
-  getConversationHistoryBySenderId
+  getConversationHistoryBySenderId,
+  updateMessageWithBotResponse
 } from '@/lib/db/queries/meta-messages'
-import { sendTextMessage, sendTypingIndicator } from './send-message'
+import { sendTextMessage, sendTypingIndicator, getUserProfile } from './send-message'
 import { sanitizeMessageText } from './validate-webhook'
 import { sql } from '@/lib/db'
 
@@ -34,9 +35,21 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
       return
     }
 
+    // Obtener perfil del usuario desde Meta API
+    const userProfile = await getUserProfile(senderId)
+    console.log('👤 User profile:', { firstName: userProfile?.firstName, lastName: userProfile?.lastName })
+
     // Obtener o crear conversación
-    const conversation = await getOrCreateConversation(senderId)
-    console.log('📞 Conversation:', { conversationId: conversation.id, messageCount: conversation.message_count })
+    const conversation = await getOrCreateConversation(
+      senderId,
+      userProfile?.firstName,
+      userProfile?.lastName
+    )
+    console.log('📞 Conversation:', { 
+      conversationId: conversation.id, 
+      messageCount: conversation.message_count,
+      userName: `${conversation.user_first_name} ${conversation.user_last_name}`.trim()
+    })
 
     // Enviar indicador de escritura
     try {
@@ -52,8 +65,9 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
     const intent = detectIntent(sanitizedText)
 
     // Guardar mensaje en BD (sin esperar contacto)
+    let savedMessageId: number
     try {
-      await saveMetaMessage({
+      const savedMessage = await saveMetaMessage({
         contactId: null, // No requerido para meta_messages
         platform: PLATFORMS.FACEBOOK, // Usar Facebook por defecto (Messenger)
         metaSenderId: senderId,
@@ -66,6 +80,7 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
           originalText: messageText,
         },
       })
+      savedMessageId = savedMessage.id
       console.log('✅ Message saved to meta_messages')
     } catch (error) {
       console.error('Error saving message:', error)
@@ -103,6 +118,14 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
       } else {
         console.log('✅ Auto-response sent')
         await updateConversationAfterResponse(conversation.id)
+        
+        // Guardar respuesta del bot en el mensaje
+        try {
+          await updateMessageWithBotResponse(messageId, response)
+          console.log('✅ Bot response saved to message')
+        } catch (error) {
+          console.error('Error saving bot response:', error)
+        }
       }
     } catch (error) {
       console.error('Error sending auto-response:', error)
