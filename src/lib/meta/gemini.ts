@@ -84,7 +84,7 @@ TONO: Profesional, amable, breve, directo.`
 
     switch (intent) {
       case 'greeting':
-        userPrompt = `El usuario está saludando. Responde con un saludo amable y pregunta qué tipo de propiedad busca.
+        userPrompt = `El usuario está saludando. Responde con un saludo amable y pregunta en que podemos ayudarlo.
 Mensaje: "${userMessage}"`
         break
 
