@@ -4,7 +4,7 @@
  */
 
 import { MetaMessage, ProcessedMessage } from '@/types/meta'
-import { PLATFORMS } from './constants'
+import { PLATFORMS, AUTO_RESPONSES } from './constants'
 import { 
   saveMetaMessage,
   getOrCreateConversation,
@@ -144,24 +144,27 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
       return
     }
 
-    // Verificar si debe responder (evitar repetición)
-    const shouldRespond = await checkIfShouldRespond(conversation)
+    // Responder a cada mensaje (sin restricción de tiempo)
+    // El bot responderá a cada intención detectada
 
-    if (!shouldRespond) {
-      console.log('⏭️ Skipping auto-response (already responded recently)')
-      return
-    }
-
-    // Generar respuesta inteligente con Gemini
+    // Generar respuesta
     try {
-      const response = await generateSmartResponse(
-        intent,
-        sanitizedText,
-        {
-          firstName: userProfile?.firstName,
-          lastName: userProfile?.lastName,
-        }
-      )
+      let response: string
+      
+      // Usar mensaje de bienvenida predefinido para saludos
+      if (intent === 'greeting') {
+        response = AUTO_RESPONSES.GREETING
+      } else {
+        // Usar Gemini para otras intenciones
+        response = await generateSmartResponse(
+          intent,
+          sanitizedText,
+          {
+            firstName: userProfile?.firstName,
+            lastName: userProfile?.lastName,
+          }
+        )
+      }
       
       const sent = await sendTextMessage(senderId, response)
 
@@ -284,13 +287,13 @@ async function checkIfShouldRespond(conversation: any): Promise<boolean> {
     return false
   }
 
-  // Si respondimos hace menos de 2 minutos, no responder nuevamente
+  // Si respondimos hace menos de 30 segundos, no responder nuevamente
   if (conversation.last_auto_response_at) {
     const lastResponseTime = new Date(conversation.last_auto_response_at)
     const now = new Date()
     const secondsElapsed = (now.getTime() - lastResponseTime.getTime()) / 1000
 
-    if (secondsElapsed < 120) {
+    if (secondsElapsed < 30) {
       return false
     }
   }
