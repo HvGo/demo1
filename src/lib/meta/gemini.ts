@@ -56,7 +56,7 @@ export async function generateSmartResponse(
   try {
     const userName = userProfile?.firstName ? `${userProfile.firstName}` : 'usuario'
 
-    const systemPrompt = `Eres un asistente inmobiliario profesional para Ivan Utah Realtor en Utah.
+    const systemPrompt = `Eres un asistente inmobiliario profesional en Utah.
 
 RESTRICCIONES ESTRICTAS:
 1. Solo habla de propiedades, visitas, filtros de búsqueda, contacto.
