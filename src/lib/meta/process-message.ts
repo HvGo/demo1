@@ -1,10 +1,10 @@
 /**
  * Procesamiento de mensajes de Meta
- * Detecta intención, crea contactos y envía respuestas automáticas
+ * Detecta intención con Gemini, crea contactos y envía respuestas inteligentes
  */
 
 import { MetaMessage, ProcessedMessage } from '@/types/meta'
-import { INTENTS, AUTO_RESPONSES, INTENT_KEYWORDS, PLATFORMS } from './constants'
+import { PLATFORMS } from './constants'
 import { 
   saveMetaMessage,
   getOrCreateConversation,
@@ -15,6 +15,8 @@ import {
 } from '@/lib/db/queries/meta-messages'
 import { sendTextMessage, sendTypingIndicator, getUserProfile } from './send-message'
 import { sanitizeMessageText } from './validate-webhook'
+import { detectIntentWithGemini, generateSmartResponse, type Intent } from './gemini'
+import { validateUserInput, isUserFrustrated, getFrustratedUserResponse } from './guardrails'
 import { sql } from '@/lib/db'
 
 /**
@@ -61,21 +63,56 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
     // Sanitizar texto
     const sanitizedText = sanitizeMessageText(messageText)
 
-    // Detectar intención
-    let intent = detectIntent(sanitizedText)
+    // Validar entrada (guardrails)
+    const validation = validateUserInput(sanitizedText)
     
-    // Si la intención es INFO, cambiar a INQUIRY (aún no hay propiedades disponibles)
-    if (intent === INTENTS.INFO) {
-      intent = INTENTS.INQUIRY
-      console.log('ℹ️ Changing intent from INFO to INQUIRY (no properties available yet)')
+    if (!validation.isValid) {
+      console.warn('Message validation failed:', validation.reason)
+      
+      // Guardar mensaje rechazado
+      try {
+        await saveMetaMessage({
+          contactId: null,
+          platform: PLATFORMS.FACEBOOK,
+          metaSenderId: senderId,
+          metaMessageId: messageId,
+          messageText: sanitizedText,
+          messageType: 'text',
+          intent: 'unknown',
+          metadata: {
+            timestamp,
+            originalText: messageText,
+            validationReason: validation.reason,
+          },
+          botResponse: validation.predefinedResponse,
+        })
+      } catch (error) {
+        console.error('Error saving rejected message:', error)
+      }
+
+      // Enviar respuesta predefinida
+      if (validation.predefinedResponse) {
+        await sendTextMessage(senderId, validation.predefinedResponse)
+      }
+      return
     }
 
-    // Guardar mensaje en BD (sin esperar contacto)
+    // Detectar intención con Gemini
+    let intent: Intent = 'unknown'
+    try {
+      intent = await detectIntentWithGemini(sanitizedText)
+      console.log('🎯 Intent detected:', intent)
+    } catch (error) {
+      console.error('Error detecting intent:', error)
+      intent = 'unknown'
+    }
+
+    // Guardar mensaje en BD
     let savedMessageId: number
     try {
       const savedMessage = await saveMetaMessage({
-        contactId: null, // No requerido para meta_messages
-        platform: PLATFORMS.FACEBOOK, // Usar Facebook por defecto (Messenger)
+        contactId: null,
+        platform: PLATFORMS.FACEBOOK,
         metaSenderId: senderId,
         metaMessageId: messageId,
         messageText: sanitizedText,
@@ -93,16 +130,17 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
       throw error
     }
 
-    // Verificar si debe escalar
-    const shouldEscalate = await checkIfShouldEscalate(conversation, sanitizedText)
-
-    if (shouldEscalate.escalate) {
-      await escalateConversation(conversation.id, shouldEscalate.reason)
-      console.log('⚠️ Conversation escalated:', shouldEscalate.reason)
+    // Verificar si usuario está frustrado
+    if (isUserFrustrated(sanitizedText)) {
+      const frustratedResponse = getFrustratedUserResponse()
+      await sendTextMessage(senderId, frustratedResponse)
       
-      // Enviar mensaje de escalamiento
-      const escalationMessage = '👤 Tu consulta ha sido escalada a nuestro equipo. Un agente se pondrá en contacto pronto.'
-      await sendTextMessage(senderId, escalationMessage)
+      // Guardar respuesta
+      try {
+        await updateMessageWithBotResponse(messageId, frustratedResponse)
+      } catch (error) {
+        console.error('Error saving frustrated response:', error)
+      }
       return
     }
 
@@ -114,15 +152,23 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
       return
     }
 
-    // Enviar respuesta automática
+    // Generar respuesta inteligente con Gemini
     try {
-      const response = getAutoResponse(intent)
+      const response = await generateSmartResponse(
+        intent,
+        sanitizedText,
+        {
+          firstName: userProfile?.firstName,
+          lastName: userProfile?.lastName,
+        }
+      )
+      
       const sent = await sendTextMessage(senderId, response)
 
       if (!sent.success) {
         console.error('Failed to send response:', sent.error)
       } else {
-        console.log('✅ Auto-response sent')
+        console.log('✅ Smart response sent')
         await updateConversationAfterResponse(conversation.id)
         
         // Guardar respuesta del bot en el mensaje
@@ -134,7 +180,7 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
         }
       }
     } catch (error) {
-      console.error('Error sending auto-response:', error)
+      console.error('Error generating smart response:', error)
     }
   } catch (error) {
     console.error('Error processing Meta message:', error)
@@ -142,49 +188,6 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
   }
 }
 
-/**
- * Detectar la intención del mensaje
- */
-export function detectIntent(
-  text: string
-): 'info' | 'schedule' | 'inquiry' | 'unknown' {
-  if (!text) return INTENTS.UNKNOWN
-
-  const lowerText = text.toLowerCase()
-
-  // Detectar intención de agendar
-  if (INTENT_KEYWORDS.SCHEDULE.some((keyword) => lowerText.includes(keyword))) {
-    return INTENTS.SCHEDULE
-  }
-
-  // Detectar intención de información
-  if (INTENT_KEYWORDS.INFO.some((keyword) => lowerText.includes(keyword))) {
-    return INTENTS.INFO
-  }
-
-  // Detectar intención de consulta
-  if (INTENT_KEYWORDS.INQUIRY.some((keyword) => lowerText.includes(keyword))) {
-    return INTENTS.INQUIRY
-  }
-
-  return INTENTS.UNKNOWN
-}
-
-/**
- * Obtener respuesta automática según intención
- */
-export function getAutoResponse(intent: string): string {
-  switch (intent) {
-    case INTENTS.SCHEDULE:
-      return AUTO_RESPONSES.SCHEDULE
-    case INTENTS.INFO:
-      return AUTO_RESPONSES.INFO
-    case INTENTS.INQUIRY:
-      return AUTO_RESPONSES.INQUIRY
-    default:
-      return AUTO_RESPONSES.GREETING
-  }
-}
 
 
 /**
@@ -271,64 +274,6 @@ export async function getConversationHistory(
   return result.rows.reverse() // Retornar en orden cronológico
 }
 
-/**
- * Verificar si la conversación debe ser escalada a humano
- */
-async function checkIfShouldEscalate(
-  conversation: any,
-  messageText: string
-): Promise<{ escalate: boolean; reason: string }> {
-  // Palabras clave de frustración
-  const frustrationKeywords = [
-    'ayuda',
-    'urgente',
-    'alguien',
-    'hola?',
-    'hola??',
-    'hola???',
-    'no entiendo',
-    'no me sirve',
-    'no funciona',
-    'quiero hablar',
-    'agente',
-    'persona',
-    'humano',
-  ]
-
-  const lowerText = messageText.toLowerCase()
-
-  // Detectar frustración
-  if (frustrationKeywords.some((keyword) => lowerText.includes(keyword))) {
-    return {
-      escalate: true,
-      reason: 'Frustration detected - client needs human assistance',
-    }
-  }
-
-  // Si cliente envió 3+ mensajes sin respuesta humana, escalar
-  if (conversation.message_count >= 3 && !conversation.escalated_to_human) {
-    return {
-      escalate: true,
-      reason: 'Multiple messages without human response',
-    }
-  }
-
-  // Si pasaron más de 30 minutos sin respuesta humana y hay 2+ mensajes
-  if (conversation.last_auto_response_at) {
-    const lastResponseTime = new Date(conversation.last_auto_response_at)
-    const now = new Date()
-    const minutesElapsed = (now.getTime() - lastResponseTime.getTime()) / (1000 * 60)
-
-    if (minutesElapsed > 30 && conversation.message_count >= 2) {
-      return {
-        escalate: true,
-        reason: 'No human response for 30+ minutes',
-      }
-    }
-  }
-
-  return { escalate: false, reason: '' }
-}
 
 /**
  * Verificar si debe responder (evitar repetición)
