@@ -5,8 +5,11 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const client = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY)
-const model = client.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-2.0-flash-exp' })
+const apiKey = process.env.GOOGLE_API_KEY || ''
+const modelName = process.env.GEMINI_MODEL || 'gemini-2.0-flash-exp'
+
+const client = new GoogleGenerativeAI(apiKey)
+const model = client.getGenerativeModel({ model: modelName })
 
 export type Intent = 'greeting' | 'schedule' | 'info' | 'inquiry' | 'unknown'
 
