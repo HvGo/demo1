@@ -48,6 +48,35 @@ Responde SOLO con una de estas palabras: greeting, schedule, info, inquiry, unkn
 /**
  * Generar respuesta inteligente usando Gemini
  */
+/**
+ * Extraer nombre y teléfono del mensaje del usuario
+ */
+function extractUserData(message: string): { name?: string; phone?: string } {
+  const data: { name?: string; phone?: string } = {}
+
+  // Buscar teléfono (patrones comunes: 123-456-7890, (123) 456-7890, +1 123 456 7890, etc)
+  const phoneMatch = message.match(/(\+?1?\s*)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}/)
+  if (phoneMatch) {
+    data.phone = phoneMatch[0].trim()
+  }
+
+  // Buscar nombre (palabras capitalizadas, después de "mi nombre es", "soy", etc)
+  const namePatterns = [
+    /(?:mi nombre es|soy|me llamo)\s+([A-Za-záéíóúñ\s]+?)(?:\.|,|$)/i,
+    /^([A-Z][a-záéíóúñ]+(?:\s+[A-Z][a-záéíóúñ]+)?)\s*$/m,
+  ]
+
+  for (const pattern of namePatterns) {
+    const nameMatch = message.match(pattern)
+    if (nameMatch && nameMatch[1]) {
+      data.name = nameMatch[1].trim()
+      break
+    }
+  }
+
+  return data
+}
+
 export async function generateSmartResponse(
   intent: Intent,
   userMessage: string,
@@ -55,6 +84,20 @@ export async function generateSmartResponse(
 ): Promise<string> {
   try {
     const userName = userProfile?.firstName ? `${userProfile.firstName}` : 'usuario'
+    const extractedData = extractUserData(userMessage)
+
+    // Determinar qué datos faltan
+    const missingData: string[] = []
+    if (!extractedData.name) {
+      missingData.push('nombre completo')
+    }
+    if (!extractedData.phone) {
+      missingData.push('número de teléfono')
+    }
+
+    const dataStatus = missingData.length > 0
+      ? `DATOS FALTANTES: Pide ${missingData.join(' y ')} de manera natural.`
+      : `DATOS COMPLETOS: El usuario ya proporcionó su nombre (${extractedData.name}) y teléfono (${extractedData.phone}). No pidas estos datos nuevamente.`
 
     const systemPrompt = `Eres un asistente inmobiliario profesional en Utah.
 
@@ -68,10 +111,9 @@ RESTRICCIONES ESTRICTAS:
 7. Siempre ofrece que un experto se pondrá en contacto pronto.
 
 RECOPILACIÓN DE DATOS:
-- Pide el nombre completo del usuario de manera natural en la conversación.
-- Pide el número de teléfono de manera natural en la conversación.
-- Integra estas preguntas de forma amable y contextual, no de forma abrupta.
-- Si el usuario ya proporcionó sus datos, no los pidas nuevamente.
+${dataStatus}
+- Integra las preguntas de forma amable y contextual, no de forma abrupta.
+- Solo pide datos que aún no tengas.
 
 CASOS ESPECIALES:
 - Si el usuario pregunta algo fuera de tema → Redirige amablemente.
