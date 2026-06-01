@@ -80,24 +80,32 @@ function extractUserData(message: string): { name?: string; phone?: string } {
 export async function generateSmartResponse(
   intent: Intent,
   userMessage: string,
+  chatHistory?: Array<{ role: 'user' | 'model'; parts: [{ text: string }] }>,
+  userData?: { name?: string; phone?: string },
   userProfile?: { firstName?: string; lastName?: string }
 ): Promise<string> {
   try {
     const userName = userProfile?.firstName ? `${userProfile.firstName}` : 'usuario'
+    
+    // Priorizar datos de BD, luego extraer del mensaje
     const extractedData = extractUserData(userMessage)
+    const userDataCombined = {
+      name: userData?.name || extractedData.name,
+      phone: userData?.phone || extractedData.phone,
+    }
 
     // Determinar qué datos faltan
     const missingData: string[] = []
-    if (!extractedData.name) {
+    if (!userDataCombined.name) {
       missingData.push('nombre completo')
     }
-    if (!extractedData.phone) {
+    if (!userDataCombined.phone) {
       missingData.push('número de teléfono')
     }
 
     const dataStatus = missingData.length > 0
       ? `DATOS FALTANTES: Pide ${missingData.join(' y ')} de manera natural.`
-      : `DATOS COMPLETOS: El usuario ya proporcionó su nombre (${extractedData.name}) y teléfono (${extractedData.phone}). No pidas estos datos nuevamente.`
+      : `DATOS COMPLETOS: El usuario ya proporcionó su nombre (${userDataCombined.name}) y teléfono (${userDataCombined.phone}). No pidas estos datos nuevamente.`
 
     const systemPrompt = `Eres un asistente inmobiliario profesional en Utah.
 
@@ -157,8 +165,16 @@ ${userPrompt}
 
 Responde en español. Máximo 2-3 oraciones. Sé amable y profesional.`
 
-    const result = await model.generateContent(fullPrompt)
-    const response = result.response.text().trim()
+    // Usar chat con historial si está disponible
+    let response: string
+    if (chatHistory && chatHistory.length > 0) {
+      const chat = model.startChat({ history: chatHistory })
+      const result = await chat.sendMessage(fullPrompt)
+      response = result.response.text().trim()
+    } else {
+      const result = await model.generateContent(fullPrompt)
+      response = result.response.text().trim()
+    }
 
     return response
   } catch (error) {

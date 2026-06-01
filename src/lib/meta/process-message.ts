@@ -155,10 +155,31 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
       if (intent === 'greeting') {
         response = AUTO_RESPONSES.GREETING
       } else {
+        // Obtener historial de conversación (últimos 5 mensajes)
+        let chatHistory: Array<{ role: 'user' | 'model'; parts: [{ text: string }] }> = []
+        try {
+          const messages = await getConversationHistoryBySenderId(senderId, 5)
+          // Invertir para orden cronológico (más antiguo primero)
+          chatHistory = messages.reverse().map(msg => ({
+            role: 'user', // Todos son mensajes del usuario en meta_messages
+            parts: [{ text: msg.message_text }],
+          }))
+        } catch (error) {
+          console.warn('Could not retrieve chat history:', error)
+        }
+
+        // Datos del usuario desde la conversación
+        const userData = {
+          name: conversation.user_first_name,
+          phone: undefined, // Aún no está guardado en meta_conversations
+        }
+
         // Usar Gemini para otras intenciones
         response = await generateSmartResponse(
           intent,
           sanitizedText,
+          chatHistory,
+          userData,
           {
             firstName: userProfile?.firstName,
             lastName: userProfile?.lastName,
