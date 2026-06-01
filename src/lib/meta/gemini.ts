@@ -6,7 +6,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
 const apiKey = process.env.GOOGLE_API_KEY || ''
-const modelName = process.env.GEMINI_MODEL || 'gemini-2.0-flash-exp'
+const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash'
 
 const client = new GoogleGenerativeAI(apiKey)
 const model = client.getGenerativeModel({ model: modelName })
