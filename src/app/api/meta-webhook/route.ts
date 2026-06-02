@@ -95,10 +95,23 @@ export async function POST(request: NextRequest) {
     // Procesar cada entrada del webhook
     let processedCount = 0
     for (const entry of payload.entry) {
+      console.log('📨 Entry received with', entry.messaging?.length || 0, 'messaging events')
+      
       for (const message of entry.messaging || []) {
+        // Log detallado de qué tipo de evento es
+        const msg = message as any
+        const eventType = message.message ? 'message' : message.postback ? 'postback' : msg.read ? 'read' : msg.delivery ? 'delivery' : 'unknown'
+        console.log(`📬 Event type: ${eventType}`, {
+          senderId: message.sender?.id,
+          hasMessage: !!message.message,
+          hasPostback: !!message.postback,
+          hasRead: !!msg.read,
+          hasDelivery: !!msg.delivery,
+        })
+        
         // Validar mensaje
         if (!isValidMetaMessage(message)) {
-          console.warn('⚠️ Invalid message structure:', message)
+          console.warn('⚠️ Invalid message structure - skipping event:', eventType)
           continue
         }
 
