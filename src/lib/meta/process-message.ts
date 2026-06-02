@@ -4,7 +4,7 @@
  */
 
 import { MetaMessage, ProcessedMessage } from '@/types/meta'
-import { PLATFORMS, AUTO_RESPONSES } from './constants'
+import { PLATFORMS, AUTO_RESPONSES, META_CONFIG } from './constants'
 import { 
   saveMetaMessage,
   getOrCreateConversation,
@@ -30,6 +30,16 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
 
   try {
     console.log('Processing Meta message:', { senderId, messageText, messageId, platform })
+
+    // Filtrar mensajes del bot mismo (evitar procesar respuestas propias)
+    // En Instagram, el bot recibe webhooks de sus propios mensajes
+    if (platform === PLATFORMS.INSTAGRAM && META_CONFIG.BUSINESS_ACCOUNT_ID) {
+      // Si el sender es la cuenta de negocio del bot, ignorar el mensaje
+      if (senderId === META_CONFIG.BUSINESS_ACCOUNT_ID) {
+        console.log('⏭️ Ignoring bot own message from Instagram Business Account:', senderId)
+        return
+      }
+    }
 
     // Validar que el mensaje es legítimo
     if (!isLegitimateMessage(messageText)) {
