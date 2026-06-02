@@ -12,11 +12,12 @@ interface SendMessageResponse {
 
 /**
  * Obtener el endpoint correcto según la plataforma
+ * Nota: Instagram Messenger usa el mismo endpoint que Facebook (graph.facebook.com)
+ * No usar graph.instagram.com para mensajes
  */
 function getGraphEndpoint(platform: string): string {
-  return platform === PLATFORMS.INSTAGRAM
-    ? 'https://graph.instagram.com'
-    : 'https://graph.facebook.com'
+  // Instagram Messenger usa graph.facebook.com, no graph.instagram.com
+  return 'https://graph.facebook.com'
 }
 
 /**
