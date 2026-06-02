@@ -24,21 +24,12 @@ import { sql } from '@/lib/db'
  */
 export async function processMetaMessage(message: MetaMessage, platform: string = PLATFORMS.FACEBOOK): Promise<void> {
   const senderId = message.sender.id
-  const recipientId = message.recipient.id
   const messageText = message.message?.text || ''
   const messageId = message.message?.mid || ''
   const timestamp = message.timestamp
 
   try {
-    console.log('Processing Meta message:', { senderId, recipientId, messageText, messageId, platform })
-
-    // Filtrar mensajes del bot mismo (evitar procesar respuestas propias)
-    // En Instagram, el bot recibe webhooks de sus propios mensajes
-    // Si el sender es el mismo que el recipient, significa que el bot está respondiendo a sí mismo
-    if (platform === PLATFORMS.INSTAGRAM && senderId === recipientId) {
-      console.log('⏭️ Ignoring bot own message from Instagram (sender === recipient):', senderId)
-      return
-    }
+    console.log('Processing Meta message:', { senderId, messageText, messageId, platform })
 
     // Validar que el mensaje es legítimo
     if (!isLegitimateMessage(messageText)) {
