@@ -38,7 +38,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
     }
 
     // Obtener perfil del usuario desde Meta API
-    const userProfile = await getUserProfile(senderId)
+    const userProfile = await getUserProfile(senderId, platform)
     console.log('👤 User profile:', { firstName: userProfile?.firstName, lastName: userProfile?.lastName })
 
     // Obtener o crear conversación
