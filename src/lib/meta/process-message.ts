@@ -22,14 +22,14 @@ import { sql } from '@/lib/db'
 /**
  * Procesar un mensaje recibido de Meta
  */
-export async function processMetaMessage(message: MetaMessage): Promise<void> {
+export async function processMetaMessage(message: MetaMessage, platform: string = PLATFORMS.FACEBOOK): Promise<void> {
   const senderId = message.sender.id
   const messageText = message.message?.text || ''
   const messageId = message.message?.mid || ''
   const timestamp = message.timestamp
 
   try {
-    console.log('Processing Meta message:', { senderId, messageText, messageId })
+    console.log('Processing Meta message:', { senderId, messageText, messageId, platform })
 
     // Validar que el mensaje es legítimo
     if (!isLegitimateMessage(messageText)) {
@@ -92,7 +92,7 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
 
       // Enviar respuesta predefinida
       if (validation.predefinedResponse) {
-        await sendTextMessage(senderId, validation.predefinedResponse)
+        await sendTextMessage(senderId, validation.predefinedResponse, platform)
       }
       return
     }
@@ -133,7 +133,7 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
     // Verificar si usuario está frustrado
     if (isUserFrustrated(sanitizedText)) {
       const frustratedResponse = getFrustratedUserResponse()
-      await sendTextMessage(senderId, frustratedResponse)
+      await sendTextMessage(senderId, frustratedResponse, platform)
       
       // Guardar respuesta
       try {
@@ -187,7 +187,7 @@ export async function processMetaMessage(message: MetaMessage): Promise<void> {
         )
       }
       
-      const sent = await sendTextMessage(senderId, response)
+      const sent = await sendTextMessage(senderId, response, platform)
 
       if (!sent.success) {
         console.error('Failed to send response:', sent.error)

@@ -2,7 +2,7 @@
  * Servicio para enviar mensajes a través de Meta API
  */
 
-import { META_CONFIG } from './constants'
+import { META_CONFIG, PLATFORMS } from './constants'
 
 interface SendMessageResponse {
   success: boolean
@@ -11,14 +11,27 @@ interface SendMessageResponse {
 }
 
 /**
+ * Obtener el endpoint correcto según la plataforma
+ */
+function getGraphEndpoint(platform: string): string {
+  return platform === PLATFORMS.INSTAGRAM
+    ? 'https://graph.instagram.com'
+    : 'https://graph.facebook.com'
+}
+
+/**
  * Enviar mensaje de texto a un usuario de Meta
  */
 export async function sendTextMessage(
   recipientId: string,
-  text: string
+  text: string,
+  platform: string = PLATFORMS.FACEBOOK
 ): Promise<SendMessageResponse> {
   try {
+    const endpoint = getGraphEndpoint(platform)
     console.log('🔐 Sending message with token:', {
+      platform,
+      endpoint,
       tokenLength: META_CONFIG.ACCESS_TOKEN?.length || 0,
       tokenPrefix: META_CONFIG.ACCESS_TOKEN?.substring(0, 10) || 'UNDEFINED',
       tokenSuffix: META_CONFIG.ACCESS_TOKEN?.substring(META_CONFIG.ACCESS_TOKEN.length - 10) || 'UNDEFINED',
@@ -26,7 +39,7 @@ export async function sendTextMessage(
     })
 
     const response = await fetch(
-      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `${endpoint}/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
