@@ -278,11 +278,19 @@ export async function sendTypingIndicator(
  * Obtener perfil del usuario desde Meta API
  */
 export async function getUserProfile(
-  metaSenderId: string
+  metaSenderId: string,
+  platform: string = PLATFORMS.FACEBOOK
 ): Promise<{ firstName: string; lastName: string } | null> {
   try {
+    const endpoint = getGraphEndpoint(platform)
+    
+    // Instagram no tiene campos first_name/last_name, solo username
+    const fields = platform === PLATFORMS.INSTAGRAM 
+      ? 'username,name' 
+      : 'first_name,last_name'
+    
     const response = await fetch(
-      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/${metaSenderId}?fields=first_name,last_name&access_token=${META_CONFIG.ACCESS_TOKEN}`,
+      `${endpoint}/${META_CONFIG.API_VERSION}/${metaSenderId}?fields=${fields}&access_token=${META_CONFIG.ACCESS_TOKEN}`,
       {
         method: 'GET',
         headers: {
@@ -298,6 +306,16 @@ export async function getUserProfile(
     }
 
     const data = await response.json()
+    
+    // Para Instagram, usar username o name
+    if (platform === PLATFORMS.INSTAGRAM) {
+      return {
+        firstName: data.name || data.username || '',
+        lastName: '',
+      }
+    }
+    
+    // Para Facebook, usar first_name y last_name
     return {
       firstName: data.first_name || '',
       lastName: data.last_name || '',
