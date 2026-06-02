@@ -24,22 +24,25 @@ export async function GET(request: NextRequest) {
   const token = searchParams.get('hub.verify_token')
   const challenge = searchParams.get('hub.challenge')
 
+  console.log('🔍 WEBHOOK VERIFICATION REQUEST RECEIVED')
   console.log('🔍 Webhook verification request:', {
-    token,
-    challenge,
-    expectedToken: process.env.META_VERIFY_TOKEN,
+    token: token ? `${token.substring(0, 10)}...` : 'MISSING',
+    challenge: challenge ? `${challenge.substring(0, 20)}...` : 'MISSING',
+    expectedToken: process.env.META_VERIFY_TOKEN ? `${process.env.META_VERIFY_TOKEN.substring(0, 10)}...` : 'MISSING',
   })
 
   const validChallenge = validateWebhookChallenge(token, challenge)
 
   if (validChallenge) {
+    console.log('✅ WEBHOOK VERIFIED SUCCESSFULLY')
     console.log('✅ Webhook verified successfully, returning challenge:', validChallenge)
     return new NextResponse(validChallenge, { status: 200 })
   }
 
+  console.error('❌ WEBHOOK VERIFICATION FAILED - Invalid token')
   console.error('❌ Invalid webhook verification token', {
-    receivedToken: token,
-    expectedToken: process.env.META_VERIFY_TOKEN,
+    receivedToken: token ? `${token.substring(0, 10)}...` : 'MISSING',
+    expectedToken: process.env.META_VERIFY_TOKEN ? `${process.env.META_VERIFY_TOKEN.substring(0, 10)}...` : 'MISSING',
   })
   return new NextResponse('Invalid token', { status: 403 })
 }
