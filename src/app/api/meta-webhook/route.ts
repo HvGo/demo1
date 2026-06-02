@@ -52,16 +52,24 @@ export async function POST(request: NextRequest) {
   let payload: MetaWebhookPayload | null = null
 
   try {
+    // Log inicial para confirmar que el webhook fue recibido
+    console.log('🔔 WEBHOOK RECEIVED - POST request started')
+    
     // Leer el body como string para validar firma
     body = await request.text()
+    console.log('📦 Webhook body received, length:', body.length)
 
     // Validar firma del webhook
     const signature = request.headers.get('x-hub-signature-256') || undefined
+    console.log('🔐 Signature validation:', { signaturePresent: !!signature })
+    
     if (!validateMetaSignature(body, signature)) {
       console.error('❌ Invalid webhook signature')
       await logWebhookEvent('webhook_received', {}, 'error', 'Invalid signature')
       return new NextResponse('Invalid signature', { status: 403 })
     }
+    
+    console.log('✅ Signature validated')
 
     // Parsear payload
     payload = JSON.parse(body) as MetaWebhookPayload
