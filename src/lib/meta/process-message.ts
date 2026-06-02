@@ -112,7 +112,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
     try {
       const savedMessage = await saveMetaMessage({
         contactId: null,
-        platform: PLATFORMS.FACEBOOK,
+        platform: platform,
         metaSenderId: senderId,
         metaMessageId: messageId,
         messageText: sanitizedText,
