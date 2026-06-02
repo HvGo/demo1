@@ -7,7 +7,7 @@ export const META_CONFIG = {
   ACCESS_TOKEN: process.env.META_ACCESS_TOKEN || '',
   BUSINESS_ACCOUNT_ID: process.env.META_BUSINESS_ACCOUNT_ID || '',
   WEBHOOK_SECRET: process.env.META_WEBHOOK_SECRET || '',
-  API_VERSION: 'v18.0',
+  API_VERSION: 'v25.5',
 } as const
 
 export const PLATFORMS = {
@@ -47,7 +47,7 @@ export const APPOINTMENT_STATUS = {
 
 export const AUTO_RESPONSES = {
   GREETING:
-    '¡Hola!, ¿En que puedo ayudarte hoy?, ¿Tienes alguna consulta sobre comprar o vender una casa en Utah?',
+    '¡Hola!, ¿En qué puedo ayudarte hoy?, ¿Tienes alguna consulta sobre comprar o vender una casa en Utah?',
   SCHEDULE:
     'Me gustaría agendar una cita contigo. ¿Cuándo te vendría bien? Tengo disponibilidad en los próximos días.',
   INFO: 'Aquí están las propiedades que encontré para ti según tus criterios. ¿Te gustaría más información sobre alguna?',
