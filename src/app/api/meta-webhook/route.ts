@@ -84,6 +84,10 @@ export async function POST(request: NextRequest) {
     // Procesar cada entrada del webhook
     let processedCount = 0
     for (const entry of payload.entry) {
+      // Extraer plataforma del webhook (payload.object es 'page' para Facebook o 'instagram' para Instagram)
+      const platform = payload.object === 'instagram' ? 'instagram' : 'facebook'
+      console.log('📱 Platform detected:', platform)
+      
       for (const message of entry.messaging || []) {
         // Validar mensaje
         if (!isValidMetaMessage(message)) {
@@ -93,7 +97,7 @@ export async function POST(request: NextRequest) {
 
         try {
           // Procesar mensaje de forma asíncrona (no esperar)
-          processMetaMessage(message).catch((error) => {
+          processMetaMessage(message, platform).catch((error) => {
             console.error('Error processing message:', error)
             logWebhookEvent(
               'message_processed',

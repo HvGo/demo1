@@ -2,7 +2,7 @@
  * Servicio para enviar mensajes a través de Meta API
  */
 
-import { META_CONFIG } from './constants'
+import { META_CONFIG, PLATFORMS } from './constants'
 
 interface SendMessageResponse {
   success: boolean
@@ -11,14 +11,27 @@ interface SendMessageResponse {
 }
 
 /**
+ * Obtener el endpoint correcto según la plataforma
+ */
+function getGraphEndpoint(platform: string): string {
+  return platform === PLATFORMS.INSTAGRAM
+    ? 'https://graph.instagram.com'
+    : 'https://graph.facebook.com'
+}
+
+/**
  * Enviar mensaje de texto a un usuario de Meta
  */
 export async function sendTextMessage(
   recipientId: string,
-  text: string
+  text: string,
+  platform: string = PLATFORMS.FACEBOOK
 ): Promise<SendMessageResponse> {
   try {
+    const endpoint = getGraphEndpoint(platform)
     console.log('🔐 Sending message with token:', {
+      platform,
+      endpoint,
       tokenLength: META_CONFIG.ACCESS_TOKEN?.length || 0,
       tokenPrefix: META_CONFIG.ACCESS_TOKEN?.substring(0, 10) || 'UNDEFINED',
       tokenSuffix: META_CONFIG.ACCESS_TOKEN?.substring(META_CONFIG.ACCESS_TOKEN.length - 10) || 'UNDEFINED',
@@ -26,7 +39,7 @@ export async function sendTextMessage(
     })
 
     const response = await fetch(
-      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `${endpoint}/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
@@ -69,11 +82,13 @@ export async function sendTextMessage(
 export async function sendButtonMessage(
   recipientId: string,
   text: string,
-  buttons: Array<{ title: string; payload: string }>
+  buttons: Array<{ title: string; payload: string }>,
+  platform: string = PLATFORMS.FACEBOOK
 ): Promise<SendMessageResponse> {
   try {
+    const endpoint = getGraphEndpoint(platform)
     const response = await fetch(
-      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `${endpoint}/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
@@ -129,11 +144,13 @@ export async function sendButtonMessage(
 export async function sendImageMessage(
   recipientId: string,
   imageUrl: string,
-  caption?: string
+  caption?: string,
+  platform: string = PLATFORMS.FACEBOOK
 ): Promise<SendMessageResponse> {
   try {
+    const endpoint = getGraphEndpoint(platform)
     const response = await fetch(
-      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `${endpoint}/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
@@ -183,11 +200,13 @@ export async function sendImageMessage(
  * Marcar mensaje como leído
  */
 export async function markMessageAsRead(
-  messageId: string
+  messageId: string,
+  platform: string = PLATFORMS.FACEBOOK
 ): Promise<SendMessageResponse> {
   try {
+    const endpoint = getGraphEndpoint(platform)
     const response = await fetch(
-      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `${endpoint}/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
@@ -224,11 +243,13 @@ export async function markMessageAsRead(
  * Enviar indicador de "escribiendo"
  */
 export async function sendTypingIndicator(
-  recipientId: string
+  recipientId: string,
+  platform: string = PLATFORMS.FACEBOOK
 ): Promise<SendMessageResponse> {
   try {
+    const endpoint = getGraphEndpoint(platform)
     const response = await fetch(
-      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/me/messages`,
+      `${endpoint}/${META_CONFIG.API_VERSION}/me/messages`,
       {
         method: 'POST',
         headers: {
@@ -265,11 +286,13 @@ export async function sendTypingIndicator(
  * Obtener perfil del usuario desde Meta API
  */
 export async function getUserProfile(
-  metaSenderId: string
+  metaSenderId: string,
+  platform: string = PLATFORMS.FACEBOOK
 ): Promise<{ firstName: string; lastName: string } | null> {
   try {
+    const endpoint = getGraphEndpoint(platform)
     const response = await fetch(
-      `https://graph.facebook.com/${META_CONFIG.API_VERSION}/${metaSenderId}?fields=first_name,last_name&access_token=${META_CONFIG.ACCESS_TOKEN}`,
+      `${endpoint}/${META_CONFIG.API_VERSION}/${metaSenderId}?fields=first_name,last_name&access_token=${META_CONFIG.ACCESS_TOKEN}`,
       {
         method: 'GET',
         headers: {
