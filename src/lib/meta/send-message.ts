@@ -29,33 +29,40 @@ export async function sendTextMessage(
 ): Promise<SendMessageResponse> {
   try {
     const endpoint = getGraphEndpoint(platform)
-    console.log('🔐 Sending message with token:', {
+    const url = `${endpoint}/${META_CONFIG.API_VERSION}/me/messages`
+    
+    console.log('🔐 Sending message:', {
       platform,
       endpoint,
+      url,
+      recipientId,
+      textLength: text.length,
+      tokenPresent: !!META_CONFIG.ACCESS_TOKEN,
       tokenLength: META_CONFIG.ACCESS_TOKEN?.length || 0,
-      tokenPrefix: META_CONFIG.ACCESS_TOKEN?.substring(0, 10) || 'UNDEFINED',
-      tokenSuffix: META_CONFIG.ACCESS_TOKEN?.substring(META_CONFIG.ACCESS_TOKEN.length - 10) || 'UNDEFINED',
-      fullToken: META_CONFIG.ACCESS_TOKEN,
     })
 
-    const response = await fetch(
-      `${endpoint}/${META_CONFIG.API_VERSION}/me/messages`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${META_CONFIG.ACCESS_TOKEN}`,
-        },
-        body: JSON.stringify({
-          recipient: { id: recipientId },
-          message: { text },
-        }),
-      }
-    )
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${META_CONFIG.ACCESS_TOKEN}`,
+      },
+      body: JSON.stringify({
+        recipient: { id: recipientId },
+        message: { text },
+      }),
+    })
+
+    console.log('📡 Response status:', response.status, response.statusText)
 
     if (!response.ok) {
       const error = await response.json()
-      console.error('Meta API error:', error)
+      console.error('❌ Meta API error:', {
+        status: response.status,
+        error: error.error,
+        url,
+        platform,
+      })
       return {
         success: false,
         error: error.error?.message || 'Failed to send message',
