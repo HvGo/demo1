@@ -12,7 +12,6 @@ import {
   isValidMetaMessage,
 } from '@/lib/meta/validate-webhook'
 import { processMetaMessage } from '@/lib/meta/process-message'
-import { PLATFORMS } from '@/lib/meta/constants'
 import { sql } from '@/lib/db'
 import { MetaWebhookPayload } from '@/types/meta'
 
@@ -85,10 +84,6 @@ export async function POST(request: NextRequest) {
     // Procesar cada entrada del webhook
     let processedCount = 0
     for (const entry of payload.entry) {
-      // Extraer plataforma del webhook (payload.object es 'page' para Facebook o 'instagram' para Instagram)
-      const platform = payload.object === 'instagram' ? PLATFORMS.INSTAGRAM : PLATFORMS.FACEBOOK
-      console.log('📱 Platform detected:', platform)
-      
       for (const message of entry.messaging || []) {
         // Validar mensaje
         if (!isValidMetaMessage(message)) {
@@ -98,7 +93,7 @@ export async function POST(request: NextRequest) {
 
         try {
           // Procesar mensaje de forma asíncrona (no esperar)
-          processMetaMessage(message, platform).catch((error) => {
+          processMetaMessage(message).catch((error) => {
             console.error('Error processing message:', error)
             logWebhookEvent(
               'message_processed',

@@ -22,14 +22,14 @@ import { sql } from '@/lib/db'
 /**
  * Procesar un mensaje recibido de Meta
  */
-export async function processMetaMessage(message: MetaMessage, platform: string = PLATFORMS.FACEBOOK): Promise<void> {
+export async function processMetaMessage(message: MetaMessage): Promise<void> {
   const senderId = message.sender.id
   const messageText = message.message?.text || ''
   const messageId = message.message?.mid || ''
   const timestamp = message.timestamp
 
   try {
-    console.log('Processing Meta message:', { senderId, messageText, messageId, platform })
+    console.log('Processing Meta message:', { senderId, messageText, messageId })
 
     // Validar que el mensaje es legítimo
     if (!isLegitimateMessage(messageText)) {
@@ -38,7 +38,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
     }
 
     // Obtener perfil del usuario desde Meta API
-    const userProfile = await getUserProfile(senderId, platform)
+    const userProfile = await getUserProfile(senderId)
     console.log('👤 User profile:', { firstName: userProfile?.firstName, lastName: userProfile?.lastName })
 
     // Obtener o crear conversación
@@ -55,7 +55,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
 
     // Enviar indicador de escritura
     try {
-      await sendTypingIndicator(senderId, platform)
+      await sendTypingIndicator(senderId)
     } catch (error) {
       console.error('Error sending typing indicator:', error)
     }
@@ -73,7 +73,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       try {
         await saveMetaMessage({
           contactId: null,
-          platform: platform,
+          platform: PLATFORMS.FACEBOOK,
           metaSenderId: senderId,
           metaMessageId: messageId,
           messageText: sanitizedText,
@@ -92,7 +92,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
 
       // Enviar respuesta predefinida
       if (validation.predefinedResponse) {
-        await sendTextMessage(senderId, validation.predefinedResponse, platform)
+        await sendTextMessage(senderId, validation.predefinedResponse)
       }
       return
     }
@@ -112,7 +112,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
     try {
       const savedMessage = await saveMetaMessage({
         contactId: null,
-        platform: platform,
+        platform: PLATFORMS.FACEBOOK,
         metaSenderId: senderId,
         metaMessageId: messageId,
         messageText: sanitizedText,
@@ -133,7 +133,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
     // Verificar si usuario está frustrado
     if (isUserFrustrated(sanitizedText)) {
       const frustratedResponse = getFrustratedUserResponse()
-      await sendTextMessage(senderId, frustratedResponse, platform)
+      await sendTextMessage(senderId, frustratedResponse)
       
       // Guardar respuesta
       try {
@@ -187,7 +187,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         )
       }
       
-      const sent = await sendTextMessage(senderId, response, platform)
+      const sent = await sendTextMessage(senderId, response)
 
       if (!sent.success) {
         console.error('Failed to send response:', sent.error)
