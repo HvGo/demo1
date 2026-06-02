@@ -7,7 +7,7 @@ export const META_CONFIG = {
   ACCESS_TOKEN: process.env.META_ACCESS_TOKEN || '',
   BUSINESS_ACCOUNT_ID: process.env.META_BUSINESS_ACCOUNT_ID || '',
   WEBHOOK_SECRET: process.env.META_WEBHOOK_SECRET || '',
-  API_VERSION: 'v25.5',
+  API_VERSION: 'v18.0',
 } as const
 
 export const PLATFORMS = {
