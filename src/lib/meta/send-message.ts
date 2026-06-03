@@ -30,7 +30,11 @@ export async function sendTextMessage(
 ): Promise<SendMessageResponse> {
   try {
     const endpoint = getGraphEndpoint(platform)
-    const url = `${endpoint}/${META_CONFIG.API_VERSION}/me/messages`
+    // Instagram requiere usar el ID de la cuenta de negocio, no /me
+    const accountId = platform === PLATFORMS.INSTAGRAM 
+      ? META_CONFIG.BUSINESS_ACCOUNT_ID 
+      : 'me'
+    const url = `${endpoint}/${META_CONFIG.API_VERSION}/${accountId}/messages`
     
     console.log('🔐 Sending message:', {
       platform,

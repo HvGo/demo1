@@ -31,6 +31,13 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
   try {
     console.log('Processing Meta message:', { senderId, messageText, messageId, platform })
 
+    // Filtrar mensajes del bot mismo en Instagram
+    // El bot recibe webhooks de sus propios mensajes, evitar procesarlos
+    if (platform === PLATFORMS.INSTAGRAM && senderId === '17841406852481675') {
+      console.log('⏭️ Ignoring bot own message from Instagram Business Account:', senderId)
+      return
+    }
+
     // Validar que el mensaje es legítimo
     if (!isLegitimateMessage(messageText)) {
       console.warn('Message rejected: not legitimate', { messageText })
