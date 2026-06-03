@@ -162,15 +162,30 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       if (intent === 'greeting') {
         response = AUTO_RESPONSES.GREETING
       } else {
-        // Obtener historial de conversación (últimos 5 mensajes)
+        // Obtener historial de conversación (últimos 10 mensajes)
         let chatHistory: Array<{ role: 'user' | 'model'; parts: [{ text: string }] }> = []
         try {
-          const messages = await getConversationHistoryBySenderId(senderId, 5)
-          // Invertir para orden cronológico (más antiguo primero)
-          chatHistory = messages.reverse().map(msg => ({
-            role: 'user', // Todos son mensajes del usuario en meta_messages
-            parts: [{ text: msg.message_text }],
-          }))
+          const messages = await getConversationHistoryBySenderId(senderId, 10)
+          // Construir historial con ambos roles (usuario y bot)
+          chatHistory = messages.flatMap(msg => {
+            const historyItems: Array<{ role: 'user' | 'model'; parts: [{ text: string }] }> = []
+            
+            // Agregar mensaje del usuario
+            historyItems.push({
+              role: 'user',
+              parts: [{ text: msg.message_text }],
+            })
+            
+            // Agregar respuesta del bot si existe
+            if (msg.bot_response) {
+              historyItems.push({
+                role: 'model',
+                parts: [{ text: msg.bot_response }],
+              })
+            }
+            
+            return historyItems
+          })
         } catch (error) {
           console.warn('Could not retrieve chat history:', error)
         }

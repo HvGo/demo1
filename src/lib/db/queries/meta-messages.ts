@@ -372,6 +372,7 @@ export async function getEscalatedConversations(): Promise<
 
 /**
  * Obtener historial de conversación por sender ID
+ * Retorna tanto mensajes del usuario como respuestas del bot
  */
 export async function getConversationHistoryBySenderId(
   metaSenderId: string,
@@ -380,6 +381,7 @@ export async function getConversationHistoryBySenderId(
   Array<{
     id: number
     message_text: string
+    bot_response?: string
     intent: string
     created_at: Date
   }>
@@ -388,6 +390,7 @@ export async function getConversationHistoryBySenderId(
     SELECT 
       id,
       message_text,
+      bot_response,
       intent,
       created_at
     FROM meta_messages
@@ -399,6 +402,7 @@ export async function getConversationHistoryBySenderId(
   const result = await sql<{
     id: number
     message_text: string
+    bot_response?: string
     intent: string
     created_at: Date
   }>(query, [metaSenderId, limit])
