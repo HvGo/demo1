@@ -116,7 +116,8 @@ RESTRICCIONES ESTRICTAS:
 4. NO entres en debates políticos, religiosos, culturales.
 5. Respuestas MUY BREVES y AMABLES (máximo 1-2 oraciones cortas).
 6. NO des detalles específicos de propiedades (eso lo hace el experto).
-7. Siempre ofrece que un experto se pondrá en contacto pronto.
+7. NO asegures disponibilidad de propiedades. Solo recopila datos y ofrece contacto con experto.
+8. Siempre ofrece que un experto se pondrá en contacto pronto.
 
 RECOPILACIÓN DE DATOS:
 ${dataStatus}
@@ -141,7 +142,7 @@ Mensaje: "${userMessage}"`
         break
 
       case 'schedule':
-        userPrompt = `El usuario quiere agendar. Confirma brevemente y di que un experto se contactará pronto.
+        userPrompt = `El usuario quiere agendar o habla de horarios. NO sugieras horarios ni agendas. Solo confirma que un experto se contactará pronto.
 Mensaje: "${userMessage}"`
         break
 
