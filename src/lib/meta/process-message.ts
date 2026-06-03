@@ -11,6 +11,7 @@ import {
   updateConversationAfterResponse,
   updateLastMessageAt,
   escalateConversation,
+  closeConversation,
   getConversationHistoryBySenderId,
   updateMessageWithBotResponse
 } from '@/lib/db/queries/meta-messages'
@@ -157,6 +158,33 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       } catch (error) {
         console.error('Error saving frustrated response:', error)
       }
+      return
+    }
+
+    // Verificar si la conversación está cerrando
+    if (intent === 'closing') {
+      console.log('👋 Conversation closing detected')
+      
+      // Responder con despedida breve
+      const closingResponse = 'De nada, ¡que tengas un excelente día!'
+      await sendTextMessage(senderId, closingResponse, platform)
+      
+      // Guardar respuesta
+      try {
+        await updateMessageWithBotResponse(messageId, closingResponse)
+        console.log('✅ Closing response saved')
+      } catch (error) {
+        console.error('Error saving closing response:', error)
+      }
+      
+      // Cerrar conversación
+      try {
+        await closeConversation(conversation.id)
+        console.log('✅ Conversation closed')
+      } catch (error) {
+        console.error('Error closing conversation:', error)
+      }
+      
       return
     }
 

@@ -11,7 +11,7 @@ const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash'
 const client = new GoogleGenerativeAI(apiKey)
 const model = client.getGenerativeModel({ model: modelName })
 
-export type Intent = 'greeting' | 'schedule' | 'info' | 'inquiry' | 'unknown'
+export type Intent = 'greeting' | 'schedule' | 'info' | 'inquiry' | 'closing' | 'unknown'
 
 /**
  * Detectar intención del mensaje usando Gemini
@@ -25,17 +25,18 @@ Intenciones posibles:
 - schedule: El usuario quiere agendar una cita o visita (ej: "Quiero agendar", "¿Cuándo puedo ver?")
 - info: El usuario pide información sobre propiedades (ej: "¿Cuál es el precio?", "Detalles de la casa")
 - inquiry: El usuario hace una consulta general (ej: "Tengo una pregunta", "Quiero comprar")
+- closing: El usuario está cerrando la conversación (ej: "Gracias", "Ok", "Listo", "Adiós", "Vale")
 - unknown: El mensaje no tiene sentido o es inapropiado
 
 Mensaje del usuario: "${userMessage}"
 
-Responde SOLO con una de estas palabras: greeting, schedule, info, inquiry, unknown`
+Responde SOLO con una de estas palabras: greeting, schedule, info, inquiry, closing, unknown`
 
     const result = await model.generateContent(prompt)
     const response = result.response.text().toLowerCase().trim()
 
     // Validar que la respuesta sea una intención válida
-    const validIntents: Intent[] = ['greeting', 'schedule', 'info', 'inquiry', 'unknown']
+    const validIntents: Intent[] = ['greeting', 'schedule', 'info', 'inquiry', 'closing', 'unknown']
     const detectedIntent = validIntents.find(intent => response.includes(intent))
 
     return detectedIntent || 'unknown'
@@ -117,7 +118,8 @@ RESTRICCIONES ESTRICTAS:
 5. Respuestas MUY BREVES y AMABLES (máximo 1-2 oraciones cortas).
 6. NO des detalles específicos de propiedades (eso lo hace el experto).
 7. NO asegures disponibilidad de propiedades. Solo recopila datos y ofrece contacto con experto.
-8. Siempre ofrece que un experto se pondrá en contacto pronto.
+8. NUNCA repitas la misma frase en mensajes consecutivos. Varía tus respuestas.
+9. Si ya dijiste "Un experto se pondrá en contacto", NO lo repitas. Cambia a otra cosa.
 
 RECOPILACIÓN DE DATOS:
 ${dataStatus}
@@ -130,8 +132,11 @@ CASOS ESPECIALES:
 - Si el usuario está frustrado → Empatiza brevemente y ofrece contacto con experto.
 - Si no entiendes → Pide clarificación en 1 línea.
 
-TONO: Profesional, amable, CONCISO, directo.
-IMPORTANTE: Evita párrafos largos. Usa frases cortas y directas.`
+TONO: Profesional, amable, CONCISO, directo, VARIADO.
+IMPORTANTE: 
+- Evita párrafos largos. Usa frases cortas y directas.
+- NO repitas frases. Cada respuesta debe ser diferente.
+- Varía entre: "Un experto te contactará", "Nuestro equipo se comunicará", "Te llamaremos pronto", etc.`
 
     let userPrompt = ''
 
@@ -153,6 +158,11 @@ Mensaje: "${userMessage}"`
 
       case 'inquiry':
         userPrompt = `El usuario consulta sobre propiedades. Responde brevemente y ofrece ayuda de un experto.
+Mensaje: "${userMessage}"`
+        break
+
+      case 'closing':
+        userPrompt = `El usuario está cerrando la conversación. Despídete brevemente de forma amable. NO pidas más datos.
 Mensaje: "${userMessage}"`
         break
 

@@ -350,6 +350,23 @@ export async function escalateConversation(
 }
 
 /**
+ * Cerrar conversación
+ */
+export async function closeConversation(
+  conversationId: number
+): Promise<void> {
+  const query = `
+    UPDATE meta_conversations
+    SET 
+      conversation_status = 'closed',
+      updated_at = NOW()
+    WHERE id = $1
+  `
+
+  await sql(query, [conversationId])
+}
+
+/**
  * Obtener conversaciones escaladas
  */
 export async function getEscalatedConversations(): Promise<
