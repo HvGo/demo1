@@ -9,6 +9,7 @@ import {
   saveMetaMessage,
   getOrCreateConversation,
   updateConversationAfterResponse,
+  updateLastMessageAt,
   escalateConversation,
   getConversationHistoryBySenderId,
   updateMessageWithBotResponse
@@ -132,6 +133,14 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       })
       savedMessageId = savedMessage.id
       console.log('✅ Message saved to meta_messages')
+      
+      // Actualizar last_message_at en la conversación
+      try {
+        await updateLastMessageAt(conversation.id)
+        console.log('✅ Updated last_message_at in conversation')
+      } catch (error) {
+        console.warn('Could not update last_message_at:', error)
+      }
     } catch (error) {
       console.error('Error saving message:', error)
       throw error

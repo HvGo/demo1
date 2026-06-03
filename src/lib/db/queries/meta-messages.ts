@@ -302,7 +302,25 @@ export async function updateConversationAfterResponse(
     UPDATE meta_conversations
     SET 
       message_count = message_count + 1,
+      last_message_at = NOW(),
       last_auto_response_at = NOW(),
+      updated_at = NOW()
+    WHERE id = $1
+  `
+
+  await sql(query, [conversationId])
+}
+
+/**
+ * Actualizar last_message_at cuando se recibe un mensaje
+ */
+export async function updateLastMessageAt(
+  conversationId: number
+): Promise<void> {
+  const query = `
+    UPDATE meta_conversations
+    SET 
+      last_message_at = NOW(),
       updated_at = NOW()
     WHERE id = $1
   `
