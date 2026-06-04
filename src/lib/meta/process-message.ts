@@ -115,10 +115,26 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       return
     }
 
-    // Detectar intención con Gemini
+    // Obtener historial de conversación para contexto
+    let lastBotMessage: string | undefined
+    try {
+      const chatHistory = await getConversationHistoryBySenderId(senderId)
+      // Extraer último mensaje del bot (role === 'assistant')
+      const lastAssistantMessage = chatHistory
+        .filter(msg => msg.bot_response)
+        .pop()
+      lastBotMessage = lastAssistantMessage?.bot_response
+      if (lastBotMessage) {
+        console.log('📝 Last bot message found for context')
+      }
+    } catch (error) {
+      console.warn('Could not retrieve last bot message:', error)
+    }
+
+    // Detectar intención con Gemini (con contexto conversacional)
     let intent: Intent = 'unknown'
     try {
-      intent = await detectIntentWithGemini(sanitizedText)
+      intent = await detectIntentWithGemini(sanitizedText, lastBotMessage)
       console.log('🎯 Intent detected:', intent)
     } catch (error) {
       console.error('Error detecting intent:', error)

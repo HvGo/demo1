@@ -16,9 +16,20 @@ export type Intent = 'greeting' | 'schedule' | 'info' | 'inquiry' | 'purchase' |
 /**
  * Detectar intención del mensaje usando Gemini
  */
-export async function detectIntentWithGemini(userMessage: string): Promise<Intent> {
+export async function detectIntentWithGemini(userMessage: string, lastBotMessage?: string): Promise<Intent> {
   try {
-    const prompt = `Analiza el siguiente mensaje de un usuario y detecta su intención.
+    const contextLine = lastBotMessage 
+      ? `El bot acaba de preguntar: "${lastBotMessage}"\n`
+      : ''
+    
+    const prompt = `${contextLine}
+Analiza el siguiente mensaje de un usuario y detecta su intención.
+
+REGLA CRÍTICA para "closing":
+- SOLO si el usuario está diciendo ADIÓS o DESPIDIÉNDOSE explícitamente
+- NO es closing si el usuario está respondiendo a una pregunta del bot
+- Palabras de closing: adiós, chao, hasta luego, nos vemos, cuídate, me voy, bye, goodbye
+- NO es closing: "por esta vía está bien", "sí", "ok", "listo", "está bien" (son respuestas a preguntas)
 
 Intenciones posibles:
 - greeting: El usuario saluda o inicia conversación (ej: "Hola", "Buenos días")
@@ -26,7 +37,7 @@ Intenciones posibles:
 - info: El usuario pide información sobre propiedades (ej: "¿Cuál es el precio?", "Detalles de la casa")
 - inquiry: El usuario hace una consulta general (ej: "Tengo una pregunta")
 - purchase: El usuario quiere comprar una propiedad (ej: "Quiero comprar", "Busco casa para comprar", "Estoy interesado en comprar")
-- closing: El usuario está cerrando la conversación (ej: "Gracias", "Ok", "Listo", "Adiós", "Vale")
+- closing: El usuario está diciendo ADIÓS o DESPIDIÉNDOSE (ej: "Adiós", "Chao", "Hasta luego", "Nos vemos")
 - unknown: El mensaje no tiene sentido o es inapropiado
 
 Mensaje del usuario: "${userMessage}"
