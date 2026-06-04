@@ -444,3 +444,78 @@ export async function getConversationHistoryBySenderId(
 
   return result.rows.reverse()
 }
+
+/**
+ * Crear o actualizar lead de compra
+ */
+export async function createOrUpdatePurchaseLead(
+  metaSenderId: string,
+  conversationId: number,
+  nombre?: string,
+  telefono?: string
+): Promise<number> {
+  const query = `
+    INSERT INTO purchase_leads (meta_sender_id, conversation_id, nombre, telefono)
+    VALUES ($1, $2, $3, $4)
+    ON CONFLICT (meta_sender_id) DO UPDATE
+    SET updated_at = NOW()
+    RETURNING id
+  `
+  const result = await sql<{ id: number }>(query, [metaSenderId, conversationId, nombre || null, telefono || null])
+  return result.rows[0].id
+}
+
+/**
+ * Actualizar respuesta de calificación y calcular prioridad
+ */
+export async function updatePurchaseQualification(
+  leadId: number,
+  paso: number,
+  respuestas: {
+    historial_trabajo?: boolean
+    ssn?: boolean
+    credito?: boolean
+    ingresos?: boolean
+  }
+): Promise<void> {
+  let prioridad = 'MEDIA'
+  
+  // Calcular prioridad
+  if (respuestas.historial_trabajo && respuestas.ssn && respuestas.credito && respuestas.ingresos) {
+    prioridad = 'ALTA'
+  } else if (!respuestas.historial_trabajo || !respuestas.ssn || !respuestas.credito) {
+    prioridad = 'BAJA'
+  }
+  
+  const query = `
+    UPDATE purchase_leads
+    SET 
+      tiene_historial_trabajo = COALESCE($2, tiene_historial_trabajo),
+      tiene_ssn = COALESCE($3, tiene_ssn),
+      credito_activo = COALESCE($4, credito_activo),
+      ingresos_40_mas = COALESCE($5, ingresos_40_mas),
+      estado_calificacion = $6,
+      prioridad = $7,
+      updated_at = NOW()
+    WHERE id = $1
+  `
+  
+  await sql(query, [
+    leadId,
+    respuestas.historial_trabajo !== undefined ? respuestas.historial_trabajo : null,
+    respuestas.ssn !== undefined ? respuestas.ssn : null,
+    respuestas.credito !== undefined ? respuestas.credito : null,
+    respuestas.ingresos !== undefined ? respuestas.ingresos : null,
+    `paso_${paso}`,
+    prioridad
+  ])
+}
+
+/**
+ * Obtener lead de compra por sender_id
+ */
+export async function getPurchaseLeadBySenderId(metaSenderId: string): Promise<any> {
+  const query = `SELECT * FROM purchase_leads WHERE meta_sender_id = $1`
+  const result = await sql(query, [metaSenderId])
+  return result.rows[0] || null
+}

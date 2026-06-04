@@ -13,12 +13,21 @@ import {
   escalateConversation,
   closeConversation,
   getConversationHistoryBySenderId,
-  updateMessageWithBotResponse
+  updateMessageWithBotResponse,
+  createOrUpdatePurchaseLead,
+  updatePurchaseQualification,
+  getPurchaseLeadBySenderId
 } from '@/lib/db/queries/meta-messages'
 import { sendTextMessage, sendTypingIndicator, getUserProfile } from './send-message'
 import { sanitizeMessageText } from './validate-webhook'
 import { detectIntentWithGemini, generateSmartResponse, type Intent } from './gemini'
 import { validateUserInput, isUserFrustrated, getFrustratedUserResponse } from './guardrails'
+import { 
+  QUALIFICATION_QUESTIONS, 
+  isAffirmativeResponse, 
+  getNextStep,
+  getQualificationResponse 
+} from './purchase-qualification'
 import { sql } from '@/lib/db'
 
 /**
@@ -187,6 +196,118 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       
       return
     }
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // FLUJO DE CALIFICACIÓN DE COMPRA (Slot Filling)
+    // ═══════════════════════════════════════════════════════════════════════════════
+
+    // Si intención es "purchase", iniciar flujo de calificación
+    if (intent === 'purchase') {
+      console.log('🛒 Purchase intent detected - Starting qualification flow')
+      
+      try {
+        // Obtener o crear lead de compra
+        let lead = await getPurchaseLeadBySenderId(senderId)
+        if (!lead) {
+          const leadId = await createOrUpdatePurchaseLead(
+            senderId,
+            conversation.id,
+            conversation.user_first_name,
+            undefined
+          )
+          lead = { id: leadId, estado_calificacion: 'paso_1' }
+          console.log('✅ New purchase lead created')
+        }
+        
+        // Obtener pregunta según paso actual
+        const currentStep = lead.estado_calificacion || 'paso_1'
+        const question = QUALIFICATION_QUESTIONS[currentStep as keyof typeof QUALIFICATION_QUESTIONS]?.question
+        
+        if (question) {
+          // Enviar pregunta
+          await sendTextMessage(senderId, question, platform)
+          
+          // Guardar respuesta
+          try {
+            await updateMessageWithBotResponse(messageId, question)
+            console.log(`✅ Qualification question sent (${currentStep})`)
+          } catch (error) {
+            console.error('Error saving qualification question:', error)
+          }
+        }
+      } catch (error) {
+        console.error('Error in purchase qualification flow:', error)
+      }
+      
+      return
+    }
+
+    // Si está en flujo de calificación, procesar respuesta
+    try {
+      const lead = await getPurchaseLeadBySenderId(senderId)
+      if (lead && lead.estado_calificacion && lead.estado_calificacion !== 'completado') {
+        console.log(`📋 Processing qualification response (${lead.estado_calificacion})`)
+        
+        const esAfirmativo = isAffirmativeResponse(sanitizedText)
+        const currentStep = lead.estado_calificacion
+        
+        // Procesar según paso actual
+        if (currentStep === 'paso_1') {
+          if (!esAfirmativo) {
+            // No cumple requisito básico
+            const response = 'Entendido. Un experto se comunicará contigo para evaluar tu situación actual y ver cómo podemos ayudarte a prepararte.'
+            await sendTextMessage(senderId, response, platform)
+            await updatePurchaseQualification(lead.id, 1, { historial_trabajo: false, ssn: false })
+            await updateMessageWithBotResponse(messageId, response)
+            console.log('✅ Qualification completed (BAJA priority)')
+            return
+          }
+          
+          // Pasar a paso 2
+          await updatePurchaseQualification(lead.id, 2, { historial_trabajo: true, ssn: true })
+          const nextQuestion = QUALIFICATION_QUESTIONS.paso_2.question
+          await sendTextMessage(senderId, nextQuestion, platform)
+          await updateMessageWithBotResponse(messageId, nextQuestion)
+          console.log('✅ Advanced to paso_2')
+          return
+        }
+        
+        if (currentStep === 'paso_2') {
+          // Guardar respuesta de crédito
+          await updatePurchaseQualification(lead.id, 3, { credito: esAfirmativo })
+          const nextQuestion = QUALIFICATION_QUESTIONS.paso_3.question
+          await sendTextMessage(senderId, nextQuestion, platform)
+          await updateMessageWithBotResponse(messageId, nextQuestion)
+          console.log('✅ Advanced to paso_3')
+          return
+        }
+        
+        if (currentStep === 'paso_3') {
+          // Última pregunta - calcular prioridad y cerrar flujo
+          await updatePurchaseQualification(lead.id, 3, { ingresos: esAfirmativo })
+          
+          // Obtener lead actualizado para calcular respuesta final
+          const updatedLead = await getPurchaseLeadBySenderId(senderId)
+          const finalResponse = getQualificationResponse(
+            updatedLead.tiene_historial_trabajo,
+            updatedLead.tiene_ssn,
+            updatedLead.credito_activo,
+            updatedLead.ingresos_40_mas
+          )
+          
+          await sendTextMessage(senderId, finalResponse, platform)
+          await updateMessageWithBotResponse(messageId, finalResponse)
+          console.log(`✅ Qualification completed (${updatedLead.prioridad} priority)`)
+          return
+        }
+      }
+    } catch (error) {
+      console.error('Error processing qualification response:', error)
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // FLUJO NORMAL (Si no es purchase o no está en calificación)
+    // ═══════════════════════════════════════════════════════════════════════════════
 
     // Responder a cada mensaje (sin restricción de tiempo)
     // El bot responderá a cada intención detectada

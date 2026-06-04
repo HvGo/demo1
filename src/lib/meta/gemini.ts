@@ -11,7 +11,7 @@ const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash'
 const client = new GoogleGenerativeAI(apiKey)
 const model = client.getGenerativeModel({ model: modelName })
 
-export type Intent = 'greeting' | 'schedule' | 'info' | 'inquiry' | 'closing' | 'unknown'
+export type Intent = 'greeting' | 'schedule' | 'info' | 'inquiry' | 'purchase' | 'closing' | 'unknown'
 
 /**
  * Detectar intención del mensaje usando Gemini
@@ -24,19 +24,20 @@ Intenciones posibles:
 - greeting: El usuario saluda o inicia conversación (ej: "Hola", "Buenos días")
 - schedule: El usuario quiere agendar una cita o visita (ej: "Quiero agendar", "¿Cuándo puedo ver?")
 - info: El usuario pide información sobre propiedades (ej: "¿Cuál es el precio?", "Detalles de la casa")
-- inquiry: El usuario hace una consulta general (ej: "Tengo una pregunta", "Quiero comprar")
+- inquiry: El usuario hace una consulta general (ej: "Tengo una pregunta")
+- purchase: El usuario quiere comprar una propiedad (ej: "Quiero comprar", "Busco casa para comprar", "Estoy interesado en comprar")
 - closing: El usuario está cerrando la conversación (ej: "Gracias", "Ok", "Listo", "Adiós", "Vale")
 - unknown: El mensaje no tiene sentido o es inapropiado
 
 Mensaje del usuario: "${userMessage}"
 
-Responde SOLO con una de estas palabras: greeting, schedule, info, inquiry, closing, unknown`
+Responde SOLO con una de estas palabras: greeting, schedule, info, inquiry, purchase, closing, unknown`
 
     const result = await model.generateContent(prompt)
     const response = result.response.text().toLowerCase().trim()
 
     // Validar que la respuesta sea una intención válida
-    const validIntents: Intent[] = ['greeting', 'schedule', 'info', 'inquiry', 'closing', 'unknown']
+    const validIntents: Intent[] = ['greeting', 'schedule', 'info', 'inquiry', 'purchase', 'closing', 'unknown']
     const detectedIntent = validIntents.find(intent => response.includes(intent))
 
     return detectedIntent || 'unknown'
