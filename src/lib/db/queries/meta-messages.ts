@@ -487,6 +487,9 @@ export async function updatePurchaseQualification(
     prioridad = 'BAJA'
   }
   
+  // Si es paso 3, marcar como completado
+  const estadoCalificacion = paso === 3 ? 'completado' : `paso_${paso}`
+  
   const query = `
     UPDATE purchase_leads
     SET 
@@ -506,7 +509,7 @@ export async function updatePurchaseQualification(
     respuestas.ssn !== undefined ? respuestas.ssn : null,
     respuestas.credito !== undefined ? respuestas.credito : null,
     respuestas.ingresos !== undefined ? respuestas.ingresos : null,
-    `paso_${paso}`,
+    estadoCalificacion,
     prioridad
   ])
 }
