@@ -337,10 +337,9 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         
         // Verificar si ya existe un lead completado
         if (existingLead && existingLead.estado_calificacion === 'completado') {
-          console.log('♻️ Lead completado encontrado - Reseteando para reintentar')
-          // Resetear el lead para permitir reintentar
-          await resetPurchaseLead(existingLead.id)
-          leadId = existingLead.id
+          console.log('♻️ Lead completado encontrado - No reiniciar automáticamente')
+          // No reiniciar automáticamente. El usuario debe pedir explícitamente comprar de nuevo
+          return
         } else if (existingLead) {
           // Si existe pero está en progreso, no hacer nada (ya se procesó arriba)
           console.log('⚠️ Lead en progreso - No reiniciar')
