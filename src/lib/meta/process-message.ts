@@ -202,9 +202,8 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           // Última pregunta - guardar respuesta de ingresos y calcular prioridad
           console.log(`🔍 PASO 3 - esAfirmativo: ${esAfirmativo}, tipo: ${typeof esAfirmativo}, mensaje: "${sanitizedText}"`)
           console.log(`🔍 PASO 3 - Verificación: esAfirmativo === true? ${esAfirmativo === true}, esAfirmativo === false? ${esAfirmativo === false}, esAfirmativo === undefined? ${esAfirmativo === undefined}`)
-          console.log(`� Paso 3 - Tipo de esAfirmativo: ${typeof esAfirmativo}, Valor: ${esAfirmativo}`)
-          console.log(`�� Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=3, respuestas={ ingresos: ${esAfirmativo} }`)
-          await updatePurchaseQualification(existingLead.id, 3, { ingresos: esAfirmativo })
+          console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=3, marcarCompletado=true, respuestas={ ingresos: ${esAfirmativo} }`)
+          await updatePurchaseQualification(existingLead.id, 3, { ingresos: esAfirmativo }, true)
           
           // Obtener lead actualizado para calcular respuesta final
           const updatedLead = await getPurchaseLeadBySenderId(senderId)

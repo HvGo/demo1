@@ -476,7 +476,8 @@ export async function updatePurchaseQualification(
     ssn?: boolean
     credito?: boolean
     ingresos?: boolean
-  }
+  },
+  marcarCompletado: boolean = false
 ): Promise<void> {
   console.log(`📊 updatePurchaseQualification - leadId: ${leadId}, paso: ${paso}, respuestas:`, respuestas)
   
@@ -508,8 +509,14 @@ export async function updatePurchaseQualification(
     prioridad = 'BAJA'
   }
   
-  // Si es paso 3, marcar como completado
-  const estadoCalificacion = paso === 3 ? 'completado' : `paso_${paso}`
+  // Calcular estado basado en paso y marcarCompletado
+  let estadoCalificacion: string
+  if (marcarCompletado) {
+    estadoCalificacion = 'completado'
+  } else {
+    estadoCalificacion = `paso_${paso}`
+  }
+  console.log(`🔐 Estado calculado: marcarCompletado=${marcarCompletado}, paso=${paso}, estado=${estadoCalificacion}`)
   
   // Actualizar directamente con valores combinados (sin CASE WHEN)
   const query = `
