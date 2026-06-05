@@ -158,8 +158,11 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       // Procesar según paso actual
       try {
         if (currentStep === 'paso_1') {
+          console.log(`🔍 Paso 1 - esAfirmativo: ${esAfirmativo}, mensaje: "${sanitizedText}"`)
+          
           if (!esAfirmativo) {
             // No cumple requisito básico
+            console.log('❌ Respuesta negativa en paso_1')
             const response = 'Entendido. Un experto se comunicará contigo para evaluar tu situación actual y ver cómo podemos ayudarte a prepararte.'
             await sendTextMessage(senderId, response, platform)
             await updatePurchaseQualification(existingLead.id, 1, { historial_trabajo: false, ssn: false })
@@ -169,6 +172,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           }
           
           // Pasar a paso 2 - guardar respuesta de paso_1
+          console.log('✅ Respuesta afirmativa en paso_1 - Guardando como TRUE')
           await updatePurchaseQualification(existingLead.id, 1, { historial_trabajo: true, ssn: true })
           const nextQuestion = QUALIFICATION_QUESTIONS.paso_2.question
           await sendTextMessage(senderId, nextQuestion, platform)

@@ -75,7 +75,9 @@ export function getQualificationResponse(
 export function isAffirmativeResponse(message: string): boolean {
   const affirmative = ['sí', 'si', 'yes', 'yep', 'claro', 'claro que sí', 'por supuesto', 'obviamente', 'claro que sí']
   const lowerMessage = message.toLowerCase().trim()
-  return affirmative.some(word => lowerMessage.includes(word))
+  const result = affirmative.some(word => lowerMessage.includes(word))
+  console.log(`🔎 isAffirmativeResponse("${message}") → ${result} (lower: "${lowerMessage}")`)
+  return result
 }
 
 /**
