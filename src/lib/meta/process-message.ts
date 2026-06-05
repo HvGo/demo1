@@ -189,8 +189,8 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         if (currentStep === 'paso_2') {
           // Guardar respuesta de crédito y pasar a paso 3
           console.log(`🔍 PASO 2 - esAfirmativo: ${esAfirmativo}, tipo: ${typeof esAfirmativo}, mensaje: "${sanitizedText}"`)
-          console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=3, respuestas={ credito: ${esAfirmativo} }`)
-          await updatePurchaseQualification(existingLead.id, 3, { credito: esAfirmativo })
+          console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=2, respuestas={ credito: ${esAfirmativo} }`)
+          await updatePurchaseQualification(existingLead.id, 2, { credito: esAfirmativo })
           const nextQuestion = QUALIFICATION_QUESTIONS.paso_3.question
           await sendTextMessage(senderId, nextQuestion, platform)
           await updateMessageWithBotResponse(messageId, nextQuestion)
@@ -200,7 +200,8 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         
         if (currentStep === 'paso_3') {
           // Última pregunta - guardar respuesta de ingresos y calcular prioridad
-          console.log(`🔍 Paso 3 - esAfirmativo: ${esAfirmativo}, mensaje: "${sanitizedText}"`)
+          console.log(`🔍 PASO 3 - esAfirmativo: ${esAfirmativo}, tipo: ${typeof esAfirmativo}, mensaje: "${sanitizedText}"`)
+          console.log(`🔍 PASO 3 - Verificación: esAfirmativo === true? ${esAfirmativo === true}, esAfirmativo === false? ${esAfirmativo === false}, esAfirmativo === undefined? ${esAfirmativo === undefined}`)
           console.log(`� Paso 3 - Tipo de esAfirmativo: ${typeof esAfirmativo}, Valor: ${esAfirmativo}`)
           console.log(`�� Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=3, respuestas={ ingresos: ${esAfirmativo} }`)
           await updatePurchaseQualification(existingLead.id, 3, { ingresos: esAfirmativo })
