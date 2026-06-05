@@ -167,8 +167,8 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
             return
           }
           
-          // Pasar a paso 2
-          await updatePurchaseQualification(existingLead.id, 2, { historial_trabajo: true, ssn: true })
+          // Pasar a paso 2 - guardar respuesta de paso_1
+          await updatePurchaseQualification(existingLead.id, 1, { historial_trabajo: true, ssn: true })
           const nextQuestion = QUALIFICATION_QUESTIONS.paso_2.question
           await sendTextMessage(senderId, nextQuestion, platform)
           await updateMessageWithBotResponse(messageId, nextQuestion)
@@ -177,8 +177,8 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         }
         
         if (currentStep === 'paso_2') {
-          // Guardar respuesta de crédito
-          await updatePurchaseQualification(existingLead.id, 3, { credito: esAfirmativo })
+          // Guardar respuesta de crédito y pasar a paso 3
+          await updatePurchaseQualification(existingLead.id, 2, { credito: esAfirmativo })
           const nextQuestion = QUALIFICATION_QUESTIONS.paso_3.question
           await sendTextMessage(senderId, nextQuestion, platform)
           await updateMessageWithBotResponse(messageId, nextQuestion)
@@ -187,7 +187,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         }
         
         if (currentStep === 'paso_3') {
-          // Última pregunta - calcular prioridad y cerrar flujo
+          // Última pregunta - guardar respuesta de ingresos y calcular prioridad
           await updatePurchaseQualification(existingLead.id, 3, { ingresos: esAfirmativo })
           
           // Obtener lead actualizado para calcular respuesta final
