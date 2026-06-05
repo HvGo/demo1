@@ -16,7 +16,8 @@ import {
   updateMessageWithBotResponse,
   createOrUpdatePurchaseLead,
   updatePurchaseQualification,
-  getPurchaseLeadBySenderId
+  getPurchaseLeadBySenderId,
+  resetPurchaseLead
 } from '@/lib/db/queries/meta-messages'
 import { sendTextMessage, sendTypingIndicator, getUserProfile } from './send-message'
 import { sanitizeMessageText } from './validate-webhook'
@@ -318,14 +319,28 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       console.log('🛒 Purchase intent detected - Starting qualification flow')
       
       try {
-        // Crear nuevo lead de compra
-        const leadId = await createOrUpdatePurchaseLead(
-          senderId,
-          conversation.id,
-          conversation.user_first_name,
-          undefined
-        )
-        console.log('✅ New purchase lead created')
+        let leadId: number
+        
+        // Verificar si ya existe un lead completado
+        if (existingLead && existingLead.estado_calificacion === 'completado') {
+          console.log('♻️ Lead completado encontrado - Reseteando para reintentar')
+          // Resetear el lead para permitir reintentar
+          await resetPurchaseLead(existingLead.id)
+          leadId = existingLead.id
+        } else if (existingLead) {
+          // Si existe pero está en progreso, no hacer nada (ya se procesó arriba)
+          console.log('⚠️ Lead en progreso - No reiniciar')
+          return
+        } else {
+          // Crear nuevo lead
+          leadId = await createOrUpdatePurchaseLead(
+            senderId,
+            conversation.id,
+            conversation.user_first_name,
+            undefined
+          )
+          console.log('✅ New purchase lead created')
+        }
         
         // Enviar primera pregunta
         const firstQuestion = QUALIFICATION_QUESTIONS.paso_1.question

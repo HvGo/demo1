@@ -522,3 +522,22 @@ export async function getPurchaseLeadBySenderId(metaSenderId: string): Promise<a
   const result = await sql(query, [metaSenderId])
   return result.rows[0] || null
 }
+
+/**
+ * Resetear lead de compra para reintentar
+ */
+export async function resetPurchaseLead(leadId: number): Promise<void> {
+  const query = `
+    UPDATE purchase_leads
+    SET 
+      tiene_historial_trabajo = NULL,
+      tiene_ssn = NULL,
+      credito_activo = NULL,
+      ingresos_40_mas = NULL,
+      estado_calificacion = 'paso_1',
+      prioridad = 'MEDIA',
+      updated_at = NOW()
+    WHERE id = $1
+  `
+  await sql(query, [leadId])
+}
