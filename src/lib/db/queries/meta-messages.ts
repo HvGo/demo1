@@ -480,25 +480,7 @@ export async function updatePurchaseQualification(
 ): Promise<void> {
   console.log(`📊 updatePurchaseQualification - leadId: ${leadId}, paso: ${paso}, respuestas:`, respuestas)
   
-  // Usar CASE WHEN para actualizar solo los campos que se pasaron
-  // Si no se pasa un valor, mantener el anterior
-  const query = `
-    UPDATE purchase_leads
-    SET 
-      tiene_historial_trabajo = CASE WHEN $2::boolean IS NOT NULL THEN $2::boolean ELSE tiene_historial_trabajo END,
-      tiene_ssn = CASE WHEN $3::boolean IS NOT NULL THEN $3::boolean ELSE tiene_ssn END,
-      credito_activo = CASE WHEN $4::boolean IS NOT NULL THEN $4::boolean ELSE credito_activo END,
-      ingresos_40_mas = CASE WHEN $5::boolean IS NOT NULL THEN $5::boolean ELSE ingresos_40_mas END,
-      estado_calificacion = $6,
-      prioridad = $7,
-      updated_at = NOW()
-    WHERE id = $1
-  `
-  
-  // Calcular prioridad basada en los valores que se están guardando
-  let prioridad = 'MEDIA'
-  
-  // Para calcular prioridad, necesitamos obtener el lead actual primero
+  // Obtener el lead actual para combinar valores
   const currentResult = await sql(`SELECT * FROM purchase_leads WHERE id = $1`, [leadId])
   if (!currentResult.rows[0]) {
     console.error(`❌ Lead not found: ${leadId}`)
@@ -513,9 +495,12 @@ export async function updatePurchaseQualification(
   const credito = respuestas.credito !== undefined ? respuestas.credito : lead.credito_activo
   const ingresos = respuestas.ingresos !== undefined ? respuestas.ingresos : lead.ingresos_40_mas
   
+  console.log(`📋 Lead anterior - historial: ${lead.tiene_historial_trabajo}, ssn: ${lead.tiene_ssn}, credito: ${lead.credito_activo}, ingresos: ${lead.ingresos_40_mas}`)
+  console.log(`📋 Respuestas pasadas - historial: ${respuestas.historial_trabajo}, ssn: ${respuestas.ssn}, credito: ${respuestas.credito}, ingresos: ${respuestas.ingresos}`)
   console.log(`📋 Valores combinados - historial: ${historial_trabajo}, ssn: ${ssn}, credito: ${credito}, ingresos: ${ingresos}`)
   
   // Calcular prioridad
+  let prioridad = 'MEDIA'
   if (historial_trabajo && ssn && credito && ingresos) {
     prioridad = 'ALTA'
   } else if (!historial_trabajo || !ssn || !credito) {
@@ -525,12 +510,26 @@ export async function updatePurchaseQualification(
   // Si es paso 3, marcar como completado
   const estadoCalificacion = paso === 3 ? 'completado' : `paso_${paso}`
   
+  // Actualizar directamente con valores combinados (sin CASE WHEN)
+  const query = `
+    UPDATE purchase_leads
+    SET 
+      tiene_historial_trabajo = $2,
+      tiene_ssn = $3,
+      credito_activo = $4,
+      ingresos_40_mas = $5,
+      estado_calificacion = $6,
+      prioridad = $7,
+      updated_at = NOW()
+    WHERE id = $1
+  `
+  
   const params = [
     leadId,
-    respuestas.historial_trabajo !== undefined ? respuestas.historial_trabajo : null,
-    respuestas.ssn !== undefined ? respuestas.ssn : null,
-    respuestas.credito !== undefined ? respuestas.credito : null,
-    respuestas.ingresos !== undefined ? respuestas.ingresos : null,
+    historial_trabajo,
+    ssn,
+    credito,
+    ingresos,
     estadoCalificacion,
     prioridad
   ]

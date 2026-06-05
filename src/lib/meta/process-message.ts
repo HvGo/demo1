@@ -187,6 +187,8 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         
         if (currentStep === 'paso_2') {
           // Guardar respuesta de crédito y pasar a paso 3
+          console.log(`🔍 Paso 2 - esAfirmativo: ${esAfirmativo}, mensaje: "${sanitizedText}"`)
+          console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=2, respuestas={ credito: ${esAfirmativo} }`)
           await updatePurchaseQualification(existingLead.id, 2, { credito: esAfirmativo })
           const nextQuestion = QUALIFICATION_QUESTIONS.paso_3.question
           await sendTextMessage(senderId, nextQuestion, platform)
@@ -197,10 +199,14 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         
         if (currentStep === 'paso_3') {
           // Última pregunta - guardar respuesta de ingresos y calcular prioridad
+          console.log(`🔍 Paso 3 - esAfirmativo: ${esAfirmativo}, mensaje: "${sanitizedText}"`)
+          console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=3, respuestas={ ingresos: ${esAfirmativo} }`)
           await updatePurchaseQualification(existingLead.id, 3, { ingresos: esAfirmativo })
           
           // Obtener lead actualizado para calcular respuesta final
           const updatedLead = await getPurchaseLeadBySenderId(senderId)
+          console.log(`📊 Lead actualizado después de paso_3: estado=${updatedLead.estado_calificacion}, prioridad=${updatedLead.prioridad}`)
+          
           const finalResponse = getQualificationResponse(
             updatedLead.tiene_historial_trabajo,
             updatedLead.tiene_ssn,
