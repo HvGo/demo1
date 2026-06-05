@@ -478,12 +478,31 @@ export async function updatePurchaseQualification(
     ingresos?: boolean
   }
 ): Promise<void> {
+  console.log(`📊 updatePurchaseQualification - paso: ${paso}, respuestas:`, respuestas)
+  
+  // Obtener el lead actual para mantener valores anteriores
+  const currentLead = await sql(`SELECT * FROM purchase_leads WHERE id = $1`, [leadId])
+  if (!currentLead.rows[0]) {
+    throw new Error(`Lead not found: ${leadId}`)
+  }
+  
+  const lead = currentLead.rows[0]
+  
+  // Actualizar solo los campos que se pasaron, mantener los anteriores
+  const historial_trabajo = respuestas.historial_trabajo !== undefined ? respuestas.historial_trabajo : lead.tiene_historial_trabajo
+  const ssn = respuestas.ssn !== undefined ? respuestas.ssn : lead.tiene_ssn
+  const credito = respuestas.credito !== undefined ? respuestas.credito : lead.credito_activo
+  const ingresos = respuestas.ingresos !== undefined ? respuestas.ingresos : lead.ingresos_40_mas
+  
+  console.log(`📋 Lead actual - historial: ${lead.tiene_historial_trabajo}, ssn: ${lead.tiene_ssn}, credito: ${lead.credito_activo}, ingresos: ${lead.ingresos_40_mas}`)
+  console.log(`📋 Nuevos valores - historial: ${historial_trabajo}, ssn: ${ssn}, credito: ${credito}, ingresos: ${ingresos}`)
+  
   let prioridad = 'MEDIA'
   
-  // Calcular prioridad
-  if (respuestas.historial_trabajo && respuestas.ssn && respuestas.credito && respuestas.ingresos) {
+  // Calcular prioridad con todos los valores (actuales + nuevos)
+  if (historial_trabajo && ssn && credito && ingresos) {
     prioridad = 'ALTA'
-  } else if (!respuestas.historial_trabajo || !respuestas.ssn || !respuestas.credito) {
+  } else if (!historial_trabajo || !ssn || !credito) {
     prioridad = 'BAJA'
   }
   
@@ -493,25 +512,21 @@ export async function updatePurchaseQualification(
   const query = `
     UPDATE purchase_leads
     SET 
-      tiene_historial_trabajo = COALESCE($2, tiene_historial_trabajo),
-      tiene_ssn = COALESCE($3, tiene_ssn),
-      credito_activo = COALESCE($4, credito_activo),
-      ingresos_40_mas = COALESCE($5, ingresos_40_mas),
+      tiene_historial_trabajo = $2,
+      tiene_ssn = $3,
+      credito_activo = $4,
+      ingresos_40_mas = $5,
       estado_calificacion = $6,
       prioridad = $7,
       updated_at = NOW()
     WHERE id = $1
   `
   
-  await sql(query, [
-    leadId,
-    respuestas.historial_trabajo !== undefined ? respuestas.historial_trabajo : null,
-    respuestas.ssn !== undefined ? respuestas.ssn : null,
-    respuestas.credito !== undefined ? respuestas.credito : null,
-    respuestas.ingresos !== undefined ? respuestas.ingresos : null,
-    estadoCalificacion,
-    prioridad
-  ])
+  const params = [leadId, historial_trabajo, ssn, credito, ingresos, estadoCalificacion, prioridad]
+  console.log(`💾 SQL params:`, params)
+  
+  await sql(query, params)
+  console.log(`✅ Lead actualizado - leadId: ${leadId}, estado: ${estadoCalificacion}, prioridad: ${prioridad}`)
 }
 
 /**
