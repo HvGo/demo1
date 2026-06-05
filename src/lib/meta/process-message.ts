@@ -174,10 +174,10 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
             return
           }
           
-          // Pasar a paso 2 - guardar respuesta de paso_1
-          console.log('✅ Respuesta afirmativa en paso_1 - Guardando como TRUE')
-          console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=1, respuestas={ historial_trabajo: true, ssn: true }`)
-          await updatePurchaseQualification(existingLead.id, 1, { historial_trabajo: true, ssn: true })
+          // Pasar a paso 2 - guardar respuesta de paso_1 y avanzar a paso_2
+          console.log('✅ Respuesta afirmativa en paso_1 - Guardando como TRUE y avanzando a paso_2')
+          console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=2, respuestas={ historial_trabajo: true, ssn: true }`)
+          await updatePurchaseQualification(existingLead.id, 2, { historial_trabajo: true, ssn: true })
           const nextQuestion = QUALIFICATION_QUESTIONS.paso_2.question
           await sendTextMessage(senderId, nextQuestion, platform)
           await updateMessageWithBotResponse(messageId, nextQuestion)
