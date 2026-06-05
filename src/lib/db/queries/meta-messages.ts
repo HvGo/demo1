@@ -478,28 +478,44 @@ export async function updatePurchaseQualification(
     ingresos?: boolean
   }
 ): Promise<void> {
-  console.log(`📊 updatePurchaseQualification - paso: ${paso}, respuestas:`, respuestas)
+  console.log(`📊 updatePurchaseQualification - leadId: ${leadId}, paso: ${paso}, respuestas:`, respuestas)
   
-  // Obtener el lead actual para mantener valores anteriores
-  const currentLead = await sql(`SELECT * FROM purchase_leads WHERE id = $1`, [leadId])
-  if (!currentLead.rows[0]) {
+  // Usar CASE WHEN para actualizar solo los campos que se pasaron
+  // Si no se pasa un valor, mantener el anterior
+  const query = `
+    UPDATE purchase_leads
+    SET 
+      tiene_historial_trabajo = CASE WHEN $2::boolean IS NOT NULL THEN $2::boolean ELSE tiene_historial_trabajo END,
+      tiene_ssn = CASE WHEN $3::boolean IS NOT NULL THEN $3::boolean ELSE tiene_ssn END,
+      credito_activo = CASE WHEN $4::boolean IS NOT NULL THEN $4::boolean ELSE credito_activo END,
+      ingresos_40_mas = CASE WHEN $5::boolean IS NOT NULL THEN $5::boolean ELSE ingresos_40_mas END,
+      estado_calificacion = $6,
+      prioridad = $7,
+      updated_at = NOW()
+    WHERE id = $1
+  `
+  
+  // Calcular prioridad basada en los valores que se están guardando
+  let prioridad = 'MEDIA'
+  
+  // Para calcular prioridad, necesitamos obtener el lead actual primero
+  const currentResult = await sql(`SELECT * FROM purchase_leads WHERE id = $1`, [leadId])
+  if (!currentResult.rows[0]) {
+    console.error(`❌ Lead not found: ${leadId}`)
     throw new Error(`Lead not found: ${leadId}`)
   }
   
-  const lead = currentLead.rows[0]
+  const lead = currentResult.rows[0]
   
-  // Actualizar solo los campos que se pasaron, mantener los anteriores
+  // Combinar valores actuales con nuevos valores
   const historial_trabajo = respuestas.historial_trabajo !== undefined ? respuestas.historial_trabajo : lead.tiene_historial_trabajo
   const ssn = respuestas.ssn !== undefined ? respuestas.ssn : lead.tiene_ssn
   const credito = respuestas.credito !== undefined ? respuestas.credito : lead.credito_activo
   const ingresos = respuestas.ingresos !== undefined ? respuestas.ingresos : lead.ingresos_40_mas
   
-  console.log(`📋 Lead actual - historial: ${lead.tiene_historial_trabajo}, ssn: ${lead.tiene_ssn}, credito: ${lead.credito_activo}, ingresos: ${lead.ingresos_40_mas}`)
-  console.log(`📋 Nuevos valores - historial: ${historial_trabajo}, ssn: ${ssn}, credito: ${credito}, ingresos: ${ingresos}`)
+  console.log(`📋 Valores combinados - historial: ${historial_trabajo}, ssn: ${ssn}, credito: ${credito}, ingresos: ${ingresos}`)
   
-  let prioridad = 'MEDIA'
-  
-  // Calcular prioridad con todos los valores (actuales + nuevos)
+  // Calcular prioridad
   if (historial_trabajo && ssn && credito && ingresos) {
     prioridad = 'ALTA'
   } else if (!historial_trabajo || !ssn || !credito) {
@@ -509,24 +525,25 @@ export async function updatePurchaseQualification(
   // Si es paso 3, marcar como completado
   const estadoCalificacion = paso === 3 ? 'completado' : `paso_${paso}`
   
-  const query = `
-    UPDATE purchase_leads
-    SET 
-      tiene_historial_trabajo = $2,
-      tiene_ssn = $3,
-      credito_activo = $4,
-      ingresos_40_mas = $5,
-      estado_calificacion = $6,
-      prioridad = $7,
-      updated_at = NOW()
-    WHERE id = $1
-  `
+  const params = [
+    leadId,
+    respuestas.historial_trabajo !== undefined ? respuestas.historial_trabajo : null,
+    respuestas.ssn !== undefined ? respuestas.ssn : null,
+    respuestas.credito !== undefined ? respuestas.credito : null,
+    respuestas.ingresos !== undefined ? respuestas.ingresos : null,
+    estadoCalificacion,
+    prioridad
+  ]
   
-  const params = [leadId, historial_trabajo, ssn, credito, ingresos, estadoCalificacion, prioridad]
   console.log(`💾 SQL params:`, params)
   
-  await sql(query, params)
-  console.log(`✅ Lead actualizado - leadId: ${leadId}, estado: ${estadoCalificacion}, prioridad: ${prioridad}`)
+  try {
+    await sql(query, params)
+    console.log(`✅ Lead actualizado - leadId: ${leadId}, estado: ${estadoCalificacion}, prioridad: ${prioridad}`)
+  } catch (error) {
+    console.error(`❌ Error updating lead:`, error)
+    throw error
+  }
 }
 
 /**

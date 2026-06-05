@@ -124,6 +124,9 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
     let existingLead: any = null
     try {
       existingLead = await getPurchaseLeadBySenderId(senderId)
+      if (existingLead) {
+        console.log(`🔍 Lead encontrado: id=${existingLead.id}, estado=${existingLead.estado_calificacion}, historial=${existingLead.tiene_historial_trabajo}`)
+      }
     } catch (error) {
       console.warn('Could not check for existing lead:', error)
     }
@@ -173,6 +176,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           
           // Pasar a paso 2 - guardar respuesta de paso_1
           console.log('✅ Respuesta afirmativa en paso_1 - Guardando como TRUE')
+          console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=1, respuestas={ historial_trabajo: true, ssn: true }`)
           await updatePurchaseQualification(existingLead.id, 1, { historial_trabajo: true, ssn: true })
           const nextQuestion = QUALIFICATION_QUESTIONS.paso_2.question
           await sendTextMessage(senderId, nextQuestion, platform)
