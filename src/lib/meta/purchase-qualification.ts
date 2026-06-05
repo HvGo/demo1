@@ -73,10 +73,39 @@ export function getQualificationResponse(
  * Determinar si la respuesta es afirmativa
  */
 export function isAffirmativeResponse(message: string): boolean {
-  const affirmative = ['sí', 'si', 'yes', 'yep', 'claro', 'claro que sí', 'por supuesto', 'obviamente', 'claro que sí']
-  const lowerMessage = message.toLowerCase().trim()
-  const result = affirmative.some(word => lowerMessage.includes(word))
-  console.log(`🔎 isAffirmativeResponse("${message}") → ${result} (lower: "${lowerMessage}")`)
+  // Palabras afirmativas en español e inglés (expandidas)
+  const affirmativeWords = [
+    // Español básico
+    'si', 'sí', 'claro', 'ok', 'vale', 'bueno',
+    // Inglés
+    'yes', 'yep', 'yup', 'yeah', 'okay',
+    // Frases comunes
+    'por supuesto', 'obviamente', 'esta bien', 'está bien',
+    'correcto', 'exacto', 'verdad', 'cierto',
+    'afirmativo', 'positivo',
+    'de acuerdo', 'estoy de acuerdo',
+    'eso es', 'asi es', 'así es', 'asi mismo', 'así mismo',
+    // Variantes adicionales
+    'claro que si', 'claro que sí',
+    'por supuesto que si', 'por supuesto que sí',
+    'sin duda', 'sin dudas',
+    'totalmente', 'completamente',
+    'perfecto', 'excelente',
+    'esta correcto', 'está correcto',
+    'es correcto',
+    'me parece bien', 'me parece correcto',
+    'adelante', 'adelante con eso',
+    'procede', 'proceder',
+    'vamos', 'vamos adelante'
+  ]
+  
+  // Normalizar: convertir a minúsculas y remover espacios extras
+  const normalized = message.toLowerCase().trim()
+  
+  // Buscar coincidencias
+  const result = affirmativeWords.some(word => normalized.includes(word))
+  
+  console.log(`🔎 isAffirmativeResponse("${message}") → ${result} (normalized: "${normalized}")`)
   return result
 }
 
