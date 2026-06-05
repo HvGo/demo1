@@ -496,8 +496,9 @@ export async function updatePurchaseQualification(
   const ingresos = respuestas.ingresos !== undefined ? respuestas.ingresos : lead.ingresos_40_mas
   
   console.log(`📋 Lead anterior - historial: ${lead.tiene_historial_trabajo}, ssn: ${lead.tiene_ssn}, credito: ${lead.credito_activo}, ingresos: ${lead.ingresos_40_mas}`)
-  console.log(`📋 Respuestas pasadas - historial: ${respuestas.historial_trabajo}, ssn: ${respuestas.ssn}, credito: ${respuestas.credito}, ingresos: ${respuestas.ingresos}`)
+  console.log(`📋 Respuestas pasadas - historial: ${respuestas.historial_trabajo} (tipo: ${typeof respuestas.historial_trabajo}), ssn: ${respuestas.ssn} (tipo: ${typeof respuestas.ssn}), credito: ${respuestas.credito} (tipo: ${typeof respuestas.credito}), ingresos: ${respuestas.ingresos} (tipo: ${typeof respuestas.ingresos})`)
   console.log(`📋 Valores combinados - historial: ${historial_trabajo}, ssn: ${ssn}, credito: ${credito}, ingresos: ${ingresos}`)
+  console.log(`🔍 Verificación de ingresos: respuestas.ingresos !== undefined? ${respuestas.ingresos !== undefined}, valor: ${respuestas.ingresos}`)
   
   // Calcular prioridad
   let prioridad = 'MEDIA'

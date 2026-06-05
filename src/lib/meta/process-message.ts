@@ -161,11 +161,12 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       // Procesar según paso actual
       try {
         if (currentStep === 'paso_1') {
-          console.log(`🔍 Paso 1 - esAfirmativo: ${esAfirmativo}, mensaje: "${sanitizedText}"`)
+          console.log(`🔍 PASO 1 - esAfirmativo: ${esAfirmativo}, tipo: ${typeof esAfirmativo}, mensaje: "${sanitizedText}"`)
           
           if (!esAfirmativo) {
             // No cumple requisito básico
             console.log('❌ Respuesta negativa en paso_1')
+            console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=1, respuestas={ historial_trabajo: false, ssn: false }`)
             const response = 'Entendido. Un experto se comunicará contigo para evaluar tu situación actual y ver cómo podemos ayudarte a prepararte.'
             await sendTextMessage(senderId, response, platform)
             await updatePurchaseQualification(existingLead.id, 1, { historial_trabajo: false, ssn: false })
@@ -187,7 +188,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         
         if (currentStep === 'paso_2') {
           // Guardar respuesta de crédito y pasar a paso 3
-          console.log(`🔍 Paso 2 - esAfirmativo: ${esAfirmativo}, mensaje: "${sanitizedText}"`)
+          console.log(`🔍 PASO 2 - esAfirmativo: ${esAfirmativo}, tipo: ${typeof esAfirmativo}, mensaje: "${sanitizedText}"`)
           console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=3, respuestas={ credito: ${esAfirmativo} }`)
           await updatePurchaseQualification(existingLead.id, 3, { credito: esAfirmativo })
           const nextQuestion = QUALIFICATION_QUESTIONS.paso_3.question
@@ -201,12 +202,18 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           // Última pregunta - guardar respuesta de ingresos y calcular prioridad
           console.log(`🔍 Paso 3 - esAfirmativo: ${esAfirmativo}, mensaje: "${sanitizedText}"`)
           console.log(`� Paso 3 - Tipo de esAfirmativo: ${typeof esAfirmativo}, Valor: ${esAfirmativo}`)
-          console.log(`�🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=3, respuestas={ ingresos: ${esAfirmativo} }`)
+          console.log(`�� Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=3, respuestas={ ingresos: ${esAfirmativo} }`)
           await updatePurchaseQualification(existingLead.id, 3, { ingresos: esAfirmativo })
           
           // Obtener lead actualizado para calcular respuesta final
           const updatedLead = await getPurchaseLeadBySenderId(senderId)
-          console.log(`📊 Lead actualizado después de paso_3: estado=${updatedLead.estado_calificacion}, prioridad=${updatedLead.prioridad}`)
+          console.log(`📊 Lead actualizado después de paso_3:`)
+          console.log(`   - estado: ${updatedLead.estado_calificacion}`)
+          console.log(`   - historial: ${updatedLead.tiene_historial_trabajo}`)
+          console.log(`   - ssn: ${updatedLead.tiene_ssn}`)
+          console.log(`   - credito: ${updatedLead.credito_activo}`)
+          console.log(`   - ingresos: ${updatedLead.ingresos_40_mas}`)
+          console.log(`   - prioridad: ${updatedLead.prioridad}`)
           
           const finalResponse = getQualificationResponse(
             updatedLead.tiene_historial_trabajo,
