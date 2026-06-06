@@ -167,10 +167,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
             // No cumple requisito básico
             console.log('❌ Respuesta negativa en paso_1')
             console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=1, respuestas={ historial_trabajo: false, ssn: false }`)
-            const response = 'Entendido. Un experto se comunicará contigo para evaluar tu situación actual y ver cómo podemos ayudarte a prepararte.'
-            await sendTextMessage(senderId, response, platform)
             await updatePurchaseQualification(existingLead.id, 1, { historial_trabajo: false, ssn: false })
-            await updateMessageWithBotResponse(messageId, response)
             console.log('✅ Qualification completed (BAJA priority)')
             return
           }
@@ -179,9 +176,6 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           console.log('✅ Respuesta afirmativa en paso_1 - Guardando como TRUE y avanzando a paso_2')
           console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=2, respuestas={ historial_trabajo: true, ssn: true }`)
           await updatePurchaseQualification(existingLead.id, 2, { historial_trabajo: true, ssn: true })
-          const nextQuestion = QUALIFICATION_QUESTIONS.paso_2.question
-          await sendTextMessage(senderId, nextQuestion, platform)
-          await updateMessageWithBotResponse(messageId, nextQuestion)
           console.log('✅ Advanced to paso_2')
           return
         }
@@ -191,9 +185,6 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           console.log(`🔍 PASO 2 - esAfirmativo: ${esAfirmativo}, tipo: ${typeof esAfirmativo}, mensaje: "${sanitizedText}"`)
           console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=3, respuestas={ credito: ${esAfirmativo} }`)
           await updatePurchaseQualification(existingLead.id, 3, { credito: esAfirmativo })
-          const nextQuestion = QUALIFICATION_QUESTIONS.paso_3.question
-          await sendTextMessage(senderId, nextQuestion, platform)
-          await updateMessageWithBotResponse(messageId, nextQuestion)
           console.log('✅ Advanced to paso_3')
           return
         }
@@ -215,15 +206,6 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           console.log(`   - ingresos: ${updatedLead.ingresos_40_mas}`)
           console.log(`   - prioridad: ${updatedLead.prioridad}`)
           
-          const finalResponse = getQualificationResponse(
-            updatedLead.tiene_historial_trabajo,
-            updatedLead.tiene_ssn,
-            updatedLead.credito_activo,
-            updatedLead.ingresos_40_mas
-          )
-          
-          await sendTextMessage(senderId, finalResponse, platform)
-          await updateMessageWithBotResponse(messageId, finalResponse)
           console.log(`✅ Qualification completed (${updatedLead.prioridad} priority)`)
           return
         }
