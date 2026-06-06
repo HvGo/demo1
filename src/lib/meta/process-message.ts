@@ -421,6 +421,12 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         )
       }
       
+      // No enviar si la respuesta está vacía
+      if (!response || response.trim() === '') {
+        console.log('🔇 No response to send (empty)')
+        return
+      }
+      
       const sent = await sendTextMessage(senderId, response, platform)
 
       if (!sent.success) {
