@@ -109,10 +109,8 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         console.error('Error saving rejected message:', error)
       }
 
-      // Enviar respuesta predefinida
-      if (validation.predefinedResponse) {
-        await sendTextMessage(senderId, validation.predefinedResponse, platform)
-      }
+      // No enviar respuesta de validación
+      console.log('🔇 Validation failed - no response sent')
       return
     }
 
@@ -279,33 +277,13 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
 
     // Verificar si usuario está frustrado
     if (isUserFrustrated(sanitizedText)) {
-      const frustratedResponse = getFrustratedUserResponse()
-      await sendTextMessage(senderId, frustratedResponse, platform)
-      
-      // Guardar respuesta
-      try {
-        await updateMessageWithBotResponse(messageId, frustratedResponse)
-      } catch (error) {
-        console.error('Error saving frustrated response:', error)
-      }
+      console.log('🔇 User frustrated detected - no response sent')
       return
     }
 
     // Verificar si la conversación está cerrando
     if (intent === 'closing') {
-      console.log('👋 Conversation closing detected')
-      
-      // Responder con despedida breve
-      const closingResponse = 'De nada, ¡que tengas un excelente día!'
-      await sendTextMessage(senderId, closingResponse, platform)
-      
-      // Guardar respuesta
-      try {
-        await updateMessageWithBotResponse(messageId, closingResponse)
-        console.log('✅ Closing response saved')
-      } catch (error) {
-        console.error('Error saving closing response:', error)
-      }
+      console.log('👋 Conversation closing detected - no response sent')
       
       // Cerrar conversación
       try {
@@ -345,17 +323,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           console.log('✅ New purchase lead created')
         }
         
-        // Enviar primera pregunta
-        const firstQuestion = QUALIFICATION_QUESTIONS.paso_1.question
-        await sendTextMessage(senderId, firstQuestion, platform)
-        
-        // Guardar respuesta
-        try {
-          await updateMessageWithBotResponse(messageId, firstQuestion)
-          console.log('✅ Qualification question sent (paso_1)')
-        } catch (error) {
-          console.error('Error saving qualification question:', error)
-        }
+        console.log('🔇 Purchase qualification started - no response sent')
       } catch (error) {
         console.error('Error in purchase qualification flow:', error)
       }
@@ -368,11 +336,12 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
 
     // Generar respuesta
     try {
-      let response: string
+      let response: string = ''
       
-      // Usar mensaje de bienvenida predefinido para saludos
+      // No enviar respuesta de bienvenida para saludos
       if (intent === 'greeting') {
-        response = AUTO_RESPONSES.GREETING
+        console.log('🔇 Greeting detected - no response sent')
+        return
       } else {
         // Obtener historial de conversación (últimos 10 mensajes)
         let chatHistory: Array<{ role: 'user' | 'model'; parts: [{ text: string }] }> = []
