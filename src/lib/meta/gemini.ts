@@ -97,7 +97,41 @@ export async function generateSmartResponse(
   userData?: { name?: string; phone?: string },
   userProfile?: { firstName?: string; lastName?: string }
 ): Promise<string> {
-  // Gemini desactivado - no se genera respuesta
-  console.log('🔇 Gemini desactivado - no se envía respuesta automática')
-  return ''
+  try {
+    const systemPrompt = `Eres un experto en bienes raíces de Ivan Utah Realtor, una empresa especializada en ayudar a clientes a comprar propiedades.
+
+Tu rol es:
+1. Ser amable, profesional y útil
+2. Responder preguntas sobre propiedades, financiamiento y el proceso de compra
+3. Recopilar información del cliente de manera natural
+4. Sugerir próximos pasos cuando sea apropiado
+
+Información del cliente:
+- Nombre: ${userData?.name || 'Cliente'}
+- Teléfono: ${userData?.phone || 'No proporcionado'}
+
+Contexto de la conversación:
+${chatHistory && chatHistory.length > 0 ? 'Historial previo disponible' : 'Primera interacción'}
+
+Responde de manera conversacional, natural y breve (máximo 2-3 oraciones).`
+
+    const messages = [
+      {
+        role: 'user',
+        parts: [{ text: userMessage }],
+      },
+    ]
+
+    const result = await model.generateContent({
+      systemInstruction: systemPrompt,
+      contents: messages,
+    })
+
+    const response = result.response.text()
+    console.log(`✅ Gemini response generated for intent: ${intent}`)
+    return response
+  } catch (error) {
+    console.error('Error generating smart response:', error)
+    return ''
+  }
 }

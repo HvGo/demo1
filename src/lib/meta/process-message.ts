@@ -43,6 +43,33 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
   try {
     console.log('Processing Meta message:', { senderId, messageText, messageId, platform })
 
+    // 🔒 FILTRO DE USUARIO DE PRUEBA - Solo responder a usuario específico
+    const ALLOWED_USER_ID = '27172513052343744'
+    if (senderId !== ALLOWED_USER_ID) {
+      console.log(`🔒 Usuario no autorizado: ${senderId}. Solo ${ALLOWED_USER_ID} puede recibir respuestas.`)
+      // Guardar mensaje pero no procesar
+      try {
+        await saveMetaMessage({
+          contactId: null,
+          platform: platform,
+          metaSenderId: senderId,
+          metaMessageId: messageId,
+          messageText: messageText,
+          messageType: 'text',
+          intent: 'unknown',
+          metadata: {
+            timestamp,
+            originalText: messageText,
+            note: 'Usuario no autorizado - mensaje guardado sin procesar'
+          },
+        })
+      } catch (error) {
+        console.error('Error saving unauthorized user message:', error)
+      }
+      return
+    }
+    console.log(`✅ Usuario autorizado: ${senderId}`)
+
     // Filtrar mensajes del bot mismo en Instagram
     // El bot recibe webhooks de sus propios mensajes, evitar procesarlos
     if (platform === PLATFORMS.INSTAGRAM && senderId === '17841406852481675') {
@@ -109,8 +136,10 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
         console.error('Error saving rejected message:', error)
       }
 
-      // No enviar respuesta de validación
-      console.log('🔇 Validation failed - no response sent')
+        // Enviar respuesta de validación
+      if (validation.predefinedResponse) {
+        await sendTextMessage(senderId, validation.predefinedResponse, platform)
+      }
       return
     }
 
@@ -277,13 +306,31 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
 
     // Verificar si usuario está frustrado
     if (isUserFrustrated(sanitizedText)) {
-      console.log('🔇 User frustrated detected - no response sent')
+      const frustratedResponse = getFrustratedUserResponse()
+      await sendTextMessage(senderId, frustratedResponse, platform)
+      
+      try {
+        await updateMessageWithBotResponse(messageId, frustratedResponse)
+      } catch (error) {
+        console.error('Error saving frustrated response:', error)
+      }
       return
     }
 
     // Verificar si la conversación está cerrando
     if (intent === 'closing') {
-      console.log('👋 Conversation closing detected - no response sent')
+      console.log('👋 Conversation closing detected')
+      
+      // Responder con despedida breve
+      const closingResponse = 'De nada, ¡que tengas un excelente día!'
+      await sendTextMessage(senderId, closingResponse, platform)
+      
+      try {
+        await updateMessageWithBotResponse(messageId, closingResponse)
+        console.log('✅ Closing response sent')
+      } catch (error) {
+        console.error('Error saving closing response:', error)
+      }
       
       // Cerrar conversación
       try {
@@ -323,7 +370,16 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           console.log('✅ New purchase lead created')
         }
         
-        console.log('🔇 Purchase qualification started - no response sent')
+        // Enviar primera pregunta
+        const firstQuestion = QUALIFICATION_QUESTIONS.paso_1.question
+        await sendTextMessage(senderId, firstQuestion, platform)
+        
+        try {
+          await updateMessageWithBotResponse(messageId, firstQuestion)
+          console.log('✅ Qualification question sent (paso_1)')
+        } catch (error) {
+          console.error('Error saving qualification question:', error)
+        }
       } catch (error) {
         console.error('Error in purchase qualification flow:', error)
       }
@@ -338,10 +394,9 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
     try {
       let response: string = ''
       
-      // No enviar respuesta de bienvenida para saludos
+      // Usar mensaje de bienvenida predefinido para saludos
       if (intent === 'greeting') {
-        console.log('🔇 Greeting detected - no response sent')
-        return
+        response = AUTO_RESPONSES.GREETING
       } else {
         // Obtener historial de conversación (últimos 10 mensajes)
         let chatHistory: Array<{ role: 'user' | 'model'; parts: [{ text: string }] }> = []

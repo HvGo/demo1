@@ -295,45 +295,53 @@ export async function getUserProfile(
 ): Promise<{ firstName: string; lastName: string } | null> {
   try {
     const endpoint = getGraphEndpoint(platform)
+    console.log(`📋 Obteniendo perfil de usuario: senderId=${metaSenderId}, platform=${platform}, endpoint=${endpoint}`)
     
     // Instagram no tiene campos first_name/last_name, solo username
     const fields = platform === PLATFORMS.INSTAGRAM 
       ? 'username,name' 
       : 'first_name,last_name'
     
-    const response = await fetch(
-      `${endpoint}/${META_CONFIG.API_VERSION}/${metaSenderId}?fields=${fields}&access_token=${META_CONFIG.ACCESS_TOKEN}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    const url = `${endpoint}/${META_CONFIG.API_VERSION}/${metaSenderId}?fields=${fields}&access_token=${META_CONFIG.ACCESS_TOKEN}`
+    console.log(`📋 URL de Meta API: ${url.replace(META_CONFIG.ACCESS_TOKEN, 'TOKEN_HIDDEN')}`)
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    console.log(`📋 Respuesta Meta API status: ${response.status}`)
 
     if (!response.ok) {
       const error = await response.json()
-      console.error('Meta API error getting user profile:', error)
+      console.error('❌ Meta API error getting user profile:', error)
       return null
     }
 
     const data = await response.json()
+    console.log(`📋 Datos recibidos de Meta API:`, JSON.stringify(data))
     
     // Para Instagram, usar username o name
     if (platform === PLATFORMS.INSTAGRAM) {
-      return {
+      const result = {
         firstName: data.name || data.username || '',
         lastName: '',
       }
+      console.log(`📋 Perfil Instagram procesado:`, result)
+      return result
     }
     
     // Para Facebook, usar first_name y last_name
-    return {
+    const result = {
       firstName: data.first_name || '',
       lastName: data.last_name || '',
     }
+    console.log(`📋 Perfil Facebook procesado:`, result)
+    return result
   } catch (error) {
-    console.error('Error getting user profile:', error)
+    console.error('❌ Error getting user profile:', error)
     return null
   }
 }

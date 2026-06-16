@@ -194,5 +194,5 @@ export function isUserFrustrated(message: string): boolean {
  * Obtener respuesta para usuario frustrado
  */
 export function getFrustratedUserResponse(): string {
-  return 'Lamento que hayas tenido una mala experiencia. Estoy aquí para ayudarte a encontrar propiedades. Si prefieres, puedo conectarte con un agente humano que te atenderá personalmente. ¿Quieres que te pase los datos de contacto?'
+  return 'Lamento que hayas tenido una mala experiencia. Estoy aquí para ayudarte a encontrar propiedades. Si prefieres, puedo conectarte con un agente humano que te atenderá personalmente. ¿Brindame nombre completo y telefono para que un experto se comunique contigo?'
 }
