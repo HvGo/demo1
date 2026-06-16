@@ -5,6 +5,7 @@
 
 import { MetaMessage, ProcessedMessage } from '@/types/meta'
 import { PLATFORMS, AUTO_RESPONSES, META_CONFIG } from './constants'
+import { QUALIFICATION_QUESTIONS, QUALIFICATION_RESPONSES } from './purchase-qualification'
 import { 
   saveMetaMessage,
   getOrCreateConversation,
