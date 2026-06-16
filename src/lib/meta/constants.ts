@@ -47,7 +47,7 @@ export const APPOINTMENT_STATUS = {
 
 export const AUTO_RESPONSES = {
   GREETING:
-    '¡Hola! ¿En qué puedo ayudarte? ¿Buscas comprar o vender una casa en Utah?',
+    '¡Hola! ¿En qué puedo ayudarte? ¿Buscas comprar una casa en Utah?',
   SCHEDULE:
     'Entendido. Un experto se pondrá en contacto contigo pronto.',
   INFO: 'Un experto te contactará con información personalizada.',

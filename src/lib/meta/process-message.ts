@@ -204,6 +204,16 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=2, respuestas={ historial_trabajo: true, ssn: true }`)
           await updatePurchaseQualification(existingLead.id, 2, { historial_trabajo: true, ssn: true })
           console.log('✅ Advanced to paso_2')
+          
+          // Enviar pregunta de paso_2
+          const paso2Question = QUALIFICATION_QUESTIONS.paso_2.question
+          await sendTextMessage(senderId, paso2Question, platform)
+          try {
+            await updateMessageWithBotResponse(messageId, paso2Question)
+            console.log('✅ Qualification question sent (paso_2)')
+          } catch (error) {
+            console.error('Error saving paso_2 question:', error)
+          }
           return
         }
         
@@ -213,6 +223,16 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           console.log(`🔐 Llamando updatePurchaseQualification con: leadId=${existingLead.id}, paso=3, respuestas={ credito: ${esAfirmativo} }`)
           await updatePurchaseQualification(existingLead.id, 3, { credito: esAfirmativo })
           console.log('✅ Advanced to paso_3')
+          
+          // Enviar pregunta de paso_3
+          const paso3Question = QUALIFICATION_QUESTIONS.paso_3.question
+          await sendTextMessage(senderId, paso3Question, platform)
+          try {
+            await updateMessageWithBotResponse(messageId, paso3Question)
+            console.log('✅ Qualification question sent (paso_3)')
+          } catch (error) {
+            console.error('Error saving paso_3 question:', error)
+          }
           return
         }
         
@@ -234,6 +254,24 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
           console.log(`   - prioridad: ${updatedLead.prioridad}`)
           
           console.log(`✅ Qualification completed (${updatedLead.prioridad} priority)`)
+          
+          // Enviar mensaje final según prioridad
+          let finalResponse: string
+          if (updatedLead.prioridad === 'ALTA') {
+            finalResponse = QUALIFICATION_RESPONSES.cumple_todo
+          } else if (updatedLead.prioridad === 'MEDIA') {
+            finalResponse = QUALIFICATION_RESPONSES.no_cumple_ingresos
+          } else {
+            finalResponse = QUALIFICATION_RESPONSES.falta_requisito
+          }
+          
+          await sendTextMessage(senderId, finalResponse, platform)
+          try {
+            await updateMessageWithBotResponse(messageId, finalResponse)
+            console.log('✅ Final qualification response sent')
+          } catch (error) {
+            console.error('Error saving final response:', error)
+          }
           return
         }
       } catch (error) {
