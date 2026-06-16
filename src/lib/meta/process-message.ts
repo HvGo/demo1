@@ -72,7 +72,7 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
 
     // Filtrar mensajes del bot mismo en Instagram
     // El bot recibe webhooks de sus propios mensajes, evitar procesarlos
-    if (platform === PLATFORMS.INSTAGRAM && senderId === '17841406852481675') {
+    if (platform === PLATFORMS.INSTAGRAM && (senderId as string) === '17841406852481675') {
       console.log('⏭️ Ignoring bot own message from Instagram Business Account:', senderId)
       return
     }
