@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export const emailConfig = {
   from: process.env.RESEND_FROM || 'ivanutahrealtor.com <contact@ivanutahrealtor.com>',
-  adminEmail: process.env.ADMIN_EMAIL || 'admin@ivanutahrealtor.com'
+  adminEmail: process.env.ADMIN_EMAIL || 'lissy@teambluekeyrealty.com'
 }
 
 export interface EmailPayload {
