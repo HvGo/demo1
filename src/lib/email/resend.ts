@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export const emailConfig = {
   from: process.env.RESEND_FROM || 'ivanutahrealtor.com <contact@ivanutahrealtor.com>',
-  adminEmail: process.env.ADMIN_EMAIL || 'lissy@teambluekeyrealty.com'
+  adminEmail: process.env.ADMIN_EMAIL?.split(',').map(e => e.trim()) || ['lissy@teambluekeyrealty.com']
 }
 
 export interface EmailPayload {
@@ -106,7 +106,7 @@ export async function sendContactConfirmation(name: string, email: string) {
     to: email,
     subject: '¡Hemos recibido tu mensaje!',
     html,
-    replyTo: emailConfig.adminEmail
+    replyTo: Array.isArray(emailConfig.adminEmail) ? emailConfig.adminEmail[0] : emailConfig.adminEmail
   })
 }
 
@@ -169,7 +169,7 @@ export async function sendContactAdminNotification(
   const notificationEmails = await getNotificationEmails('contact')
   
   // Si no hay emails en BD, usar el email del admin por defecto
-  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : [emailConfig.adminEmail]
+  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : emailConfig.adminEmail
 
   return sendEmail({
     to: recipientEmails,
@@ -221,7 +221,7 @@ export async function sendGoldenQuestionsConfirmation(name: string, email: strin
     to: email,
     subject: '¡Hemos recibido tus respuestas!',
     html,
-    replyTo: emailConfig.adminEmail
+    replyTo: Array.isArray(emailConfig.adminEmail) ? emailConfig.adminEmail[0] : emailConfig.adminEmail
   })
 }
 
@@ -275,7 +275,7 @@ export async function sendGoldenQuestionsAdminNotification(
   const notificationEmails = await getNotificationEmails('golden_questions')
   
   // Si no hay emails en BD, usar el email del admin por defecto
-  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : [emailConfig.adminEmail]
+  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : emailConfig.adminEmail
 
   return sendEmail({
     to: recipientEmails,
@@ -337,7 +337,7 @@ export async function sendCMAFormConfirmation(name: string, email: string, addre
     to: email,
     subject: 'Tu Análisis de Mercado está en proceso',
     html,
-    replyTo: emailConfig.adminEmail
+    replyTo: Array.isArray(emailConfig.adminEmail) ? emailConfig.adminEmail[0] : emailConfig.adminEmail
   })
 }
 
@@ -393,7 +393,7 @@ export async function sendCMAFormAdminNotification(
   `
 
   const notificationEmails = await getNotificationEmails('cma_form')
-  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : [emailConfig.adminEmail]
+  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : emailConfig.adminEmail
 
   return sendEmail({
     to: recipientEmails,
@@ -444,7 +444,7 @@ export async function sendCuratedSearchConfirmation(name: string, email: string)
     to: email,
     subject: '¡Tu búsqueda personalizada está en proceso!',
     html,
-    replyTo: emailConfig.adminEmail
+    replyTo: Array.isArray(emailConfig.adminEmail) ? emailConfig.adminEmail[0] : emailConfig.adminEmail
   })
 }
 
@@ -495,7 +495,7 @@ export async function sendCuratedSearchAdminNotification(
   `
 
   const notificationEmails = await getNotificationEmails('curated_search')
-  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : [emailConfig.adminEmail]
+  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : emailConfig.adminEmail
 
   return sendEmail({
     to: recipientEmails,
@@ -551,7 +551,7 @@ export async function sendReportsOpenHousesConfirmation(name: string, email: str
     to: email,
     subject: '¡Hemos recibido tu solicitud de reportes!',
     html,
-    replyTo: emailConfig.adminEmail
+    replyTo: Array.isArray(emailConfig.adminEmail) ? emailConfig.adminEmail[0] : emailConfig.adminEmail
   })
 }
 
@@ -602,7 +602,7 @@ export async function sendReportsOpenHousesAdminNotification(
   `
 
   const notificationEmails = await getNotificationEmails('reports_open_houses')
-  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : [emailConfig.adminEmail]
+  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : emailConfig.adminEmail
 
   return sendEmail({
     to: recipientEmails,
@@ -658,7 +658,7 @@ export async function sendRealtorLatinoSellerConfirmation(name: string, email: s
     to: email,
     subject: '¡Tu análisis de propiedad está en proceso!',
     html,
-    replyTo: emailConfig.adminEmail
+    replyTo: Array.isArray(emailConfig.adminEmail) ? emailConfig.adminEmail[0] : emailConfig.adminEmail
   })
 }
 
@@ -705,7 +705,7 @@ export async function sendRealtorLatinoBuyerConfirmation(name: string, email: st
     to: email,
     subject: '¡Bienvenido! Tu solicitud ha sido recibida',
     html,
-    replyTo: emailConfig.adminEmail
+    replyTo: Array.isArray(emailConfig.adminEmail) ? emailConfig.adminEmail[0] : emailConfig.adminEmail
   })
 }
 
@@ -761,7 +761,7 @@ export async function sendRealtorLatinoSellerAdminNotification(
   `
 
   const notificationEmails = await getNotificationEmails('realtor_latino_seller')
-  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : [emailConfig.adminEmail]
+  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : emailConfig.adminEmail
 
   return sendEmail({
     to: recipientEmails,
@@ -818,7 +818,7 @@ export async function sendRealtorLatinoBuyerAdminNotification(
   `
 
   const notificationEmails = await getNotificationEmails('realtor_latino_buyer')
-  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : [emailConfig.adminEmail]
+  const recipientEmails = notificationEmails.length > 0 ? notificationEmails : emailConfig.adminEmail
 
   return sendEmail({
     to: recipientEmails,
