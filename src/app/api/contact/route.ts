@@ -1,6 +1,7 @@
 import { sql } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 import { sendContactConfirmation, sendContactAdminNotification } from '@/lib/email/resend'
+import { classifyContactIntent, type ContactClassification } from '@/lib/contact/intent-classifier'
 
 // Validación de email
 function isValidEmail(email: string): boolean {
@@ -226,7 +227,37 @@ export async function POST(request: NextRequest) {
     // Detectar si es bot
     const isBot = detectBot(userAgent)
 
-    // Guardar en BD (según esquema existente)
+    // NUEVO: Clasificar intención con IA
+    let classification: ContactClassification
+    try {
+      classification = await classifyContactIntent(
+        sanitizedName,
+        sanitizedEmail,
+        sanitizedPhone,
+        sanitizedMessage
+      )
+      
+      console.log('[CONTACT_CLASSIFICATION]', {
+        intent: classification.intent,
+        confidence: classification.confidence,
+        shouldSendEmail: classification.shouldSendEmail,
+        shouldNotifyAdmin: classification.shouldNotifyAdmin,
+        tags: classification.tags
+      })
+    } catch (classificationError) {
+      console.error('[CONTACT_CLASSIFICATION_ERROR]', classificationError)
+      // Fallback: tratar como consulta genuina (conservador)
+      classification = {
+        intent: 'genuine_inquiry',
+        confidence: 50,
+        shouldSendEmail: true,
+        shouldNotifyAdmin: true,
+        tags: ['classification_failed', 'needs_review'],
+        reasoning: 'AI classification failed, defaulting to safe option'
+      }
+    }
+
+    // Guardar en BD con datos de clasificación
     const { rows } = await sql<{ id: number }>(
       `
       INSERT INTO contacts (
@@ -235,9 +266,10 @@ export async function POST(request: NextRequest) {
         session_id, utm_source, utm_medium, utm_campaign, referrer,
         geo_country, geo_region, geo_city,
         device_type, os, browser,
+        intent, intent_confidence, classification_tags, classification_reasoning,
         created_at
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, NOW())
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, NOW())
       RETURNING id
       `,
       [
@@ -258,7 +290,11 @@ export async function POST(request: NextRequest) {
         geo_city,
         device_type,
         os,
-        browser
+        browser,
+        classification.intent,
+        classification.confidence,
+        classification.tags,
+        classification.reasoning
       ]
     )
 
@@ -272,23 +308,49 @@ export async function POST(request: NextRequest) {
     }
 
     // Log para monitoreo
-    console.log(`[CONTACT] New contact submitted: ${contactId} from ${sanitizedEmail}`)
+    console.log(`[CONTACT] New contact submitted: ${contactId} from ${sanitizedEmail} - Intent: ${classification.intent} (${classification.confidence}%)`)
 
-    // Enviar emails SOLO si NO es bot
-    // - Confirmación al usuario (siempre que no sea bot)
-    // - Notificación a emails dinámicos desde BD (siempre que no sea bot)
-    if (!isBot) {
+    // DECISIÓN: Enviar emails según clasificación de IA
+    // Solo enviar si:
+    // 1. NO es bot (detección básica)
+    // 2. La clasificación indica que debe enviar email
+    // 3. NO es spam, bot o test según IA
+    if (!isBot && classification.shouldSendEmail) {
       try {
-        await Promise.all([
-          sendContactConfirmation(sanitizedName, sanitizedEmail),
-          sendContactAdminNotification(sanitizedName, sanitizedEmail, sanitizedPhone, sanitizedMessage)
-        ])
+        const emailPromises: Promise<any>[] = []
+        
+        // Email de confirmación al usuario
+        emailPromises.push(
+          sendContactConfirmation(sanitizedName, sanitizedEmail)
+        )
+        
+        // Email de notificación al admin (solo si la clasificación lo indica)
+        if (classification.shouldNotifyAdmin) {
+          emailPromises.push(
+            sendContactAdminNotification(sanitizedName, sanitizedEmail, sanitizedPhone, sanitizedMessage)
+          )
+        }
+        
+        await Promise.all(emailPromises)
+        
+        // Actualizar flags de email enviado
+        await sql(
+          `UPDATE contacts 
+           SET email_sent = true, admin_notified = $1 
+           WHERE id = $2`,
+          [classification.shouldNotifyAdmin, contactId]
+        )
+        
+        console.log(`[CONTACT] Emails sent successfully for contact ${contactId}`)
       } catch (emailError) {
         console.error('[CONTACT EMAIL ERROR]', emailError)
         // No fallar la respuesta si los emails no se envían
       }
     } else {
-      console.log(`[CONTACT SPAM] Bot submission saved to DB but emails not sent: ${contactId}`)
+      const reason = !isBot 
+        ? `AI classified as ${classification.intent} - emails not sent` 
+        : 'Bot detected - emails not sent'
+      console.log(`[CONTACT] ${reason}: ${contactId}`)
     }
 
     // Respuesta exitosa
