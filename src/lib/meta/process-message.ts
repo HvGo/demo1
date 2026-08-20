@@ -30,6 +30,7 @@ import {
   getNextStep,
   getQualificationResponse 
 } from './purchase-qualification'
+import { classifyMetaMessage, PREDEFINED_RESPONSES } from './message-classifier'
 import { sql } from '@/lib/db'
 
 /**
@@ -43,33 +44,6 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
 
   try {
     console.log('Processing Meta message:', { senderId, messageText, messageId, platform })
-
-    // 🔒 FILTRO DE USUARIO DE PRUEBA - Solo responder a usuario específico
-    const ALLOWED_USER_ID = '27172513052343744'
-    if (senderId !== ALLOWED_USER_ID) {
-      console.log(`🔒 Usuario no autorizado: ${senderId}. Solo ${ALLOWED_USER_ID} puede recibir respuestas.`)
-      // Guardar mensaje pero no procesar
-      try {
-        await saveMetaMessage({
-          contactId: null,
-          platform: platform,
-          metaSenderId: senderId,
-          metaMessageId: messageId,
-          messageText: messageText,
-          messageType: 'text',
-          intent: 'unknown',
-          metadata: {
-            timestamp,
-            originalText: messageText,
-            note: 'Usuario no autorizado - mensaje guardado sin procesar'
-          },
-        })
-      } catch (error) {
-        console.error('Error saving unauthorized user message:', error)
-      }
-      return
-    }
-    console.log(`✅ Usuario autorizado: ${senderId}`)
 
     // Filtrar mensajes del bot mismo en Instagram
     // El bot recibe webhooks de sus propios mensajes, evitar procesarlos
@@ -87,6 +61,92 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
     // Obtener perfil del usuario desde Meta API
     const userProfile = await getUserProfile(senderId, platform)
     console.log('👤 User profile:', { firstName: userProfile?.firstName, lastName: userProfile?.lastName })
+
+    // Sanitizar texto
+    const sanitizedText = sanitizeMessageText(messageText)
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // CLASIFICAR MENSAJE (PARA TODOS LOS USUARIOS)
+    // ═══════════════════════════════════════════════════════════════════════════════
+    
+    // Obtener historial para contexto de clasificación
+    const rawHistory = await getConversationHistoryBySenderId(senderId)
+    
+    // Transformar historial al formato esperado
+    const chatHistory = rawHistory.map(msg => ({
+      role: msg.bot_response ? 'model' : 'user',
+      text: msg.bot_response || msg.message_text
+    }))
+    
+    // Clasificar mensaje con Gemini
+    const classification = await classifyMetaMessage(
+      sanitizedText,
+      userProfile?.firstName,
+      chatHistory
+    )
+    
+    console.log(`📊 Mensaje clasificado: ${classification.intent} (${classification.confidence}% confianza)`)
+    console.log(`   shouldRespond: ${classification.shouldRespond}, shouldSaveOnly: ${classification.shouldSaveOnly}, shouldBlock: ${classification.shouldBlock}`)
+    
+    // Guardar mensaje con clasificación completa
+    try {
+      await saveMetaMessage({
+        contactId: null,
+        platform: platform,
+        metaSenderId: senderId,
+        metaMessageId: messageId,
+        messageText: sanitizedText,
+        messageType: 'text',
+        intent: classification.intent,
+        metadata: {
+          timestamp,
+          originalText: messageText,
+          classification: {
+            intent: classification.intent,
+            confidence: classification.confidence,
+            reasoning: classification.reasoning,
+            tags: classification.tags,
+            is_b2b: classification.intent === 'b2b_opportunity',
+            is_spam: classification.intent === 'spam_generic',
+            is_personal: classification.intent === 'personal_friend',
+            requires_human_review: classification.confidence < 70
+          },
+          user_profile: {
+            first_name: userProfile?.firstName,
+            last_name: userProfile?.lastName
+          }
+        }
+      })
+      console.log('💾 Mensaje guardado con clasificación')
+    } catch (error) {
+      console.error('Error saving classified message:', error)
+    }
+    
+    // Si debe bloquearse, terminar aquí
+    if (classification.shouldBlock) {
+      console.log(`🚫 Mensaje bloqueado: ${classification.intent}`)
+      return
+    }
+    
+    // 🔒 FILTRO DE USUARIOS DE PRUEBA - Solo responder a usuarios específicos
+    // Leer usuarios autorizados desde variable de entorno
+    // Formato: ALLOWED_TEST_USERS=27172513052343744,12345678901234567
+    // Si está vacío o no existe, responde a TODOS los usuarios
+    const allowedUsersEnv = process.env.ALLOWED_TEST_USERS || ''
+    const allowedUsers = allowedUsersEnv.split(',').map(id => id.trim()).filter(id => id.length > 0)
+    
+    if (allowedUsers.length > 0 && !allowedUsers.includes(senderId)) {
+      console.log(`💾 Usuario no autorizado - Mensaje clasificado y guardado sin responder`)
+      console.log(`   Clasificación: ${classification.intent}`)
+      console.log(`   Usuarios autorizados: [${allowedUsers.join(', ')}]`)
+      return // NO RESPONDER
+    }
+    
+    if (allowedUsers.length > 0) {
+      console.log(`✅ Usuario autorizado: ${senderId}`)
+    } else {
+      console.log(`✅ Modo producción: respondiendo a todos los usuarios`)
+    }
 
     // Obtener o crear conversación
     const conversation = await getOrCreateConversation(
@@ -106,9 +166,6 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
     } catch (error) {
       console.error('Error sending typing indicator:', error)
     }
-
-    // Sanitizar texto
-    const sanitizedText = sanitizeMessageText(messageText)
 
     // Validar entrada (guardrails)
     const validation = validateUserInput(sanitizedText)

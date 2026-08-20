@@ -129,6 +129,8 @@ export async function sendContactAdminNotification(
           .field { margin: 10px 0; padding: 10px; background-color: white; border-left: 3px solid #00A86B; }
           .label { font-weight: bold; color: #00A86B; }
           .message-box { background-color: white; padding: 15px; border: 1px solid #ddd; border-radius: 4px; margin: 15px 0; }
+          .button { display: inline-block; padding: 12px 24px; background-color: #00A86B; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }
+          .button:hover { background-color: #008f5a; }
         </style>
       </head>
       <body>
@@ -156,6 +158,12 @@ export async function sendContactAdminNotification(
             <div class="message-box">
               <span class="label">Mensaje:</span>
               <p>${message.replace(/\n/g, '<br>')}</p>
+            </div>
+            
+            <div style="text-align: center; margin: 25px 0;">
+              <a href="https://admin.ivanutahrealtor.com/contacts" class="button">
+                Ver Detalles en Panel de Administración
+              </a>
             </div>
             
             <p><strong>Responde directamente a este email para contactar al usuario.</strong></p>
