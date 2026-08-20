@@ -173,30 +173,16 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
     if (!validation.isValid) {
       console.warn('Message validation failed:', validation.reason)
       
-      // Guardar mensaje rechazado
-      try {
-        await saveMetaMessage({
-          contactId: null,
-          platform: PLATFORMS.FACEBOOK,
-          metaSenderId: senderId,
-          metaMessageId: messageId,
-          messageText: sanitizedText,
-          messageType: 'text',
-          intent: 'unknown',
-          metadata: {
-            timestamp,
-            originalText: messageText,
-            validationReason: validation.reason,
-          },
-          botResponse: validation.predefinedResponse,
-        })
-      } catch (error) {
-        console.error('Error saving rejected message:', error)
-      }
-
-        // Enviar respuesta de validación
+      // Enviar respuesta de validación
       if (validation.predefinedResponse) {
         await sendTextMessage(senderId, validation.predefinedResponse, platform)
+        
+        // Actualizar mensaje con respuesta del bot
+        try {
+          await updateMessageWithBotResponse(messageId, validation.predefinedResponse)
+        } catch (error) {
+          console.error('Error updating message with validation response:', error)
+        }
       }
       return
     }
@@ -223,24 +209,11 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       const esAfirmativo = isAffirmativeResponse(sanitizedText)
       const currentStep = existingLead.estado_calificacion
       
-      // Guardar mensaje con intención "purchase" (está en flujo de compra)
+      // Actualizar última actividad de la conversación
       try {
-        await saveMetaMessage({
-          contactId: null,
-          platform: platform,
-          metaSenderId: senderId,
-          metaMessageId: messageId,
-          messageText: sanitizedText,
-          messageType: 'text',
-          intent: 'purchase',
-          metadata: {
-            timestamp,
-            originalText: messageText,
-          },
-        })
         await updateLastMessageAt(conversation.id)
       } catch (error) {
-        console.error('Error saving message:', error)
+        console.error('Error updating last message time:', error)
       }
 
       // Procesar según paso actual
@@ -369,35 +342,12 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       intent = 'unknown'
     }
 
-    // Guardar mensaje en BD
-    let savedMessageId: number
+    // Actualizar last_message_at en la conversación
     try {
-      const savedMessage = await saveMetaMessage({
-        contactId: null,
-        platform: platform,
-        metaSenderId: senderId,
-        metaMessageId: messageId,
-        messageText: sanitizedText,
-        messageType: 'text',
-        intent,
-        metadata: {
-          timestamp,
-          originalText: messageText,
-        },
-      })
-      savedMessageId = savedMessage.id
-      console.log('✅ Message saved to meta_messages')
-      
-      // Actualizar last_message_at en la conversación
-      try {
-        await updateLastMessageAt(conversation.id)
-        console.log('✅ Updated last_message_at in conversation')
-      } catch (error) {
-        console.warn('Could not update last_message_at:', error)
-      }
+      await updateLastMessageAt(conversation.id)
+      console.log('✅ Updated last_message_at in conversation')
     } catch (error) {
-      console.error('Error saving message:', error)
-      throw error
+      console.warn('Could not update last_message_at:', error)
     }
 
     // Verificar si usuario está frustrado
