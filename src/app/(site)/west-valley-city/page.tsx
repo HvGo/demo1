@@ -1,5 +1,5 @@
 import HeroSub from "@/components/shared/HeroSub";
-import IDXPropertiesEmbedCity from "@/components/Properties/IDXPropertiesEmbedCity";
+import IDXWidgetEmbed from "@/components/Properties/IDXWidgetEmbed";
 import React from "react";
 import { Metadata } from "next";
 import { FloatingBubbles } from "@/components/Home/FloatingBubbles";
@@ -21,8 +21,8 @@ const page = () => {
             />
             <section className="py-8 bg-white dark:bg-dark min-h-screen" style={{ paddingTop: "0px" }}>
                 <div className="w-full">
-                    <IDXPropertiesEmbedCity 
-                        cityUrl="https://ivanutahrealtor.idxbroker.com/i/west-valley-city"
+                    <IDXWidgetEmbed 
+                        widgetId="168391"
                         cityName="West Valley City"
                     />
                 </div>
