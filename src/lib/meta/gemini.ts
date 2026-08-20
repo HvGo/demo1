@@ -9,7 +9,7 @@ const apiKey = process.env.GOOGLE_API_KEY || ''
 const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash'
 
 const client = new GoogleGenerativeAI(apiKey)
-const model = client.getGenerativeModel({ model: modelName })
+export const model = client.getGenerativeModel({ model: modelName })
 
 export type Intent = 'greeting' | 'schedule' | 'info' | 'inquiry' | 'purchase' | 'closing' | 'unknown'
 
