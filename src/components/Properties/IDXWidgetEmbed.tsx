@@ -15,6 +15,12 @@ export default function IDXWidgetEmbed({ widgetId, cityName }: IDXWidgetEmbedPro
   useEffect(() => {
     if (scriptLoadedRef.current) return
 
+    const container = document.getElementById('idxStart')
+    if (!container) {
+      console.error('IDX container not found')
+      return
+    }
+
     const script = document.createElement('script')
     script.type = 'text/javascript'
     script.charset = 'UTF-8'
@@ -25,7 +31,7 @@ export default function IDXWidgetEmbed({ widgetId, cityName }: IDXWidgetEmbedPro
       console.log('IDX Widget script loaded successfully')
       setTimeout(() => {
         setIsLoading(false)
-      }, 1500)
+      }, 2000)
     }
 
     script.onerror = (error) => {
@@ -33,13 +39,13 @@ export default function IDXWidgetEmbed({ widgetId, cityName }: IDXWidgetEmbedPro
       setIsLoading(false)
     }
 
-    document.body.appendChild(script)
+    container.appendChild(script)
     scriptLoadedRef.current = true
 
     return () => {
       const existingScript = document.getElementById(`idxwidgetsrc-${widgetId}`)
-      if (existingScript) {
-        existingScript.remove()
+      if (existingScript && existingScript.parentNode) {
+        existingScript.parentNode.removeChild(existingScript)
       }
     }
   }, [widgetId])
