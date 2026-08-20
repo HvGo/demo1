@@ -37,20 +37,21 @@ export default function IDXWidgetEmbed({ widgetId, cityName }: IDXWidgetEmbedPro
           minHeight: isLoading ? '0' : 'auto'
         }}
       >
-        <div id={`idx-widget-${widgetId}`}></div>
+        <div id="idxStart"></div>
       </div>
 
       {/* IDX Script */}
       <Script
         id={`idxwidgetsrc-${widgetId}`}
-        src={`//ivanutahrealtor.idxbroker.com/idx/widgets/${widgetId}`}
+        src={`https://ivanutahrealtor.idxbroker.com/idx/widgets/${widgetId}`}
         strategy="afterInteractive"
+        charSet="UTF-8"
         onLoad={() => {
-          setTimeout(() => setIsLoading(false), 500)
+          setTimeout(() => setIsLoading(false), 1000)
         }}
-        onError={() => {
+        onError={(e) => {
           setIsLoading(false)
-          console.error('Failed to load IDX widget')
+          console.error('Failed to load IDX widget:', e)
         }}
       />
     </div>
