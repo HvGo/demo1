@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Script from 'next/script'
+import { useState, useEffect, useRef } from 'react'
 
 interface IDXWidgetEmbedProps {
   widgetId: string
@@ -10,9 +9,43 @@ interface IDXWidgetEmbedProps {
 
 export default function IDXWidgetEmbed({ widgetId, cityName }: IDXWidgetEmbedProps) {
   const [isLoading, setIsLoading] = useState(true)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const scriptLoadedRef = useRef(false)
+
+  useEffect(() => {
+    if (scriptLoadedRef.current) return
+
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.charset = 'UTF-8'
+    script.id = `idxwidgetsrc-${widgetId}`
+    script.src = `https://ivanutahrealtor.idxbroker.com/idx/widgets/${widgetId}`
+    
+    script.onload = () => {
+      console.log('IDX Widget script loaded successfully')
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 1500)
+    }
+
+    script.onerror = (error) => {
+      console.error('Failed to load IDX widget script:', error)
+      setIsLoading(false)
+    }
+
+    document.body.appendChild(script)
+    scriptLoadedRef.current = true
+
+    return () => {
+      const existingScript = document.getElementById(`idxwidgetsrc-${widgetId}`)
+      if (existingScript) {
+        existingScript.remove()
+      }
+    }
+  }, [widgetId])
 
   return (
-    <div className="w-full relative">
+    <div className="w-full relative" ref={containerRef}>
       {/* Loading Animation */}
       {isLoading && (
         <div className="flex flex-col justify-center items-center min-h-[600px] bg-gray-50 dark:bg-dark/50 rounded-lg">
@@ -39,21 +72,6 @@ export default function IDXWidgetEmbed({ widgetId, cityName }: IDXWidgetEmbedPro
       >
         <div id="idxStart"></div>
       </div>
-
-      {/* IDX Script */}
-      <Script
-        id={`idxwidgetsrc-${widgetId}`}
-        src={`https://ivanutahrealtor.idxbroker.com/idx/widgets/${widgetId}`}
-        strategy="afterInteractive"
-        charSet="UTF-8"
-        onLoad={() => {
-          setTimeout(() => setIsLoading(false), 1000)
-        }}
-        onError={(e) => {
-          setIsLoading(false)
-          console.error('Failed to load IDX widget:', e)
-        }}
-      />
     </div>
   )
 }
