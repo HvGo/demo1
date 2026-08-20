@@ -1,32 +1,27 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Search } from 'lucide-react'
+import { useEffect, useState, useRef } from 'react'
 
 export default function IDXPropertiesEmbed() {
   const [iframeHeight, setIframeHeight] = useState('800px')
-  const [address, setAddress] = useState('')
-  const [iframeSrc, setIframeSrc] = useState('https://ivanutahrealtor.idxbroker.com/i/act')
-  const [iframeKey, setIframeKey] = useState(0)
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    // Si el campo está vacío, mostrar todos los resultados sin aw_address
-    if (!address.trim()) {
-      const searchUrl = `https://ivanutahrealtor.idxbroker.com/i/act?idxID=c072&ccz=city&pt=1`
-      setIframeSrc(searchUrl)
-      setIframeKey(prev => prev + 1)
-    } else {
-      // Si hay dirección, filtrar por aw_address
-      const encodedAddress = address.trim().replace(/\s+/g, '+')
-      const searchUrl = `https://ivanutahrealtor.idxbroker.com/i/act?idxID=c072&aw_address=${encodedAddress}&ccz=city&pt=1`
-      setIframeSrc(searchUrl)
-      setIframeKey(prev => prev + 1)
-    }
-  }
+  const [iframeSrc] = useState('https://ivanutahrealtor.idxbroker.com/i/act')
+  const scriptLoadedRef = useRef(false)
 
   useEffect(() => {
+    // Inyectar script de IDX Addons Autocomplete
+    if (!scriptLoadedRef.current) {
+      const script = document.createElement('script')
+      script.id = 'idxaddons-autocomplete-script'
+      script.src = 'https://idxaddons.com/addon/searchtool/Q1NOWDg1b0ZhVHQ%3DszoX-bfnjCU/'
+      script.setAttribute('data-dropdown', 'n')
+      
+      const harvestDiv = document.querySelector('.harvest')
+      if (harvestDiv) {
+        harvestDiv.appendChild(script)
+        scriptLoadedRef.current = true
+      }
+    }
+
     // Ajustar altura del iframe según el contenido
     const handleResize = () => {
       const iframe = document.getElementById('idx-properties-iframe') as HTMLIFrameElement
@@ -38,63 +33,28 @@ export default function IDXPropertiesEmbed() {
             setIframeHeight(`${height + 50}px`)
           }
         } catch (e) {
-          // Cross-origin, no se puede acceder al contenido
           console.log('Cross-origin iframe - altura fija')
         }
       }
     }
 
-    // Intentar ajustar altura después de cargar
     const timer = setTimeout(handleResize, 2000)
     window.addEventListener('resize', handleResize)
 
     return () => {
       clearTimeout(timer)
       window.removeEventListener('resize', handleResize)
+      const existingScript = document.getElementById('idxaddons-autocomplete-script')
+      if (existingScript && existingScript.parentNode) {
+        existingScript.parentNode.removeChild(existingScript)
+      }
     }
   }, [])
 
   return (
     <div className="w-full">
-      {/* Control de búsqueda por dirección */}
-      <div className="flex justify-center px-4" style={{ padding: '0 !important', paddingBottom: '0 !important' }}>
-        <div className="w-full max-w-2xl" style={{ padding: '0 !important', paddingBottom: '0 !important' }}>
-
-          {/* Formulario de búsqueda */}
-          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3" style={{ padding: '0 !important', paddingBottom: '0 !important', margin: '0 !important' }}>
-            <div className="flex-1 relative">
-              <input
-                id="address-search"
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                placeholder="Ingresa una dirección"
-                className="w-full px-5 py-3 border-2 rounded-lg focus:outline-none transition-all text-base"
-                style={{
-                  borderColor: '#067ff9',
-                  color: '#067ff9',
-                }}
-              />
-            </div>
-            <button
-              type="submit"
-              className="px-8 py-3 font-semibold rounded-lg flex items-center justify-center gap-2 transition-all hover:shadow-lg active:scale-95"
-              style={{
-                backgroundColor: '#FDCB6E',
-                color: '#067ff9',
-              }}
-            >
-              <Search size={20} />
-              <span className="hidden sm:inline">Buscar</span>
-            </button>
-          </form>
-
-          {/* Sugerencias */}
-          <div className="mt-6 text-center text-xs text-gray-500">
-            <p>Ej: &quot;123 Main Street</p>
-          </div>
-        </div>
-      </div>
+      {/* IDX Addons Autocomplete */}
+      <div className="harvest"></div>
 
       {/* Iframe de IDX Broker */}
       <style>{`
@@ -154,7 +114,6 @@ export default function IDXPropertiesEmbed() {
       `}</style>
 
       <iframe
-        key={iframeKey}
         id="idx-properties-iframe"
         src={iframeSrc}
         title="IDX Broker Properties"
