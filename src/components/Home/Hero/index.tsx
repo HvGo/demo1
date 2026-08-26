@@ -56,9 +56,9 @@ const Hero = async () => {
   if (section && section.isVisible === false) return null
 
   return (
-<section className='!py-0'>
-  <SchemaMarkup schema={organizationSchema?.schemaData} />
-  <div className='overflow-hidden relative'>
+<section className='!py-0 mt-24'>
+  <SchemaMarkup schema={organizationSchema?.schemaData} />
+  <div className='overflow-hidden relative'>
     {/* Fondo e Imagen */}
     <div className='absolute inset-0 -z-[1]'>
       <Image

@@ -8,17 +8,25 @@ export default function IDXPropertiesEmbed() {
   const scriptLoadedRef = useRef(false)
 
   useEffect(() => {
-    // Inyectar script de IDX Addons Autocomplete
+    // Inyectar script de IDX Addons dentro del contenedor .harvest
     if (!scriptLoadedRef.current) {
-      const script = document.createElement('script')
-      script.id = 'idxaddons-autocomplete-script'
-      script.src = 'https://idxaddons.com/addon/searchtool/Q1NOWDg1b0ZhVHQ%3DszoX-bfnjCU/'
-      script.setAttribute('data-dropdown', 'n')
-      
       const harvestDiv = document.querySelector('.harvest')
+      
       if (harvestDiv) {
+        const script = document.createElement('script')
+        script.id = 'idxaddons-autocomplete-script'
+        script.src = 'https://idxaddons.com/addon/searchtool/Q1NOWDg1b0ZhVHQ%3DszoX-bfnjCU/'
+        script.setAttribute('data-labels', 'y')
+        script.setAttribute('data-placeholder', 'Buscar por dirección,ciudad, etc')
+        script.setAttribute('data-dropdown', 'n')
+        script.async = true
+        
         harvestDiv.appendChild(script)
         scriptLoadedRef.current = true
+        
+        console.log('IDX Addons script injected into .harvest')
+      } else {
+        console.error('Harvest container not found')
       }
     }
 
@@ -44,9 +52,12 @@ export default function IDXPropertiesEmbed() {
     return () => {
       clearTimeout(timer)
       window.removeEventListener('resize', handleResize)
+      
+      // Limpiar script
       const existingScript = document.getElementById('idxaddons-autocomplete-script')
-      if (existingScript && existingScript.parentNode) {
-        existingScript.parentNode.removeChild(existingScript)
+      if (existingScript) {
+        existingScript.remove()
+        scriptLoadedRef.current = false
       }
     }
   }, [])
@@ -54,10 +65,26 @@ export default function IDXPropertiesEmbed() {
   return (
     <div className="w-full">
       {/* IDX Addons Autocomplete */}
-      <div className="harvest"></div>
+      <div className="flex justify-center px-4 mb-6">
+        <div className="w-full max-w-4xl">
+          <div className="harvest"></div>
+        </div>
+      </div>
 
       {/* Iframe de IDX Broker */}
       <style>{`
+        /* Estilos para centrar IDX Addons */
+        .harvest {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .harvest > * {
+          width: 100%;
+          max-width: 100%;
+        }
+
         /* Estilos para mejorar la integración del iframe */
         #idx-properties-iframe {
           width: 100%;

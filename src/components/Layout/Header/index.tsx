@@ -74,12 +74,9 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
     }
   }, [handleScroll])
 
-  const isHomepage = pathname === '/'
-  const isHeroPage = pathname === '/' || pathname === '/buyers' || pathname === '/sellers' || pathname === '/about' || pathname === '/buying-strategy'
-  const useLightLogo = (isHeroPage && !sticky) || theme === 'dark'
-
   const logoLight = config?.logoLight || '/images/header/logo1.png'
   const logoDark = config?.logoDark || '/images/header/logo1.png'
+  const useLightLogo = theme === 'dark'
   const phone = config?.phone || '+1-212-456-789'
   const email = config?.email || 'hello@homely.com'
   // Use navLinks from BD, fallback to defaultNavLinks if not available
@@ -93,25 +90,19 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
   const phoneHref = phoneDigits ? `https://wa.me/${phoneDigits}?text=${whatsappMessage}` : `tel:${phone}`
 
   return (
-    <header className={`fixed h-24 py-1 z-50 w-full bg-transparent transition-all duration-300 lg:px-0 px-4 ${sticky ? "top-3" : "top-0"}`}>
+    <header className={`fixed h-24 py-1 z-50 w-full bg-white dark:bg-dark transition-all duration-300 lg:px-0 px-4 top-0 shadow-lg`}>
       <nav
-        className={`container mx-auto max-w-8xl flex items-center justify-between py-4 duration-300 ${sticky
-          ? "shadow-lg bg-white dark:bg-dark rounded-full top-5 px-4 "
-          : isHeroPage
-            ? "shadow-none top-0 rounded-full px-4 bg-white/25 dark:bg-black/25 backdrop-blur-md border border-white/30 dark:border-white/10"
-            : "shadow-none top-0"
-          }`}
+        className={`container mx-auto max-w-8xl flex items-center justify-between py-4 px-4`}
       >
         <div className='flex justify-between items-center gap-2 w-full'>
           <div className='ml-2 sm:ml-4'>
             <Link href='/'>
               <Image
-                src={useLightLogo ? (logoLight || logoDark) : (logoDark || logoLight)}
+                src={theme === 'dark' ? logoLight : logoDark}
                 alt='logo'
                 width={150}
                 height={68}
                 unoptimized={true}
-                className={useLightLogo ? 'brightness-0 invert' : ''}
               />
             </Link>
           </div>
@@ -129,12 +120,7 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
                   >
                     <Link 
                       href={item.href}
-                      className={`text-base font-medium transition-colors flex items-center gap-1 ${isHomepage
-                        ? sticky
-                          ? 'text-dark dark:text-white hover:text-primary'
-                          : 'text-white hover:text-primary'
-                        : 'text-dark dark:text-white hover:text-primary'
-                      } ${pathname === item.href ? 'text-primary font-semibold' : ''}`}
+                      className={`text-base font-medium transition-colors flex items-center gap-1 text-dark dark:text-white hover:text-primary ${pathname === item.href ? 'text-primary font-semibold' : ''}`}
                     >
                       {item.label}
                       {hasSubmenu && (
@@ -180,24 +166,14 @@ const Header: React.FC<HeaderProps> = ({ config, isVisible = true }) => {
                 )
               })}
             </nav>
-            <Link href={phoneHref} target="_blank" rel="noreferrer" className={`lg:hidden hover:cursor-pointer ${isHomepage
-              ? sticky
-                ? 'text-dark dark:text-white hover:text-primary'
-                : 'text-white hover:text-primary'
-              : 'text-dark hover:text-primary'
-              }`}
+            <Link href={phoneHref} target="_blank" rel="noreferrer" className={`lg:hidden hover:cursor-pointer text-dark dark:text-white hover:text-primary`}
               aria-label='Contact via WhatsApp'>
               <Icon icon={'ph:whatsapp-logo'} width={28} height={28} />
             </Link>
             <div className='lg:hidden'>
               <button
                 onClick={() => setNavbarOpen(!navbarOpen)}
-                className={`flex items-center gap-3 p-2 sm:px-5 sm:py-3 rounded-full font-semibold hover:cursor-pointer border ${isHomepage
-                  ? sticky
-                    ? 'text-white bg-dark dark:bg-white dark:text-dark dark:hover:text-white dark:hover:bg-dark hover:text-dark hover:bg-white border-dark dark:border-white'
-                    : 'text-dark bg-white/90 dark:text-dark hover:bg-white hover:text-dark border-white/70'
-                  : 'bg-dark text-white hover:bg-transparent hover:text-dark dark:bg-white dark:text-dark dark:hover:bg-transparent dark:hover:text-white duration-300'
-                  }`}
+                className={`flex items-center gap-3 p-2 sm:px-5 sm:py-3 rounded-full font-semibold hover:cursor-pointer border bg-dark text-white hover:bg-transparent hover:text-dark dark:bg-white dark:text-dark dark:hover:bg-transparent dark:hover:text-white border-dark dark:border-white duration-300`}
                 aria-label='Toggle mobile menu'>
                 <span>
                   <Icon icon={'ph:list'} width={24} height={24} />

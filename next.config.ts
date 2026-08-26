@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['admin.datans.work'],
+    domains: ['admin.datans.work', 'admin.ivanutahrealtor.com'],
   },
   output: 'standalone',
   webpack: (config, { isServer }) => {

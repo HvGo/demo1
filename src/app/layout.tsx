@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Bricolage_Grotesque } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 import Header from '@/components/Layout/Header'
 import FooterContent from '@/components/Layout/Footer'
@@ -38,6 +39,10 @@ export default async function RootLayout({
   return (
     <html lang='en'>
       <body className={`${font.className} bg-white dark:bg-black antialiased`}>
+        <Script
+          src="https://news.google.com/swg/js/v1/publisher.js"
+          strategy="afterInteractive"
+        />
         <NextTopLoader color="#07be8a" />
         <SessionProviderComp>
           <ThemeProvider

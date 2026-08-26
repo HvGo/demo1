@@ -11,10 +11,12 @@ import Stats from '@/components/Home/Stats'
 import HowIHelp from '@/components/Home/HowIHelp'
 import VideoSection from '@/components/Home/VideoSection'
 import LocalExpertise from '@/components/Home/LocalExpertise'
+import PropertySearch from '@/components/Home/PropertySearch'
 
 export const SECTION_COMPONENTS: Record<string, React.ComponentType<unknown>> = {
   'home_hero': Hero,
   'home_hero_description': HeroDescription,
+  'home_property_search': PropertySearch,
   'home_stats': Stats,
   'home_how_i_help': HowIHelp,
   'home_testimonials': TestimonialSection,

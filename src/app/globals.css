@@ -1,5 +1,37 @@
 @import 'tailwindcss';
+@import url('https://wrappertest.idxsecure.com/templates/fonts/realtycandy/css/realtycandy.min.css');
 @plugin 'tailwindcss-animate';
+
+/* Tema del widget de búsqueda IDX Addons, ajustado a la sección Property Search
+   (fondo oscuro #172023, tarjeta blanca y acento primary #FF9500) */
+:root {
+  --search-bg-color: #ffffff00;
+  --search-border-size: 0px;
+  --search-border-color: #66666600;
+  --search-border-radius: 12px;
+  --search-padding: 0px 0px;
+  --search-font-family: inherit;
+  --search-font-size: 16px;
+  --search-font-color: #172023;
+  --search-input-bg: #f3f4f6;
+  --search-input-color: #172023;
+  --search-input-border-size: 1px;
+  --search-input-border-color: #e5e7eb;
+  --search-input-radius: 8px;
+  --search-input-height: 48px;
+  --search-btn-border-size: 0px;
+  --search-btn-border-color: #00000000;
+  --search-btn-color: #FF9500;
+  --search-btn-text-color: #ffffff;
+  --search-btn-hover-border-color: #172023;
+  --search-btn-hover-color: #e6890a;
+  --search-btn-hover-text-color: #ffffff;
+  --search-tabs-height: 60px;
+  --search-tabs-color: #f3f4f6;
+  --search-tabs-text-color: #172023;
+  --search-tabs-active-color: #FF9500;
+  --search-tabs-active-text-color: #ffffff;
+}
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -88,41 +120,77 @@ section {
 }
 
 .blog-details ul {
-  @apply list-none space-y-3 mb-10;
+  @apply list-none space-y-4 mb-10;
 }
 
 .blog-details ul li {
-  @apply mb-0 relative pl-4 text-base leading-[1.2] before:absolute before:w-1 before:h-1 before:rounded-full before:bg-dark dark:before:bg-white/60 before:top-2 before:left-0;
+  @apply mb-0 relative pl-6 text-base leading-[1.7] before:absolute before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary before:top-[0.6em] before:left-0;
 }
 
 .blog-details ol {
-  @apply mb-8 list-inside list-decimal space-y-3;
+  @apply mb-10 list-outside list-decimal pl-5 space-y-4 marker:font-semibold marker:text-primary;
 }
 
 .blog-details ol li {
-  @apply mb-0
+  @apply mb-0 pl-2 leading-[1.7]
 }
 
 .blog-details h1 {
-  @apply mb-8 text-3xl font-bold text-dark dark:text-white sm:text-4xl md:text-[40px] md:leading-[1.28];
+  @apply mb-8 mt-12 text-3xl font-bold text-dark dark:text-white sm:text-4xl md:text-[40px] md:leading-[1.28];
 }
 
 .blog-details h2 {
-  @apply mb-2 text-2xl font-bold text-dark dark:text-white sm:text-3xl md:text-[35px] md:leading-[1.28];
+  @apply mb-4 mt-12 text-2xl font-bold text-dark dark:text-white sm:text-3xl md:text-[35px] md:leading-[1.28];
 }
 
 .blog-details h3 {
-  @apply mb-6 text-2xl text-dark dark:text-white sm:leading-[40px];
+  @apply mb-6 mt-10 text-2xl font-semibold text-dark dark:text-white sm:leading-[40px];
 }
 
 .blog-details h4 {
-  @apply mb-6 text-xl leading-[1.2] text-dark dark:text-white;
+  @apply mb-6 mt-8 text-xl font-semibold leading-[1.4] text-dark dark:text-white;
 }
 
 .blog-details hr {
-  @apply border-white
+  @apply border-dark/10 dark:border-white/10
 }
 
 .blog-details p {
-  @apply text-dark dark:text-white text-xm leading-[1.2]
+  @apply text-dark/80 dark:text-white/80 text-xm leading-[1.8]
+}
+
+.blog-details a {
+  @apply text-primary underline underline-offset-2 hover:text-primary/80
+}
+
+.blog-details table {
+  @apply w-full my-10 border-collapse overflow-hidden rounded-xl border border-dark/10 dark:border-white/10 text-sm sm:text-base;
+}
+
+.blog-details thead {
+  @apply bg-dark/5 dark:bg-white/10;
+}
+
+.blog-details th {
+  @apply px-4 py-3 text-left font-semibold text-dark dark:text-white border-b border-dark/10 dark:border-white/10;
+}
+
+.blog-details td {
+  @apply px-4 py-3 text-dark/80 dark:text-white/80 border-b border-dark/10 dark:border-white/10;
+}
+
+.blog-details tr:last-child td {
+  @apply border-b-0;
+}
+
+.blog-details blockquote {
+  @apply my-8 border-l-4 border-primary pl-5 italic text-dark/70 dark:text-white/70;
+}
+
+.blog-details pre {
+  @apply my-8 overflow-x-auto rounded-xl bg-dark/5 dark:bg-white/10 p-4 text-sm;
+}
+
+.blog-details code {
+  @apply rounded bg-dark/5 dark:bg-white/10 px-1.5 py-0.5 text-sm;
 }

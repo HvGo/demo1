@@ -138,6 +138,16 @@ Ayudamos a comprar, vender e invertir en propiedades en las principales áreas d
             <Link href="#" className="text-white/40 hover:text-primary text-sm">
               Privacy policy
             </Link>
+            <a
+              className="preferred-source-link flex items-center gap-1 text-white/40 hover:text-primary text-sm"
+              data-preferred-source
+              href="https://www.google.com/preferences/source?q=ivanutahrealtor.com"
+            >
+              <span className="preferred-source-link_label">
+                Make Us A Preferred Source
+              </span>
+              <span className="preferred-source-link_arrow" aria-hidden="true">➟</span>
+            </a>
           </div>
         </div>
       </div>
