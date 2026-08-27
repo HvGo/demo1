@@ -132,10 +132,10 @@ Ayudamos a comprar, vender e invertir en propiedades en las principales áreas d
             &copy; {new Date().getFullYear()} Ivan Vavincopa - All rights reserved
           </p>
           <div className="flex gap-8 items-center">
-            <Link href="#" className="text-white/40 hover:text-primary text-sm">
+            <Link href="/terms-and-conditions" className="text-white/40 hover:text-primary text-sm">
               Terms of service
             </Link>
-            <Link href="#" className="text-white/40 hover:text-primary text-sm">
+            <Link href="/privacy-policy" className="text-white/40 hover:text-primary text-sm">
               Privacy policy
             </Link>
             <a
