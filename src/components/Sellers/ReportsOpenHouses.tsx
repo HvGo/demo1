@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Icon } from '@iconify/react'
 import { validateReportsOpenHousesForm, ValidationError } from '@/lib/validators'
+import ConsentCheckbox from '@/components/shared/ConsentCheckbox'
 
 interface ReportsOpenHousesProps {
   onClose?: () => void
@@ -24,6 +25,7 @@ export const ReportsOpenHouses = ({ onClose }: ReportsOpenHousesProps = {}) => {
   const [successMessage, setSuccessMessage] = useState('')
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showForm, setShowForm] = useState(true)
+  const [consent, setConsent] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -49,6 +51,11 @@ export const ReportsOpenHouses = ({ onClose }: ReportsOpenHousesProps = {}) => {
 
     if (!validation.isValid) {
       setErrors(validation.errors)
+      return
+    }
+
+    if (!consent) {
+      setErrors([{ field: 'form', message: 'Por favor acepta ser contactado para continuar' }])
       return
     }
 
@@ -83,6 +90,7 @@ export const ReportsOpenHouses = ({ onClose }: ReportsOpenHousesProps = {}) => {
       setSelectedMarketingTool('')
       setSelectedConcern('')
       setFormData({ name: '', email: '', whatsapp: '' })
+      setConsent(false)
       setSubmitted(true)
       setShowSuccessModal(true)
       setShowForm(false)
@@ -341,9 +349,11 @@ export const ReportsOpenHouses = ({ onClose }: ReportsOpenHousesProps = {}) => {
               </div>
             )}
 
+            <ConsentCheckbox checked={consent} onChange={setConsent} id="reports-open-houses-consent" />
+
             <button
               type='submit'
-              disabled={loading}
+              disabled={loading || !consent}
               className='w-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold py-4 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
             >
               {loading ? (

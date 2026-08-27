@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Icon } from '@iconify/react'
 import { validateCuratedSearchForm, ValidationError } from '@/lib/validators'
+import ConsentCheckbox from '@/components/shared/ConsentCheckbox'
 
 interface CuratedSearchSectionProps {
   onSuccess?: () => void
@@ -22,6 +23,7 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
   const [errors, setErrors] = useState<ValidationError[]>([])
   const [successMessage, setSuccessMessage] = useState('')
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [consent, setConsent] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -46,6 +48,11 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
 
     if (!validation.isValid) {
       setErrors(validation.errors)
+      return
+    }
+
+    if (!consent) {
+      setErrors([{ field: 'form', message: 'Por favor acepta ser contactado para continuar' }])
       return
     }
 
@@ -77,6 +84,7 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
       setSelectedReality('')
       setSelectedCounty('')
       setFormData({ fullName: '', phone: '', email: '' })
+      setConsent(false)
       setSubmitted(true)
       setShowSuccessModal(true)
     } catch (error) {
@@ -269,9 +277,11 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
               </div>
             )}
 
+            <ConsentCheckbox checked={consent} onChange={setConsent} id="curated-search-consent" />
+
             <button
               type='submit'
-              disabled={loading}
+              disabled={loading || !consent}
               className='w-full from-primary to-teal-500 text-white font-semibold py-4 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
              style={{ backgroundColor: '#2937b0' }}>
               {loading ? (

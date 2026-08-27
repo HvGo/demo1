@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import ConsentCheckbox from '@/components/shared/ConsentCheckbox'
 
 interface PropertyContactModalProps {
   propertyId: string
@@ -25,6 +26,7 @@ export default function PropertyContactModal({
 }: PropertyContactModalProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [consent, setConsent] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -46,6 +48,10 @@ export default function PropertyContactModal({
     }
     if (!formData.phone.trim()) {
       setError('Por favor ingresa tu teléfono')
+      return
+    }
+    if (!consent) {
+      setError('Por favor acepta ser contactado para continuar')
       return
     }
 
@@ -136,6 +142,9 @@ export default function PropertyContactModal({
               />
             </div>
 
+            {/* Consent Checkbox */}
+            <ConsentCheckbox checked={consent} onChange={setConsent} id="property-contact-consent" />
+
             {/* Error */}
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-md p-3">
@@ -155,7 +164,7 @@ export default function PropertyContactModal({
               </button>
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || !consent}
                 className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {isLoading ? (

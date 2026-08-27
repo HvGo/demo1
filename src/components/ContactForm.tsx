@@ -3,6 +3,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react'
+import ConsentCheckbox from '@/components/shared/ConsentCheckbox'
 
 interface FormState {
   name: string
@@ -72,6 +73,7 @@ export default function ContactForm() {
   const [sessionId, setSessionId] = useState('')
   const [utmData, setUtmData] = useState<UTMData>({})
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [consent, setConsent] = useState(false)
 
   // Capturar sessionId y UTM/referrer al cargar
   useEffect(() => {
@@ -160,6 +162,14 @@ export default function ContactForm() {
       return
     }
 
+    if (!consent) {
+      setStatus({
+        type: 'error',
+        message: 'Please agree to be contacted to continue'
+      })
+      return
+    }
+
     // Enviar datos
     setStatus({
       type: 'loading',
@@ -197,6 +207,7 @@ export default function ContactForm() {
           message: ''
         })
         setErrors({})
+        setConsent(false)
         setShowSuccessModal(true)
       } else {
         setStatus({
@@ -351,10 +362,13 @@ export default function ContactForm() {
           </p>
         </div>
 
+        {/* Consent Checkbox */}
+        <ConsentCheckbox checked={consent} onChange={setConsent} id="contact-form-consent" />
+
         {/* Submit Button */}
         <button 
           type='submit'
-          disabled={status.type === 'loading'}
+          disabled={status.type === 'loading' || !consent}
           className='px-8 py-4 rounded-full text-white text-base font-semibold w-full mobile:w-fit hover:cursor-pointer duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
           style={{ backgroundColor: '#00A86B' }}
           onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#16a34a')}
