@@ -50,11 +50,6 @@ export default function PropertyContactModal({
       setError('Por favor ingresa tu teléfono')
       return
     }
-    if (!consent) {
-      setError('Por favor acepta ser contactado para continuar')
-      return
-    }
-
     setIsLoading(true)
 
     try {
@@ -164,7 +159,7 @@ export default function PropertyContactModal({
               </button>
               <button
                 type="submit"
-                disabled={isLoading || !consent}
+                disabled={isLoading}
                 className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {isLoading ? (

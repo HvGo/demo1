@@ -51,11 +51,6 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
       return
     }
 
-    if (!consent) {
-      setErrors([{ field: 'form', message: 'Por favor acepta ser contactado para continuar' }])
-      return
-    }
-
     setLoading(true)
     try {
       const response = await fetch('/api/forms/curated-search', {
@@ -281,7 +276,7 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
 
             <button
               type='submit'
-              disabled={loading || !consent}
+              disabled={loading}
               className='w-full from-primary to-teal-500 text-white font-semibold py-4 rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed'
              style={{ backgroundColor: '#2937b0' }}>
               {loading ? (

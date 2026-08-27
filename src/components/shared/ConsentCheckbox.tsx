@@ -25,7 +25,6 @@ export default function ConsentCheckbox({
         id={id}
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        required
         className="mt-1 h-4 w-4 flex-shrink-0 accent-primary cursor-pointer"
       />
       <span>
