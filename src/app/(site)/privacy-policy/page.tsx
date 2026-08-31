@@ -66,14 +66,21 @@ export default function PrivacyPolicyPage() {
                 may include communications related to real estate inquiries, requested property information,
                 appointments, reminders, follow-up, and service updates.
               </p>
-              <p>Message frequency may vary.</p>
-              <p>Message and data rates may apply.</p>
+              <p>
+                Message and data rates may apply for any messages sent to you from us and to us from you. Message
+                frequency may vary. If you have any questions about your text plan or data plan, it is best to contact
+                your wireless provider.
+              </p>
               <p>You may opt out of SMS communications at any time by replying STOP.</p>
               <p>
                 After receiving STOP, we may send a confirmation that you have been unsubscribed. You will no longer
-                receive SMS messages unless you opt in again.
+                receive SMS messages unless you opt in again. If you want to join again, just sign up as you did the
+                first time, and we will start sending SMS messages to you again.
               </p>
-              <p>For assistance, reply HELP or contact us using the contact information provided on our website.</p>
+              <p>
+                For assistance, reply HELP or contact us directly at{' '}
+                <a href="mailto:Ivan@teambluekeyrealty.com">Ivan@teambluekeyrealty.com</a>.
+              </p>
               <p>Mobile carriers are not liable for delayed or undelivered messages.</p>
 
               <h2>Cookies and Website Technologies</h2>

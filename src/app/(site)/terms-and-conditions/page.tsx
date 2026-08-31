@@ -52,21 +52,26 @@ export default function TermsAndConditionsPage() {
                 <li>Scheduling updates</li>
                 <li>Real estate service updates</li>
               </ul>
-              <p>Message frequency may vary.</p>
-              <p>Message and data rates may apply.</p>
               <p>You may cancel SMS communications at any time by replying STOP.</p>
               <p>
                 After you send STOP, you may receive a confirmation message that you have been unsubscribed. After that,
-                you will no longer receive SMS messages unless you opt in again.
+                you will no longer receive SMS messages unless you opt in again. If you want to join again, just sign up
+                as you did the first time, and we will start sending SMS messages to you again.
               </p>
               <p>
-                For assistance, reply HELP or contact us through the contact information provided on our website.
+                For assistance, reply HELP or contact us directly at{' '}
+                <a href="mailto:Ivan@teambluekeyrealty.com">Ivan@teambluekeyrealty.com</a>.
               </p>
               <p>Mobile carriers are not liable for delayed or undelivered messages.</p>
+              <p>
+                Message and data rates may apply for any messages sent to you from us and to us from you. Message
+                frequency may vary. If you have any questions about your text plan or data plan, it is best to contact
+                your wireless provider.
+              </p>
               <p>Consent to receive SMS messages is not a condition of purchasing goods or services.</p>
               <p>
-                For information about how we collect, use, and protect personal information, please review our Privacy
-                Policy.
+                For information about how we collect, use, and protect personal information, please review our{' '}
+                <a href="/privacy-policy">Privacy Policy</a>.
               </p>
 
               <h2>Changes to These Terms</h2>
