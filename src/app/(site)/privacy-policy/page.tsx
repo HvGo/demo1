@@ -66,22 +66,28 @@ export default function PrivacyPolicyPage() {
                 may include communications related to real estate inquiries, requested property information,
                 appointments, reminders, follow-up, and service updates.
               </p>
+              <p>1. We use SMS to confirm appointments, send reminders, and notify clients of schedule updates or important changes.</p>
               <p>
-                Message and data rates may apply for any messages sent to you from us and to us from you. Message
-                frequency may vary. If you have any questions about your text plan or data plan, it is best to contact
-                your wireless provider.
-              </p>
-              <p>You may opt out of SMS communications at any time by replying STOP.</p>
-              <p>
-                After receiving STOP, we may send a confirmation that you have been unsubscribed. You will no longer
-                receive SMS messages unless you opt in again. If you want to join again, just sign up as you did the
-                first time, and we will start sending SMS messages to you again.
+                2. You can cancel the SMS service at any time. Just text &quot;STOP&quot;. After you send the SMS message
+                &quot;STOP&quot; to us, we will send you an SMS message to confirm that you have been unsubscribed. After
+                this, you will no longer receive SMS messages from us. If you want to join again, just sign up as you did
+                the first time, and we will start sending SMS messages to you again.
               </p>
               <p>
-                For assistance, reply HELP or contact us directly at{' '}
+                3. If you are experiencing issues with the messaging program, you can reply with the keyword
+                &quot;HELP&quot; for more assistance, or you can get help directly at{' '}
                 <a href="mailto:Ivan@teambluekeyrealty.com">Ivan@teambluekeyrealty.com</a>.
               </p>
-              <p>Mobile carriers are not liable for delayed or undelivered messages.</p>
+              <p>4. Carriers are not liable for delayed or undelivered messages.</p>
+              <p>
+                5. As always, message and data rates may apply for any messages sent to you from us and to us from you.
+                Message frequency may vary. If you have any questions about your text plan or data plan, it is best to
+                contact your wireless provider.
+              </p>
+              <p>
+                6. If you have any questions regarding privacy, please read our privacy policy:{' '}
+                <a href="/privacy-policy">Privacy Policy</a>.
+              </p>
 
               <h2>Cookies and Website Technologies</h2>
               <p>
