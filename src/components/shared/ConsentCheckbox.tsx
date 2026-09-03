@@ -28,17 +28,12 @@ export default function ConsentCheckbox({
         className="mt-1 h-4 w-4 flex-shrink-0 accent-primary cursor-pointer"
       />
       <span>
-        I agree to be contacted by Blue Key Realty, LLC via call, email, and text for real estate services.
-        Message and data rates may apply. Message frequency may vary. Reply STOP to opt out at any time or HELP
-        for assistance. View our{' '}
+        I agree to be contacted by BLUE KEY REALTY LLC via call, email, and text for real estate services. To opt
+        out, you can reply &apos;stop&apos; at any time or reply &apos;help&apos; for assistance. You can also
+        click the unsubscribe link in the emails. Message and data rates may apply. Message frequency may vary.{' '}
         <Link href="/privacy-policy" target="_blank" className="text-primary underline hover:text-primary/80">
           Privacy Policy
-        </Link>{' '}
-        and{' '}
-        <Link href="/terms-and-conditions" target="_blank" className="text-primary underline hover:text-primary/80">
-          Terms &amp; Conditions
         </Link>
-        .
       </span>
     </label>
   )
