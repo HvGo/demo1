@@ -33,6 +33,10 @@ export default function ConsentCheckbox({
         click the unsubscribe link in the emails. Message and data rates may apply. Message frequency may vary.{' '}
         <Link href="/privacy-policy" target="_blank" className="text-primary underline hover:text-primary/80">
           Privacy Policy
+        </Link>{' '}
+        &amp;{' '}
+        <Link href="/terms-and-conditions" target="_blank" className="text-primary underline hover:text-primary/80">
+          Terms &amp; Conditions
         </Link>
       </span>
     </label>

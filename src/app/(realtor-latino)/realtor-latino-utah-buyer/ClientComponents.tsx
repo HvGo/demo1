@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Icon } from '@iconify/react'
 import { validateRealtorLatinoUtahForm, ValidationError } from '@/lib/validators'
+import ConsentCheckbox from '@/components/shared/ConsentCheckbox'
 
 interface Testimonial {
   name: string
@@ -26,6 +27,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
   const [errors, setErrors] = useState<ValidationError[]>([])
   const [loading, setLoading] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [consent, setConsent] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -100,6 +102,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
         phone: '',
         email: ''
       })
+      setConsent(false)
       setShowSuccessModal(true)
     } catch (error) {
       console.error('Form submission error:', error)
@@ -338,6 +341,13 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                         <p className='text-red-300 text-[7px] sm:text-[8px] mt-0.5'>{getFieldError('phone')}</p>
                       )}
                     </div>
+
+                    <ConsentCheckbox
+                      checked={consent}
+                      onChange={setConsent}
+                      id="realtor-latino-buyer-consent"
+                      className="text-[8px] sm:text-[9px] text-gray-300"
+                    />
 
                     <button type="submit" disabled={loading} className="w-full bg-accent-gold text-white py-1 sm:py-2 rounded-sm font-bold hover:bg-opacity-90 transition-all text-[10px] sm:text-xs disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1">
                       {loading ? (

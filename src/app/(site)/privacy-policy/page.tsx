@@ -53,7 +53,7 @@ export default function PrivacyPolicyPage() {
 
               <h2>Information Sharing</h2>
               <p>We do not sell personal information or phone numbers.</p>
-              <p>Data will not be sold or shared with third parties for marketing or promotional purposes.</p>
+              <p>Data will not be sold or shared with third parties for promotional or marketing purposes.</p>
               <p>
                 We may share information when reasonably necessary to provide services requested by you, comply with
                 applicable law, protect our legal rights, or work with service providers that assist us in operating our

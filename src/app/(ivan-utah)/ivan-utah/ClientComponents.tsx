@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import ConsentCheckbox from '@/components/shared/ConsentCheckbox'
 
 interface Testimonial {
   name: string
@@ -21,6 +22,7 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
     email: '',
     address: ''
   })
+  const [consent, setConsent] = useState(false)
 
   const handleConsultationClick = () => {
     window.location.href = '/contactus'
@@ -273,8 +275,13 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
                         className="w-full bg-white/20 border border-white/30 p-2 rounded-sm focus:ring-2 focus:ring-accent-gold transition-all font-medium text-white placeholder-gray-300 text-xs"
                       />
                     </div>
-                    
-      
+
+                    <ConsentCheckbox
+                      checked={consent}
+                      onChange={setConsent}
+                      id="ivan-utah-consent"
+                      className="text-[10px] text-gray-300"
+                    />
 
                     <button type="submit" className="w-full bg-accent-gold text-white py-2 rounded-sm font-bold hover:bg-opacity-90 transition-all text-xs">
                       OBTENER MI ANÁLISIS DE MERCADO GRATUITO
