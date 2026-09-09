@@ -41,6 +41,65 @@ export interface MetaAttachment {
 }
 
 // ============================================================================
+// WHATSAPP CLOUD API WEBHOOK TYPES
+// ============================================================================
+// WhatsApp usa una estructura distinta a Messenger/Instagram:
+// entry[].changes[].value.{messages[], contacts[], statuses[]}
+// en vez de entry[].messaging[]
+
+export interface WhatsAppWebhookPayload {
+  object: 'whatsapp_business_account'
+  entry: WhatsAppEntry[]
+}
+
+export interface WhatsAppEntry {
+  id: string
+  changes: WhatsAppChange[]
+}
+
+export interface WhatsAppChange {
+  field: string
+  value: WhatsAppValue
+}
+
+export interface WhatsAppValue {
+  messaging_product: 'whatsapp'
+  metadata: {
+    display_phone_number: string
+    phone_number_id: string
+  }
+  contacts?: WhatsAppContact[]
+  messages?: WhatsAppMessage[]
+  statuses?: WhatsAppStatus[]
+}
+
+export interface WhatsAppContact {
+  profile: { name: string }
+  wa_id: string
+}
+
+export interface WhatsAppMessage {
+  from: string
+  id: string
+  timestamp: string
+  type: 'text' | 'image' | 'video' | 'document' | 'audio' | 'location' | 'button' | 'interactive' | string
+  text?: { body: string }
+  button?: { text: string; payload: string }
+  interactive?: {
+    type: string
+    button_reply?: { id: string; title: string }
+    list_reply?: { id: string; title: string }
+  }
+}
+
+export interface WhatsAppStatus {
+  id: string
+  status: 'sent' | 'delivered' | 'read' | 'failed'
+  timestamp: string
+  recipient_id: string
+}
+
+// ============================================================================
 // PROCESSED MESSAGE TYPES
 // ============================================================================
 

@@ -56,7 +56,9 @@ export function validateWebhookChallenge(
 }
 
 /**
- * Validar que el payload es un webhook válido de Meta
+ * Validar que el payload es un webhook válido de Meta (Facebook/Instagram)
+ * NOTA: no modificar - usado en producción para Facebook/Instagram.
+ * Para WhatsApp usar isValidWhatsAppWebhook.
  */
 export function isValidMetaWebhook(payload: any): boolean {
   if (!payload || typeof payload !== 'object') {
@@ -74,6 +76,26 @@ export function isValidMetaWebhook(payload: any): boolean {
 
   // Al menos una entrada
   if (payload.entry.length === 0) {
+    return false
+  }
+
+  return true
+}
+
+/**
+ * Validar que el payload es un webhook válido de WhatsApp Cloud API
+ * Estructura distinta a Facebook/Instagram: entry[].changes[].value
+ */
+export function isValidWhatsAppWebhook(payload: any): boolean {
+  if (!payload || typeof payload !== 'object') {
+    return false
+  }
+
+  if (payload.object !== 'whatsapp_business_account') {
+    return false
+  }
+
+  if (!Array.isArray(payload.entry) || payload.entry.length === 0) {
     return false
   }
 
@@ -104,6 +126,29 @@ export function isValidMetaMessage(message: any): boolean {
 
   // Debe tener message o postback
   if (!message.message && !message.postback) {
+    return false
+  }
+
+  return true
+}
+
+/**
+ * Validar que un mensaje de WhatsApp tiene los campos requeridos
+ */
+export function isValidWhatsAppMessage(message: any): boolean {
+  if (!message || typeof message !== 'object') {
+    return false
+  }
+
+  if (!message.from || typeof message.from !== 'string') {
+    return false
+  }
+
+  if (!message.id || !message.timestamp) {
+    return false
+  }
+
+  if (!message.type) {
     return false
   }
 

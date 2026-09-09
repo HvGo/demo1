@@ -36,7 +36,13 @@ import { sql } from '@/lib/db'
 /**
  * Procesar un mensaje recibido de Meta
  */
-export async function processMetaMessage(message: MetaMessage, platform: string = PLATFORMS.FACEBOOK): Promise<void> {
+export async function processMetaMessage(
+  message: MetaMessage,
+  platform: string = PLATFORMS.FACEBOOK,
+  // Solo se usa para WhatsApp: el nombre del contacto viene incluido en el propio
+  // webhook (contacts[].profile.name), ya que WhatsApp no tiene endpoint de perfil.
+  presetProfile?: { firstName: string; lastName: string }
+): Promise<void> {
   const senderId = message.sender.id
   const messageText = message.message?.text || ''
   const messageId = message.message?.mid || ''
@@ -58,8 +64,10 @@ export async function processMetaMessage(message: MetaMessage, platform: string 
       return
     }
 
-    // Obtener perfil del usuario desde Meta API
-    const userProfile = await getUserProfile(senderId, platform)
+    // Obtener perfil del usuario desde Meta API (WhatsApp usa el nombre del propio webhook)
+    const userProfile = platform === PLATFORMS.WHATSAPP
+      ? (presetProfile || null)
+      : await getUserProfile(senderId, platform)
     console.log('👤 User profile:', { firstName: userProfile?.firstName, lastName: userProfile?.lastName })
 
     // Sanitizar texto

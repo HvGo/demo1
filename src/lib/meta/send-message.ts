@@ -2,7 +2,7 @@
  * Servicio para enviar mensajes a través de Meta API
  */
 
-import { META_CONFIG, PLATFORMS } from './constants'
+import { META_CONFIG, WHATSAPP_CONFIG, PLATFORMS } from './constants'
 
 interface SendMessageResponse {
   success: boolean
@@ -21,6 +21,64 @@ function getGraphEndpoint(platform: string): string {
 }
 
 /**
+ * Enviar mensaje de texto vía WhatsApp Cloud API
+ * Formato de request completamente distinto al Send API de Messenger:
+ * usa messaging_product/to/type/text en vez de recipient/message
+ */
+async function sendWhatsAppTextMessage(
+  recipientPhone: string,
+  text: string
+): Promise<SendMessageResponse> {
+  try {
+    if (!WHATSAPP_CONFIG.PHONE_NUMBER_ID || !WHATSAPP_CONFIG.ACCESS_TOKEN) {
+      console.error('❌ WhatsApp not configured: missing WHATSAPP_PHONE_NUMBER_ID or WHATSAPP_ACCESS_TOKEN')
+      return { success: false, error: 'WhatsApp not configured' }
+    }
+
+    const url = `https://graph.facebook.com/${WHATSAPP_CONFIG.API_VERSION}/${WHATSAPP_CONFIG.PHONE_NUMBER_ID}/messages`
+
+    console.log('🔐 Sending WhatsApp message:', { url, recipientPhone, textLength: text.length })
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${WHATSAPP_CONFIG.ACCESS_TOKEN}`,
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        to: recipientPhone,
+        type: 'text',
+        text: { body: text },
+      }),
+    })
+
+    console.log('📡 WhatsApp response status:', response.status, response.statusText)
+
+    if (!response.ok) {
+      const error = await response.json()
+      console.error('❌ WhatsApp API error:', { status: response.status, error: error.error })
+      return {
+        success: false,
+        error: error.error?.message || 'Failed to send WhatsApp message',
+      }
+    }
+
+    const data = await response.json()
+    return {
+      success: true,
+      messageId: data.messages?.[0]?.id,
+    }
+  } catch (error) {
+    console.error('Error sending WhatsApp message:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+
+/**
  * Enviar mensaje de texto a un usuario de Meta
  */
 export async function sendTextMessage(
@@ -28,6 +86,11 @@ export async function sendTextMessage(
   text: string,
   platform: string = PLATFORMS.FACEBOOK
 ): Promise<SendMessageResponse> {
+  // WhatsApp usa una API y formato de request completamente distintos - no tocar el flujo de abajo (Facebook/Instagram)
+  if (platform === PLATFORMS.WHATSAPP) {
+    return sendWhatsAppTextMessage(recipientId, text)
+  }
+
   try {
     const endpoint = getGraphEndpoint(platform)
     // Instagram requiere usar el ID de la cuenta de negocio, no /me
@@ -293,6 +356,13 @@ export async function getUserProfile(
   metaSenderId: string,
   platform: string = PLATFORMS.FACEBOOK
 ): Promise<{ firstName: string; lastName: string } | null> {
+  // WhatsApp no tiene un endpoint de "perfil de usuario" como Messenger.
+  // El nombre del contacto viene incluido directamente en el payload del webhook
+  // (entry[].changes[].value.contacts[].profile.name) y se pasa por otra vía.
+  if (platform === PLATFORMS.WHATSAPP) {
+    return null
+  }
+
   try {
     const endpoint = getGraphEndpoint(platform)
     console.log(`📋 Obteniendo perfil de usuario: senderId=${metaSenderId}, platform=${platform}, endpoint=${endpoint}`)

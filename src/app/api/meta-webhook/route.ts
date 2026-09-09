@@ -10,11 +10,13 @@ import {
   validateWebhookChallenge,
   isValidMetaWebhook,
   isValidMetaMessage,
+  isValidWhatsAppWebhook,
+  isValidWhatsAppMessage,
 } from '@/lib/meta/validate-webhook'
 import { processMetaMessage } from '@/lib/meta/process-message'
 import { PLATFORMS } from '@/lib/meta/constants'
 import { sql } from '@/lib/db'
-import { MetaWebhookPayload } from '@/types/meta'
+import { MetaWebhookPayload, MetaMessage, WhatsAppWebhookPayload } from '@/types/meta'
 
 /**
  * GET: Verificación del webhook
@@ -76,7 +78,15 @@ export async function POST(request: NextRequest) {
     console.log('✅ Signature validated')
 
     // Parsear payload
-    payload = JSON.parse(body) as MetaWebhookPayload
+    const rawPayload = JSON.parse(body)
+
+    // Rama separada para WhatsApp Cloud API - estructura distinta a Facebook/Instagram
+    // (entry[].changes[].value en vez de entry[].messaging[]). No afecta el flujo de abajo.
+    if (rawPayload?.object === 'whatsapp_business_account') {
+      return await handleWhatsAppWebhook(rawPayload as WhatsAppWebhookPayload)
+    }
+
+    payload = rawPayload as MetaWebhookPayload
 
     // Validar estructura del webhook
     if (!isValidMetaWebhook(payload)) {
@@ -162,6 +172,87 @@ export async function POST(request: NextRequest) {
     }
 
     // Responder a Meta con 200 de todas formas (para no reintentar)
+    return new NextResponse('OK', { status: 200 })
+  }
+}
+
+/**
+ * Manejar webhook de WhatsApp Cloud API (rama separada, no toca el flujo de Facebook/Instagram)
+ */
+async function handleWhatsAppWebhook(payload: WhatsAppWebhookPayload): Promise<NextResponse> {
+  try {
+    if (!isValidWhatsAppWebhook(payload)) {
+      console.error('❌ Invalid WhatsApp webhook structure')
+      await logWebhookEvent('webhook_received', payload, 'error', 'Invalid WhatsApp webhook structure')
+      return new NextResponse('Invalid webhook', { status: 400 })
+    }
+
+    await logWebhookEvent('webhook_received', payload, 'success')
+
+    let processedCount = 0
+
+    for (const entry of payload.entry) {
+      for (const change of entry.changes || []) {
+        const value = change.value
+        console.log('📨 WhatsApp change received with', value.messages?.length || 0, 'messages')
+
+        for (const waMessage of value.messages || []) {
+          if (!isValidWhatsAppMessage(waMessage)) {
+            console.warn('⚠️ Invalid WhatsApp message structure - skipping')
+            continue
+          }
+
+          // Buscar el nombre del contacto (viene incluido en el propio webhook)
+          const contact = value.contacts?.find((c) => c.wa_id === waMessage.from)
+          const [firstName = '', ...rest] = (contact?.profile.name || '').split(' ')
+          const presetProfile = { firstName, lastName: rest.join(' ') }
+
+          // Adaptar el mensaje de WhatsApp a la forma MetaMessage que ya consume
+          // toda la lógica existente (process-message.ts), sin duplicar esa lógica.
+          const adaptedMessage: MetaMessage = {
+            sender: { id: waMessage.from },
+            recipient: { id: value.metadata.phone_number_id },
+            timestamp: Number(waMessage.timestamp) * 1000,
+            message: {
+              mid: waMessage.id,
+              text: waMessage.text?.body || '',
+            },
+          }
+
+          try {
+            processMetaMessage(adaptedMessage, PLATFORMS.WHATSAPP, presetProfile).catch((error) => {
+              console.error('Error processing WhatsApp message:', error)
+              logWebhookEvent(
+                'message_processed',
+                waMessage,
+                'error',
+                error instanceof Error ? error.message : 'Unknown error'
+              ).catch(console.error)
+            })
+            processedCount++
+          } catch (error) {
+            console.error('Error queuing WhatsApp message for processing:', error)
+            await logWebhookEvent(
+              'message_processed',
+              waMessage,
+              'error',
+              error instanceof Error ? error.message : 'Unknown error'
+            )
+          }
+        }
+      }
+    }
+
+    console.log(`✅ Processed ${processedCount} WhatsApp messages from webhook`)
+    return new NextResponse('OK', { status: 200 })
+  } catch (error) {
+    console.error('❌ WhatsApp webhook error:', error)
+    await logWebhookEvent(
+      'webhook_error',
+      payload,
+      'error',
+      error instanceof Error ? error.message : 'Unknown error'
+    ).catch(console.error)
     return new NextResponse('OK', { status: 200 })
   }
 }

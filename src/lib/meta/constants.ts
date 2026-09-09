@@ -7,7 +7,18 @@ export const META_CONFIG = {
   ACCESS_TOKEN: process.env.META_ACCESS_TOKEN || '',
   BUSINESS_ACCOUNT_ID: process.env.META_BUSINESS_ACCOUNT_ID || '',
   WEBHOOK_SECRET: process.env.META_WEBHOOK_SECRET || '',
+  // NOTA: no tocar - usado por Facebook/Instagram, que ya funcionan en producción
   API_VERSION: 'v18.0',
+} as const
+
+// Configuración separada para WhatsApp Cloud API.
+// Se mantiene independiente de META_CONFIG para no afectar Facebook/Instagram
+// (distinto access token, distinto phone number id, distinta versión de API).
+export const WHATSAPP_CONFIG = {
+  ACCESS_TOKEN: process.env.WHATSAPP_ACCESS_TOKEN || '',
+  PHONE_NUMBER_ID: process.env.WHATSAPP_PHONE_NUMBER_ID || '',
+  BUSINESS_ACCOUNT_ID: process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || '',
+  API_VERSION: 'v25.0',
 } as const
 
 export const PLATFORMS = {
