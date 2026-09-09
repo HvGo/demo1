@@ -202,15 +202,20 @@ async function handleWhatsAppWebhook(payload: WhatsAppWebhookPayload): Promise<N
             continue
           }
 
+          // Identificador del remitente: esquema clásico (from = teléfono) o alterno (from_user_id)
+          const senderId = waMessage.from || waMessage.from_user_id || ''
+
           // Buscar el nombre del contacto (viene incluido en el propio webhook)
-          const contact = value.contacts?.find((c) => c.wa_id === waMessage.from)
-          const [firstName = '', ...rest] = (contact?.profile.name || '').split(' ')
+          const contact = value.contacts?.find(
+            (c) => c.wa_id === waMessage.from || c.user_id === waMessage.from_user_id
+          )
+          const [firstName = '', ...rest] = (contact?.profile.name || contact?.profile.username || '').split(' ')
           const presetProfile = { firstName, lastName: rest.join(' ') }
 
           // Adaptar el mensaje de WhatsApp a la forma MetaMessage que ya consume
           // toda la lógica existente (process-message.ts), sin duplicar esa lógica.
           const adaptedMessage: MetaMessage = {
-            sender: { id: waMessage.from },
+            sender: { id: senderId },
             recipient: { id: value.metadata.phone_number_id },
             timestamp: Number(waMessage.timestamp) * 1000,
             message: {

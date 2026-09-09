@@ -18,6 +18,8 @@ export const WHATSAPP_CONFIG = {
   ACCESS_TOKEN: process.env.WHATSAPP_ACCESS_TOKEN || '',
   PHONE_NUMBER_ID: process.env.WHATSAPP_PHONE_NUMBER_ID || '',
   BUSINESS_ACCOUNT_ID: process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || '',
+  // App Secret de la app de Meta usada para WhatsApp (distinta a la de Facebook/Instagram)
+  WEBHOOK_SECRET: process.env.WHATSAPP_APP_SECRET || '',
   API_VERSION: 'v25.0',
 } as const
 

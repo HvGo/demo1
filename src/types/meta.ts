@@ -74,12 +74,18 @@ export interface WhatsAppValue {
 }
 
 export interface WhatsAppContact {
-  profile: { name: string }
-  wa_id: string
+  profile: { name: string; username?: string }
+  // Esquema clásico (número de teléfono) o esquema alterno (user_id) según la cuenta
+  wa_id?: string
+  user_id?: string
+  country_code?: string
 }
 
 export interface WhatsAppMessage {
-  from: string
+  // Esquema clásico (número de teléfono) o esquema alterno (user_id) según la cuenta
+  from?: string
+  from_user_id?: string
+  from_logical_id?: string
   id: string
   timestamp: string
   type: 'text' | 'image' | 'video' | 'document' | 'audio' | 'location' | 'button' | 'interactive' | string

@@ -4,40 +4,60 @@
  */
 
 import crypto from 'crypto'
-import { META_CONFIG } from './constants'
+import { META_CONFIG, WHATSAPP_CONFIG } from './constants'
+
+/**
+ * Validar la firma del webhook de Meta contra un secreto específico
+ * Meta envía un header x-hub-signature-256 con HMAC-SHA256
+ */
+function validateSignatureWithSecret(
+  body: string,
+  signature: string,
+  secret: string
+): boolean {
+  if (!secret) return false
+
+  try {
+    const hash = crypto.createHmac('sha256', secret).update(body).digest('hex')
+    const expectedSignature = `sha256=${hash}`
+
+    // Ambos buffers deben tener el mismo largo para timingSafeEqual
+    const sigBuffer = Buffer.from(signature)
+    const expectedBuffer = Buffer.from(expectedSignature)
+    if (sigBuffer.length !== expectedBuffer.length) return false
+
+    return crypto.timingSafeEqual(sigBuffer, expectedBuffer)
+  } catch (error) {
+    console.error('Error validating signature:', error)
+    return false
+  }
+}
 
 /**
  * Validar la firma del webhook de Meta
- * Meta envía un header x-hub-signature-256 con HMAC-SHA256
+ * NOTA: no modificar la validación contra META_CONFIG.WEBHOOK_SECRET - se usa en
+ * producción para Facebook/Instagram. Se agrega además el secreto de WhatsApp
+ * (app de Meta distinta) como segunda opción válida, sin quitar la primera.
  */
 export function validateMetaSignature(
   body: string,
   signature: string | undefined
 ): boolean {
-  if (!signature || !META_CONFIG.WEBHOOK_SECRET) {
-    console.error('Missing signature or webhook secret')
+  if (!signature) {
+    console.error('Missing signature')
     return false
   }
 
-  try {
-    // Crear hash HMAC-SHA256
-    const hash = crypto
-      .createHmac('sha256', META_CONFIG.WEBHOOK_SECRET)
-      .update(body)
-      .digest('hex')
-
-    // Formato esperado: sha256=<hash>
-    const expectedSignature = `sha256=${hash}`
-
-    // Usar timingSafeEqual para evitar timing attacks
-    return crypto.timingSafeEqual(
-      Buffer.from(signature),
-      Buffer.from(expectedSignature)
-    )
-  } catch (error) {
-    console.error('Error validating signature:', error)
-    return false
+  if (validateSignatureWithSecret(body, signature, META_CONFIG.WEBHOOK_SECRET)) {
+    return true
   }
+
+  // Probar también con el secreto de la app de WhatsApp, si está configurado
+  if (WHATSAPP_CONFIG.WEBHOOK_SECRET && validateSignatureWithSecret(body, signature, WHATSAPP_CONFIG.WEBHOOK_SECRET)) {
+    return true
+  }
+
+  return false
 }
 
 /**
@@ -134,13 +154,16 @@ export function isValidMetaMessage(message: any): boolean {
 
 /**
  * Validar que un mensaje de WhatsApp tiene los campos requeridos
+ * Algunas cuentas usan el esquema clásico (from = número de teléfono)
+ * y otras un esquema alterno (from_user_id), por eso se acepta cualquiera de los dos.
  */
 export function isValidWhatsAppMessage(message: any): boolean {
   if (!message || typeof message !== 'object') {
     return false
   }
 
-  if (!message.from || typeof message.from !== 'string') {
+  const senderId = message.from || message.from_user_id
+  if (!senderId || typeof senderId !== 'string') {
     return false
   }
 
