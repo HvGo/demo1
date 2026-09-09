@@ -157,10 +157,6 @@ export default function ContactForm() {
 
     // Validar formulario
     if (!validateForm()) {
-      setStatus({
-        type: 'error',
-        message: 'Please fix the errors above'
-      })
       return
     }
 
