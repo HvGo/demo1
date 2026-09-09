@@ -103,6 +103,8 @@ export default function ContactForm() {
       newErrors.name = 'Name is required'
     } else if (formData.name.length > 100) {
       newErrors.name = 'Name must be less than 100 characters'
+    } else if (formData.name.trim().split(/\s+/).length < 2) {
+      newErrors.name = 'Please enter your full name (first and last name)'
     }
 
     if (!formData.phone.trim()) {
