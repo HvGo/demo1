@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
                 business.
               </p>
 
-              <h2>SMS/Text Messaging</h2>
+              <h2>Terms & Conditions</h2>
               <p>
                 If you consent to receive SMS/text messages from Blue Key Realty, LLC and/or Ivan Utah Realtor, messages
                 may include communications related to real estate inquiries, requested property information,
