@@ -69,7 +69,7 @@ export default function ContactForm() {
     message: ''
   })
 
-  const [errors, setErrors] = useState<Partial<FormState>>({})
+  const [errors, setErrors] = useState<Partial<FormState> & { consent?: string }>({})
   const [sessionId, setSessionId] = useState('')
   const [utmData, setUtmData] = useState<UTMData>({})
   const [showSuccessModal, setShowSuccessModal] = useState(false)
@@ -97,7 +97,7 @@ export default function ContactForm() {
 
   // Validar formulario
   const validateForm = (): boolean => {
-    const newErrors: Partial<FormState> = {}
+    const newErrors: Partial<FormState> & { consent?: string } = {}
 
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required'
@@ -129,6 +129,10 @@ export default function ContactForm() {
       newErrors.message = 'Message must be less than 5000 characters'
     } else if (formData.message.trim().split(/\s+/).length < 3) {
       newErrors.message = 'Please write a bit more detail (at least a few words)'
+    }
+
+    if (!consent) {
+      newErrors.consent = 'You must agree to be contacted before submitting'
     }
 
     setErrors(newErrors)
@@ -355,7 +359,15 @@ export default function ContactForm() {
         </div>
 
         {/* Consent Checkbox */}
-        <ConsentCheckbox checked={consent} onChange={setConsent} id="contact-form-consent" />
+        <ConsentCheckbox
+          checked={consent}
+          onChange={(v) => {
+            setConsent(v)
+            if (v) setErrors(prev => ({ ...prev, consent: undefined }))
+          }}
+          id="contact-form-consent"
+          error={errors.consent}
+        />
 
         {/* Submit Button */}
         <button 
