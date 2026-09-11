@@ -27,7 +27,6 @@ export default function PropertyContactModal({
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [consent, setConsent] = useState(false)
-  const [consentError, setConsentError] = useState('')
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -37,7 +36,6 @@ export default function PropertyContactModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
-    setConsentError('')
 
     // Validar campos
     if (!formData.name.trim()) {
@@ -50,10 +48,6 @@ export default function PropertyContactModal({
     }
     if (!formData.phone.trim()) {
       setError('Por favor ingresa tu teléfono')
-      return
-    }
-    if (!consent) {
-      setConsentError('Debes aceptar ser contactado antes de enviar')
       return
     }
     setIsLoading(true)
@@ -144,15 +138,7 @@ export default function PropertyContactModal({
             </div>
 
             {/* Consent Checkbox */}
-            <ConsentCheckbox
-              checked={consent}
-              onChange={(v) => {
-                setConsent(v)
-                if (v) setConsentError('')
-              }}
-              id="property-contact-consent"
-              error={consentError}
-            />
+            <ConsentCheckbox checked={consent} onChange={setConsent} id="property-contact-consent" />
 
             {/* Error */}
             {error && (

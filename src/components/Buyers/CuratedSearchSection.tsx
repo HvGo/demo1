@@ -46,12 +46,8 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
       ...formData
     })
 
-    const combinedErrors = [...validation.errors]
-    if (!consent) {
-      combinedErrors.push({ field: 'consent', message: 'Debes aceptar ser contactado antes de enviar' })
-    }
-    if (combinedErrors.length > 0) {
-      setErrors(combinedErrors)
+    if (!validation.isValid) {
+      setErrors(validation.errors)
       return
     }
 
@@ -276,15 +272,7 @@ export const CuratedSearchSection = ({ onSuccess }: CuratedSearchSectionProps = 
               </div>
             )}
 
-            <ConsentCheckbox
-              checked={consent}
-              onChange={(v) => {
-                setConsent(v)
-                if (v) setErrors(errors.filter(err => err.field !== 'consent'))
-              }}
-              id="curated-search-consent"
-              error={getFieldError('consent')}
-            />
+            <ConsentCheckbox checked={consent} onChange={setConsent} id="curated-search-consent" />
 
             <button
               type='submit'

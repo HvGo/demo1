@@ -131,10 +131,6 @@ export default function ContactForm() {
       newErrors.message = 'Please write a bit more detail (at least a few words)'
     }
 
-    if (!consent) {
-      newErrors.consent = 'You must agree to be contacted before submitting'
-    }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -359,15 +355,7 @@ export default function ContactForm() {
         </div>
 
         {/* Consent Checkbox */}
-        <ConsentCheckbox
-          checked={consent}
-          onChange={(v) => {
-            setConsent(v)
-            if (v) setErrors(prev => ({ ...prev, consent: undefined }))
-          }}
-          id="contact-form-consent"
-          error={errors.consent}
-        />
+        <ConsentCheckbox checked={consent} onChange={setConsent} id="contact-form-consent" />
 
         {/* Submit Button */}
         <button 

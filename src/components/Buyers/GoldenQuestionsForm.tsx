@@ -41,12 +41,8 @@ export const GoldenQuestionsForm = ({ onSuccess }: GoldenQuestionsFormProps = {}
 
     // Validar datos
     const validation = validateGoldenQuestionsForm(formData)
-    const combinedErrors = [...validation.errors]
-    if (!consent) {
-      combinedErrors.push({ field: 'consent', message: 'Debes aceptar ser contactado antes de enviar' })
-    }
-    if (combinedErrors.length > 0) {
-      setErrors(combinedErrors)
+    if (!validation.isValid) {
+      setErrors(validation.errors)
       return
     }
 
@@ -263,15 +259,7 @@ export const GoldenQuestionsForm = ({ onSuccess }: GoldenQuestionsFormProps = {}
             )}
 
             {/* Consent Checkbox */}
-            <ConsentCheckbox
-              checked={consent}
-              onChange={(v) => {
-                setConsent(v)
-                if (v) setErrors(errors.filter(err => err.field !== 'consent'))
-              }}
-              id="golden-questions-consent"
-              error={getFieldError('consent')}
-            />
+            <ConsentCheckbox checked={consent} onChange={setConsent} id="golden-questions-consent" />
 
             {/* Submit Button */}
             <button
