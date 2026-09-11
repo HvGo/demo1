@@ -72,8 +72,12 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
     setErrors([])
 
     const validation = validateRealtorLatinoUtahForm(formData)
-    if (!validation.isValid) {
-      setErrors(validation.errors)
+    const combinedErrors = [...validation.errors]
+    if (!consent) {
+      combinedErrors.push({ field: 'consent', message: 'Debes aceptar ser contactado antes de enviar' })
+    }
+    if (combinedErrors.length > 0) {
+      setErrors(combinedErrors)
       return
     }
 
@@ -372,9 +376,13 @@ export function IvanUtahClient({ whatsAppNumber }: ClientComponentsProps) {
 
                     <ConsentCheckbox
                       checked={consent}
-                      onChange={setConsent}
+                      onChange={(v) => {
+                        setConsent(v)
+                        if (v) setErrors(errors.filter(err => err.field !== 'consent'))
+                      }}
                       id="realtor-latino-seller-consent"
                       className="text-[8px] sm:text-[9px] text-gray-300"
+                      error={getFieldError('consent')}
                     />
 
                     <button type="submit" disabled={loading} className="w-full bg-accent-gold text-white py-1 sm:py-2 rounded-sm font-bold hover:bg-opacity-90 transition-all text-[10px] sm:text-xs disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1">

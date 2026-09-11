@@ -127,6 +127,8 @@ export default function ContactForm() {
       newErrors.message = 'Message must be at least 10 characters'
     } else if (formData.message.length > 5000) {
       newErrors.message = 'Message must be less than 5000 characters'
+    } else if (formData.message.trim().split(/\s+/).length < 3) {
+      newErrors.message = 'Please write a bit more detail (at least a few words)'
     }
 
     setErrors(newErrors)

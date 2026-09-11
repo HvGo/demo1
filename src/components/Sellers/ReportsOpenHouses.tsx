@@ -49,8 +49,12 @@ export const ReportsOpenHouses = ({ onClose }: ReportsOpenHousesProps = {}) => {
       ...formData
     })
 
-    if (!validation.isValid) {
-      setErrors(validation.errors)
+    const combinedErrors = [...validation.errors]
+    if (!consent) {
+      combinedErrors.push({ field: 'consent', message: 'Debes aceptar ser contactado antes de enviar' })
+    }
+    if (combinedErrors.length > 0) {
+      setErrors(combinedErrors)
       return
     }
 
@@ -344,7 +348,15 @@ export const ReportsOpenHouses = ({ onClose }: ReportsOpenHousesProps = {}) => {
               </div>
             )}
 
-            <ConsentCheckbox checked={consent} onChange={setConsent} id="reports-open-houses-consent" />
+            <ConsentCheckbox
+              checked={consent}
+              onChange={(v) => {
+                setConsent(v)
+                if (v) setErrors(errors.filter(err => err.field !== 'consent'))
+              }}
+              id="reports-open-houses-consent"
+              error={getFieldError('consent')}
+            />
 
             <button
               type='submit'
